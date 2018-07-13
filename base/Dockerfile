@@ -4,7 +4,6 @@ FROM $BUILD_FROM
 ####
 # Install core
 RUN apk add --no-cache \
-        bash \
         bsd-compat-headers \
         libgcc \
         libstdc++ \
