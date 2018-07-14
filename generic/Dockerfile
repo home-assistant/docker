@@ -7,7 +7,7 @@ RUN apk add --no-cache \
         bluez-libs eudev-libs libxslt libxml2 cups-libs \
         libffi libressl gmp mpfr3 mpc1 \
     && apk add --no-cache --virtual .build-dependencies \
-        gcc g++ python3-dev musl-dev cmake make git linux-headers \
+        gcc g++ musl-dev cmake make git linux-headers \
         bluez-dev libffi-dev libressl-dev glib-dev eudev-dev \
         libxml2-dev libxslt-dev libpng-dev libjpeg-turbo-dev tiff-dev \
         autoconf automake cups-dev linux-headers gmp-dev mpfr-dev mpc1-dev \
