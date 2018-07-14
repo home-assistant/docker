@@ -57,12 +57,13 @@ RUN apk add --no-cache \
 # Dlib
 ARG DLIB_VERSION=19.14.0
 RUN apk add --no-cache --virtual .build-dependencies \
-        cmake ncurses make g++ \
+        cmake ncurses make g++ git \
     && pip3 install --no-cache-dir dlib==$DLIB_VERSION \
     && apk del .build-dependencies
 
-# Log4Cplus
+# OpenALPR & Log4Cplus
 ARG LOGCPLUS_VERSION=REL_1_2_0
+ARG OPENALPR_VERSION=v2.3.0
 RUN apk add --no-cache \
         tesseract-ocr \
     && apk add --no-cache --virtual .build-dependencies \
@@ -74,12 +75,9 @@ RUN apk add --no-cache \
     && ./configure --with-working-locale \
     && make \
     && make install \
-    && apk del .build-dependencies \
-    && rm -rf /usr/src/log4cplus
-
-# OpenALPR
-ARG OPENALPR_VERSION=v2.3.0
-RUN git clone --depth 1 -b $OPENALPR_VERSION https://github.com/openalpr/openalpr \
+    && cd /usr/src \
+    && rm -rf /usr/src/log4cplus \
+    && git clone --depth 1 -b $OPENALPR_VERSION https://github.com/openalpr/openalpr \
     && cd openalpr/src \
     && mkdir -p build \
     && cd build \
