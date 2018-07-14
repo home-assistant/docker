@@ -123,7 +123,7 @@ RUN apk add --no-cache \
 ####
 ## Install pip module for component/homeassistant
 RUN apk add --no-cache \
-        mariadb-client-libs postgresql-libs freetds libffi \
+        mariadb-embedded postgresql-libs freetds libffi \
     && apk add --no-cache --virtual .build-dependencies \
         gcc g++ musl-dev make \
         mariadb-dev postgresql-dev freetds-dev libffi-dev \
