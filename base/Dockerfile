@@ -74,6 +74,7 @@ RUN apk add --no-cache \
     && ./configure --with-working-locale \
     && make \
     && make install \
+    && apk del .build-dependencies \
     && rm -rf /usr/src/log4cplus
 
 # OpenALPR
