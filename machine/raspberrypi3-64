@@ -39,7 +39,7 @@ RUN apk del libcec \
     && git clone --depth 1 -b libcec-4.0.2 https://github.com/Pulse-Eight/libcec /usr/src/libcec \
     && mkdir -p /usr/src/libcec/build \
     && cd /usr/src/libcec/build \
-    && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
         -DRPI_INCLUDE_DIR=/opt/vc/include \
         -DRPI_LIB_DIR=/opt/vc/lib \
         -DPYTHON_LIBRARY="/usr/local/lib/libpython3.6m.so" \
