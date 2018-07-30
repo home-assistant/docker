@@ -44,8 +44,7 @@ RUN apk add --no-cache --virtual .build-dependencies \
     && cd /usr/src/dht \
     && sed -i 's/^pi_version\ =\ None/pi_version\ =\ 1/' setup.py \
     && sed -i 's/^platform\ =\ platform_detect.UNKNOWN/platform\ =\ platform_detect.RASPBERRY_PI/' setup.py \
-    && sed -i 's/platform\ =\ platform_detect.platform_detect()/pass/' \
-        setup.py \
+    && sed -i 's/platform\ =\ platform_detect.platform_detect()/pass/' setup.py \
     && pip3 install . \
     && apk del .build-dependencies \
     && rm -rf /usr/src/dht
