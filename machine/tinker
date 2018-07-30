@@ -2,3 +2,12 @@ ARG BUILD_VERSION
 FROM homeassistant/armhf-homeassistant:$BUILD_VERSION
 
 RUN apk --no-cache add usbutils
+
+# Install GPIO support
+RUN apk add --no-cache --virtual .build-dependencies \
+        gcc libc-dev git \
+    && git clone --depth 1 https://github.com/TinkerBoard/gpio_lib_python /usr/src/gpio \
+    && cd /usr/src/gpio \
+    && pip3 install . \
+    && apk del .build-dependencies \
+    && rm -rf /usr/src/gpio
