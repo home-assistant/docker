@@ -8,7 +8,7 @@ RUN apk add --no-cache --virtual .build-dependencies \
         gcc libc-dev git musl-dev \
     && git clone --depth 1 https://github.com/TinkerBoard/gpio_lib_python /usr/src/gpio \
     && cd /usr/src/gpio \
-    && sed -i "s/caddr_t/void*/m" source/wiringTB.c \
+    && sed -i "s/caddr_t/void*/g" source/wiringTB.c \
     && pip3 install . \
     && apk del .build-dependencies \
     && rm -rf /usr/src/gpio
