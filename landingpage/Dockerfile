@@ -1,5 +1,5 @@
-ARG BUILD_ARCH
-FROM homeassistant/${BUILD_ARCH}-base:3.8
+ARG BUILD_FROM
+FROM $BUILD_FROM
 
 # Add env
 ENV LANG C.UTF-8
