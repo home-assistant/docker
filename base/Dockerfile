@@ -20,11 +20,12 @@ RUN apk add --no-cache \
 WORKDIR /usr/src/
 
 # ssocr
+ARG SSOCR_VERSION=5e47e26b125a1a13bc79de93a5e87dd0b51354ca
 RUN apk add --no-cache \
         imlib2 \
     && apk add --no-cache --virtual .build-dependencies \
         git gcc make musl-dev imlib2-dev \
-    && git clone --depth 1 https://github.com/auerswal/ssocr \
+    && git clone --depth 1 -b $SSOCR_VERSION https://github.com/auerswal/ssocr \
     && cd ssocr \
     && make \
     && make install \
