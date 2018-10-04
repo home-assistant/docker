@@ -25,8 +25,9 @@ RUN apk add --no-cache \
         imlib2 \
     && apk add --no-cache --virtual .build-dependencies \
         git gcc make musl-dev imlib2-dev \
-    && git clone --depth 1 -b $SSOCR_VERSION https://github.com/auerswal/ssocr \
+    && git clone --depth 1 https://github.com/auerswal/ssocr \
     && cd ssocr \
+    && git checkout $SSOCR_VERSION \
     && make \
     && make install \
     && apk del .build-dependencies \
