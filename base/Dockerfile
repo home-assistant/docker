@@ -104,7 +104,9 @@ RUN apk add --no-cache \
     && cd /usr/src/bazel-${BAZEL_VERSION} \
     && sed -i -e 's/-classpath/-J-Xmx8192m -J-Xms128m -classpath/g' scripts/bootstrap/compile.sh \
     && JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk" bash compile.sh \
+    && cp -p output/bazel /usr/bin/
     && cd /usr/src \
+    && rm -rf /usr/src/bazel-${BAZEL_VERSION} \
     && git clone -b v$TENSORFLOW_VERSION --depth 1 https://github.com/tensorflow/tensorflow \
     && cd /usr/src/tensorflow \
     && sed -i -e '/JEMALLOC_HAVE_SECURE_GETENV/d' third_party/jemalloc.BUILD \
@@ -124,13 +126,13 @@ RUN apk add --no-cache \
         TF_NEED_CUDA=0 \
         TF_NEED_MPI=0 \
         bash configure \
-    && /usr/src/bazel-${BAZEL_VERSION}/output/bazel build -c opt --local_resources ${LOCAL_RESOURCES} //tensorflow/tools/pip_package:build_pip_package \
-    && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
+    && JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk" /usr/src/bazel-${BAZEL_VERSION}/output/bazel build -c opt --local_resources ${LOCAL_RESOURCES} //tensorflow/tools/pip_package:build_pip_package \
+    && JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk" ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
     && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-${TENSORFLOW_VERSION}-cp36-cp36m-linux_*.whl \
     && cd /usr/src \
-    && rm -rf /usr/src/bazel-${BAZEL_VERSION} \
     && rm -rf /usr/src/tensorflow_pkg \
     && rm -rf /usr/src/tensorflow \
+    && rm -f /usr/bin/bazel \
     && pip3 uninstall -y wheel \
     && apk del .build-dependencies
 
