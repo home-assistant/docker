@@ -91,7 +91,7 @@ RUN apk add --no-cache \
 
 # TensorFlow
 ARG TENSORFLOW_VERSION=1.11.0
-ARG BAZEL_VERSION=0.10.0
+ARG BAZEL_VERSION=0.18.1
 RUN apk add --no-cache \
         freetype libpng libjpeg-turbo musl openblas \
     && apk add --no-cache --virtual=.build-dependencies \
