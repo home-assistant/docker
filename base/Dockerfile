@@ -127,7 +127,7 @@ RUN apk add --no-cache \
         TF_NEED_CUDA=0 \
         TF_NEED_MPI=0 \
         bash configure \
-    && bazel build -c opt --local_resources ${LOCAL_RESOURCES} //tensorflow/tools/pip_package:build_pip_package \
+    && bazel build -c opt --local_resources 2048,.5,1.0 //tensorflow/tools/pip_package:build_pip_package \
     && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
     && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-${TENSORFLOW_VERSION}-cp36-cp36m-linux_*.whl \
     && cd /usr/src \
@@ -146,7 +146,9 @@ RUN apk add --no-cache \
     && git clone -b master --depth 1 https://github.com/telldus/telldus \
     && cd telldus/telldus-core \
     && sed -i "/\<sys\/socket.h\>/a \#include \<sys\/select.h\>" common/Socket_unix.cpp \
-    && cmake . -DBUILD_LIBTELLDUS-CORE=ON -DBUILD_TDADMIN=OFF -DBUILD_TDTOOL=OFF -DGENERATE_MAN=OFF -DFORCE_COMPILE_FROM_TRUNK=ON -DFTDI_LIBRARY=/usr/lib/libftdi1.so \
+    && cmake . -DBUILD_LIBTELLDUS-CORE=ON \
+        -DBUILD_TDADMIN=OFF -DBUILD_TDTOOL=OFF -DGENERATE_MAN=OFF \
+        -DFORCE_COMPILE_FROM_TRUNK=ON -DFTDI_LIBRARY=/usr/lib/libftdi1.so \
     && make \
     && make install \
     && apk del .build-dependencies \
