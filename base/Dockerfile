@@ -94,7 +94,7 @@ ARG TENSORFLOW_VERSION=1.11.0
 ARG BAZEL_VERSION=0.10.0
 RUN apk add --no-cache \
         freetype libpng libjpeg-turbo musl openblas \
-RUN apk add --no-cache --virtual=.build-dependencies \
+    && apk add --no-cache --virtual=.build-dependencies \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip \
     && pip3 install --no-cache-dir wheel \
