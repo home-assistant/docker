@@ -104,7 +104,7 @@ RUN apk add --no-cache \
     && cd /usr/src/bazel-${BAZEL_VERSION} \
     && sed -i -e 's/-classpath/-J-Xmx8192m -J-Xms128m -classpath/g' scripts/bootstrap/compile.sh \
     && JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk" bash compile.sh \
-    && cp -p output/bazel /usr/bin/
+    && cp -p output/bazel /usr/bin/ \
     && cd /usr/src \
     && rm -rf /usr/src/bazel-${BAZEL_VERSION} \
     && git clone -b v$TENSORFLOW_VERSION --depth 1 https://github.com/tensorflow/tensorflow \
