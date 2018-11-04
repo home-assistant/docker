@@ -98,7 +98,8 @@ RUN apk add --no-cache \
     && apk add --no-cache --virtual=.build-dependencies \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip patch \
-    && pip3 install --no-cache-dir wheel \
+    && pip3 install --no-cache-dir wheel six numpy \
+    && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
     && curl -SLO https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-dist.zip \
     && mkdir bazel-${BAZEL_VERSION} \
     && unzip -qd bazel-${BAZEL_VERSION} bazel-${BAZEL_VERSION}-dist.zip \
@@ -134,7 +135,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/tensorflow_pkg \
     && rm -rf /usr/src/tensorflow \
     && rm -f /usr/bin/bazel \
-    && pip3 uninstall -y wheel \
+    && pip3 uninstall -y wheel keras_applications keras_preprocessing \
     && apk del .build-dependencies
 
 # Telldus
