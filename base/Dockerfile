@@ -105,8 +105,8 @@ RUN apk add --no-cache \
     && sed -i -e 's/-classpath/-J-Xmx8192m -J-Xms128m -classpath/g' scripts/bootstrap/compile.sh \
     && bash compile.sh \
     && cd /usr/src \
-    && curl -SL https://github.com/tensorflow/tensorflow/archive/v${TENSORFLOW_VERSION}.tar.gz | tar xzf - \
-    && cd /usr/src/tensorflow-${TENSORFLOW_VERSION} \
+    && git clone -b v$TENSORFLOW_VERSION --depth 1 https://github.com/tensorflow/tensorflow \
+    && cd /usr/src/tensorflow \
     && sed -i -e '/JEMALLOC_HAVE_SECURE_GETENV/d' third_party/jemalloc.BUILD \
     && sed -i -e '/define TF_GENERATE_BACKTRACE/d' tensorflow/core/platform/default/stacktrace.h \
     && sed -i -e '/define TF_GENERATE_STACKTRACE/d' tensorflow/core/platform/stacktrace_handler.cc \
@@ -130,7 +130,7 @@ RUN apk add --no-cache \
     && cd /usr/src \
     && rm -rf /usr/src/bazel-${BAZEL_VERSION} \
     && rm -rf /usr/src/tensorflow_pkg \
-    && rm -rf /usr/src/tensorflow-${TENSORFLOW_VERSION} \
+    && rm -rf /usr/src/tensorflow \
     && apk del .build-dependencies
 
 # Telldus
