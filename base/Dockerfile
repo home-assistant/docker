@@ -97,7 +97,7 @@ RUN apk add --no-cache \
         freetype libpng libjpeg-turbo musl openblas \
     && apk add --no-cache --virtual=.build-dependencies \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
-        linux-headers make musl-dev openblas-dev openjdk8 zip \
+        linux-headers make musl-dev openblas-dev openjdk8 zip patch \
     && pip3 install --no-cache-dir wheel \
     && curl -SLO https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-dist.zip \
     && mkdir bazel-${BAZEL_VERSION} \
