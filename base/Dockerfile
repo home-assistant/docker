@@ -103,7 +103,7 @@ RUN apk add --no-cache \
     && unzip -qd bazel-${BAZEL_VERSION} bazel-${BAZEL_VERSION}-dist.zip \
     && cd /usr/src/bazel-${BAZEL_VERSION} \
     && sed -i -e 's/-classpath/-J-Xmx8192m -J-Xms128m -classpath/g' scripts/bootstrap/compile.sh \
-    && bash compile.sh \
+    && JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk" bash compile.sh \
     && cd /usr/src \
     && git clone -b v$TENSORFLOW_VERSION --depth 1 https://github.com/tensorflow/tensorflow \
     && cd /usr/src/tensorflow \
@@ -131,6 +131,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/bazel-${BAZEL_VERSION} \
     && rm -rf /usr/src/tensorflow_pkg \
     && rm -rf /usr/src/tensorflow \
+    && pip3 uninstall -y wheel \
     && apk del .build-dependencies
 
 # Telldus
