@@ -124,7 +124,7 @@ RUN apk add --no-cache \
         TF_NEED_CUDA=0 \
         TF_NEED_MPI=0 \
         bash configure \
-    && /usr/src/bazel-${BAZEL_VERSION}output/bazel build -c opt --local_resources ${LOCAL_RESOURCES} //tensorflow/tools/pip_package:build_pip_package \
+    && /usr/src/bazel-${BAZEL_VERSION}/output/bazel build -c opt --local_resources ${LOCAL_RESOURCES} //tensorflow/tools/pip_package:build_pip_package \
     && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
     && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-${TENSORFLOW_VERSION}-cp36-cp36m-linux_*.whl \
     && cd /usr/src \
