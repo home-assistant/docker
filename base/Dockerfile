@@ -92,18 +92,24 @@ RUN apk add --no-cache \
 # TensorFlow
 ARG TENSORFLOW_VERSION=1.11.0
 ARG BAZEL_VERSION=0.18.1
+ARG HDF5_VERSION=1.8.21
 ENV JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 RUN apk add --no-cache \
         freetype libpng libjpeg-turbo musl openblas \
     && apk add --no-cache --virtual=.build-dependencies \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip patch \
-    && apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
-        hdf5 \
-    && apk --no-cache add --virtual .build-dependencies-edge --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
-        hdf5-dev \
     && pip3 install --no-cache-dir wheel six numpy pandas \
     && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
+    && curl -SLO https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.zip \
+    && mkdir /usr/src/hdf5-$HDF5_VERSION \
+    && unzip -qd hdf5-$HDF5_VERSION hdf5-$HDF5_VERSION.zip \
+    && cd /usr/src/hdf5-$HDF5_VERSION \
+    && bash configure \
+    && make \
+    && make install \
+    && cd /usr/src \
+    && rm -rf /usr/src/hdf5-$HDF5_VERSION \
     && curl -SLO https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip \
     && mkdir bazel-$BAZEL_VERSION \
     && unzip -qd bazel-$BAZEL_VERSION bazel-$BAZEL_VERSION-dist.zip \
@@ -131,6 +137,7 @@ RUN apk add --no-cache \
     && pip3 uninstall -y wheel keras_applications keras_preprocessing \
     && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-$TENSORFLOW_VERSION-cp36-cp36m-linux_*.whl \
     && rm -rf /usr/src/tensorflow_pkg \
+    && rm -f /usr/src/*.zip \
     && apk del .build-dependencies .build-dependencies-edge
 
 # Telldus
