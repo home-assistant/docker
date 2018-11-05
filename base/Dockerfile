@@ -102,10 +102,8 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir wheel six numpy pandas \
     && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
     && curl -SLO https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.zip \
-    && mkdir /usr/src/hdf5-$HDF5_VERSION \
-    && unzip -qd hdf5-$HDF5_VERSION hdf5-$HDF5_VERSION.zip \
+    && unzip -qd /usr/src hdf5-$HDF5_VERSION.zip \
     && cd /usr/src/hdf5-$HDF5_VERSION \
-    && ls \
     && bash configure \
     && make \
     && make install \
