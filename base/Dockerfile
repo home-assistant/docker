@@ -99,12 +99,14 @@ RUN apk add --no-cache \
     && apk add --no-cache --virtual=.build-dependencies \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip patch \
+        autoconf automake libtool \
     && pip3 install --no-cache-dir wheel six numpy pandas \
     && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
     && curl -SLO https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.zip \
     && unzip -qd /usr/src hdf5-$HDF5_VERSION.zip \
     && cd /usr/src/hdf5-$HDF5_VERSION \
-    && bash configure \
+    && autoreconf -f -i \
+    && ./configure \
     && make \
     && make install \
     && cd /usr/src \
@@ -127,7 +129,7 @@ RUN apk add --no-cache \
         CC_OPT_FLAGS="-march=native" TF_NEED_JEMALLOC=1 TF_NEED_GCP=0 TF_NEED_HDFS=0 \
         TF_NEED_S3=0 TF_ENABLE_XLA=0 TF_NEED_GDR=0 TF_NEED_VERBS=0 \
         TF_NEED_OPENCL=0 TF_NEED_CUDA=0 TF_NEED_MPI=0 \
-        bash configure \
+        ./configure \
     && bazel build -c opt --local_resources 2048,.5,1.0 //tensorflow/tools/pip_package:build_pip_package \
     && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
     && cd /usr/src \
@@ -137,7 +139,7 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-$TENSORFLOW_VERSION-cp36-cp36m-linux_*.whl \
     && rm -rf /usr/src/tensorflow_pkg \
     && rm -f /usr/src/*.zip \
-    && apk del .build-dependencies .build-dependencies-edge
+    && apk del .build-dependencies
 
 # Telldus
 RUN apk add --no-cache \
