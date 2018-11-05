@@ -105,6 +105,7 @@ RUN apk add --no-cache \
     && mkdir /usr/src/hdf5-$HDF5_VERSION \
     && unzip -qd hdf5-$HDF5_VERSION hdf5-$HDF5_VERSION.zip \
     && cd /usr/src/hdf5-$HDF5_VERSION \
+    && ls \
     && bash configure \
     && make \
     && make install \
