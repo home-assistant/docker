@@ -100,8 +100,6 @@ RUN apk add --no-cache \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip patch \
         autoconf automake libtool file \
-    && pip3 install --no-cache-dir wheel six numpy pandas \
-    && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
     && curl -SL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz | tar xzf - \
     && cd /usr/src/hdf5-$HDF5_VERSION \
     && autoreconf -f -i \
@@ -119,6 +117,8 @@ RUN apk add --no-cache \
     && cp -p output/bazel /usr/bin/ \
     && cd /usr/src \
     && rm -rf /usr/src/bazel-$BAZEL_VERSION \
+    && pip3 install --no-cache-dir wheel six numpy pandas \
+    && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
     && git clone -b v$TENSORFLOW_VERSION --depth 1 https://github.com/tensorflow/tensorflow \
     && cd /usr/src/tensorflow \
     && sed -i -e '/JEMALLOC_HAVE_SECURE_GETENV/d' third_party/jemalloc.BUILD \
