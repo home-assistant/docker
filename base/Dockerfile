@@ -98,7 +98,11 @@ RUN apk add --no-cache \
     && apk add --no-cache --virtual=.build-dependencies \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip patch \
-    && pip3 install --no-cache-dir wheel six numpy \
+    && apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+        hdf5 \
+    && apk --no-cache add --virtual .build-dependencies-edge --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+        hdf5-dev \
+    && pip3 install --no-cache-dir wheel six numpy pandas \
     && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
     && curl -SLO https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip \
     && mkdir bazel-$BAZEL_VERSION \
@@ -121,13 +125,13 @@ RUN apk add --no-cache \
         bash configure \
     && bazel build -c opt --local_resources 2048,.5,1.0 //tensorflow/tools/pip_package:build_pip_package \
     && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
-    && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-$TENSORFLOW_VERSION-cp36-cp36m-linux_*.whl \
     && cd /usr/src \
-    && rm -rf /usr/src/tensorflow_pkg \
     && rm -rf /usr/src/tensorflow \
     && rm -f /usr/bin/bazel \
     && pip3 uninstall -y wheel keras_applications keras_preprocessing \
-    && apk del .build-dependencies
+    && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-$TENSORFLOW_VERSION-cp36-cp36m-linux_*.whl \
+    && rm -rf /usr/src/tensorflow_pkg \
+    && apk del .build-dependencies .build-dependencies-edge
 
 # Telldus
 RUN apk add --no-cache \
