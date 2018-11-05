@@ -99,11 +99,10 @@ RUN apk add --no-cache \
     && apk add --no-cache --virtual=.build-dependencies \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip patch \
-        autoconf automake libtool \
+        autoconf automake libtool file \
     && pip3 install --no-cache-dir wheel six numpy pandas \
     && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
-    && curl -SLO https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.zip \
-    && unzip -qd /usr/src hdf5-$HDF5_VERSION.zip \
+    && curl -SL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz | tar xzf - \
     && cd /usr/src/hdf5-$HDF5_VERSION \
     && autoreconf -f -i \
     && ./configure \
