@@ -91,7 +91,7 @@ RUN apk add --no-cache \
 
 # TensorFlow
 ARG TENSORFLOW_VERSION=1.11.0
-ARG BAZEL_VERSION=0.18.1
+ARG BAZEL_VERSION=0.15.0
 ARG HDF5_VERSION=1.8.21
 ENV JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 RUN apk add --no-cache \
@@ -113,7 +113,6 @@ RUN apk add --no-cache \
     && mkdir bazel-$BAZEL_VERSION \
     && unzip -qd bazel-$BAZEL_VERSION bazel-$BAZEL_VERSION-dist.zip \
     && cd /usr/src/bazel-$BAZEL_VERSION \
-    && sed -i -e 's/-classpath/-J-Xmx8192m -J-Xms128m -classpath/g' scripts/bootstrap/compile.sh \
     && bash compile.sh \
     && cp -p output/bazel /usr/bin/ \
     && cd /usr/src \
@@ -130,7 +129,7 @@ RUN apk add --no-cache \
         TF_NEED_S3=0 TF_ENABLE_XLA=0 TF_NEED_GDR=0 TF_NEED_VERBS=0 \
         TF_NEED_OPENCL=0 TF_NEED_CUDA=0 TF_NEED_MPI=0 \
         ./configure \
-    && bazel build -c opt --local_resources 2048,.5,1.0 //tensorflow/tools/pip_package:build_pip_package \
+    && bazel build --config=opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" --local_resources 4096,.5,1.0 //tensorflow/tools/pip_package:build_pip_package \
     && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
     && cd /usr/src \
     && rm -rf /usr/src/tensorflow \
