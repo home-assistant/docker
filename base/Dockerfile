@@ -99,7 +99,7 @@ RUN apk add --no-cache \
     && apk add --no-cache --virtual=.build-dependencies \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip patch \
-        autoconf automake libtool file \
+        autoconf automake libtool file sed \
     && curl -SL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz | tar xzf - \
     && cd /usr/src/hdf5-$HDF5_VERSION \
     && autoreconf -f -i \
@@ -135,7 +135,7 @@ RUN apk add --no-cache \
     && cd /usr/src \
     && rm -rf /usr/src/tensorflow \
     && rm -f /usr/bin/bazel \
-    && pip3 uninstall -y wheel keras_applications keras_preprocessing \
+    && pip3 uninstall -y wheel keras_applications keras_preprocessing panda \
     && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-$TENSORFLOW_VERSION-cp36-cp36m-linux_*.whl \
     && rm -rf /usr/src/tensorflow_pkg \
     && rm -f /usr/src/*.zip \
