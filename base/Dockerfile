@@ -129,7 +129,7 @@ RUN apk add --no-cache \
         TF_NEED_S3=0 TF_ENABLE_XLA=0 TF_NEED_GDR=0 TF_NEED_VERBS=0 \
         TF_NEED_OPENCL=0 TF_NEED_CUDA=0 TF_NEED_MPI=0 \
         ./configure \
-    && bazel build --config=opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" --local_resources 4096,.5,1.0 //tensorflow/tools/pip_package:build_pip_package \
+    && bazel build --config=opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //tensorflow/tools/pip_package:build_pip_package \
     && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
     && cd /usr/src \
     && rm -rf /usr/src/tensorflow \
