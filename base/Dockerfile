@@ -103,11 +103,12 @@ RUN apk add --no-cache \
     && curl -SL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz | tar xzf - \
     && cd /usr/src/hdf5-$HDF5_VERSION \
     && autoreconf -f -i \
-    && ./configure \
+    && ./configure --prefix=/usr/local \
     && make \
     && make install \
     && cd /usr/src \
     && rm -rf /usr/src/hdf5-$HDF5_VERSION \
+    && pip3 install --no-cache-dir h5py \
     && curl -SLO https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip \
     && mkdir bazel-$BAZEL_VERSION \
     && unzip -qd bazel-$BAZEL_VERSION bazel-$BAZEL_VERSION-dist.zip \
