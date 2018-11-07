@@ -111,7 +111,6 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
     && git clone -b v$TENSORFLOW_VERSION --depth 1 https://github.com/tensorflow/tensorflow \
     && cd /usr/src/tensorflow \
-    && sed -i -e '/JEMALLOC_HAVE_SECURE_GETENV/d' third_party/jemalloc.BUILD \
     && sed -i -e '/define TF_GENERATE_BACKTRACE/d' tensorflow/core/platform/default/stacktrace.h \
     && sed -i -e '/define TF_GENERATE_STACKTRACE/d' tensorflow/core/platform/stacktrace_handler.cc \
     && PYTHON_BIN_PATH=/usr/local/bin/python3 PYTHON_LIB_PATH=/usr/local/lib/python3.6/site-packages \
