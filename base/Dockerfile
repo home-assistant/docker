@@ -92,7 +92,6 @@ RUN apk add --no-cache \
 # TensorFlow
 ARG TENSORFLOW_VERSION=1.11.0
 ARG BAZEL_VERSION=0.15.0
-ARG HDF5_VERSION=1.8.21
 ENV JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"
 RUN apk add --no-cache \
         freetype libpng libjpeg-turbo musl openblas \
@@ -100,15 +99,6 @@ RUN apk add --no-cache \
         git cmake curl freetype-dev g++ libjpeg-turbo-dev libpng-dev \
         linux-headers make musl-dev openblas-dev openjdk8 zip patch \
         autoconf automake libtool file sed \
-    && curl -SL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz | tar xzf - \
-    && cd /usr/src/hdf5-$HDF5_VERSION \
-    && autoreconf -f -i \
-    && ./configure --prefix=/usr/local \
-    && make \
-    && make install \
-    && cd /usr/src \
-    && rm -rf /usr/src/hdf5-$HDF5_VERSION \
-    && pip3 install --no-cache-dir h5py \
     && curl -SLO https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip \
     && mkdir bazel-$BAZEL_VERSION \
     && unzip -qd bazel-$BAZEL_VERSION bazel-$BAZEL_VERSION-dist.zip \
@@ -117,7 +107,7 @@ RUN apk add --no-cache \
     && cp -p output/bazel /usr/bin/ \
     && cd /usr/src \
     && rm -rf /usr/src/bazel-$BAZEL_VERSION \
-    && pip3 install --no-cache-dir wheel six numpy pandas \
+    && pip3 install --no-cache-dir wheel six numpy \
     && pip3 install --no-cache-dir --no-deps keras_applications==1.0.5 keras_preprocessing==1.0.3 \
     && git clone -b v$TENSORFLOW_VERSION --depth 1 https://github.com/tensorflow/tensorflow \
     && cd /usr/src/tensorflow \
@@ -129,12 +119,14 @@ RUN apk add --no-cache \
         TF_NEED_S3=0 TF_ENABLE_XLA=0 TF_NEED_GDR=0 TF_NEED_VERBS=0 \
         TF_NEED_OPENCL=0 TF_NEED_CUDA=0 TF_NEED_MPI=0 \
         ./configure \
-    && bazel build --config=opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //tensorflow/tools/pip_package:build_pip_package \
+    && bazel build --config=opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" \
+        --config=nohdfs --config=noaws --config=noignite --config=nokafka -config=nogcp \
+        //tensorflow/tools/pip_package:build_pip_package \
     && ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /usr/src/tensorflow_pkg \
     && cd /usr/src \
     && rm -rf /usr/src/tensorflow \
     && rm -f /usr/bin/bazel \
-    && pip3 uninstall -y wheel keras_applications keras_preprocessing panda \
+    && pip3 uninstall -y wheel keras_applications keras_preprocessing \
     && pip3 install --no-cache-dir /usr/src/tensorflow_pkg/tensorflow-$TENSORFLOW_VERSION-cp36-cp36m-linux_*.whl \
     && rm -rf /usr/src/tensorflow_pkg \
     && rm -f /usr/src/*.zip \
