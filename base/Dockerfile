@@ -28,7 +28,7 @@ RUN apk add --no-cache \
     && git clone --depth 1 https://github.com/auerswal/ssocr \
     && cd ssocr \
     && git checkout $SSOCR_VERSION \
-    && make \
+    && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/ssocr
@@ -43,6 +43,7 @@ RUN apk add --no-cache \
         gfortran ffmpeg-dev libwebp-dev lapack-dev \
         git libpng-dev libjpeg-turbo-dev tiff-dev \
         jasper-dev libdc1394-dev zlib-dev \
+    && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install --no-cache-dir numpy scipy \
     && git clone --depth 1 -b $OPENCV_VERSION https://github.com/opencv/opencv \
     && cd opencv \
@@ -51,7 +52,7 @@ RUN apk add --no-cache \
     && cmake .. -DCMAKE_BUILD_TYPE=Release \
         -DWITH_LAPACK=OFF -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF \
         -DBUILD_DOCS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF \
-    && make \
+    && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/opencv
@@ -60,6 +61,7 @@ RUN apk add --no-cache \
 ARG DLIB_VERSION=19.14.0
 RUN apk add --no-cache --virtual .build-dependencies \
         cmake ncurses make g++ git \
+    && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install --no-cache-dir dlib==$DLIB_VERSION \
     && apk del .build-dependencies
 
@@ -75,7 +77,7 @@ RUN apk add --no-cache \
     && cd log4cplus \
     && autoreconf -f -i \
     && ./configure --with-working-locale \
-    && make \
+    && make -j$(nproc) \
     && make install \
     && cd /usr/src \
     && rm -rf /usr/src/log4cplus \
@@ -84,25 +86,10 @@ RUN apk add --no-cache \
     && mkdir -p build \
     && cd build \
     && cmake ../ -DWITH_TESTS=FALSE -DWITH_BINDING_JAVA=FALSE -DWITH_BINDING_PYTHON=FALSE -DWITH_BINDING_GO=FALSE -DWITH_DAEMON=FALSE -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
-    && make \
+    && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/openalpr
-
-# TensorFlow Deps
-ARG HDF5_VERSION=1.8.21
-RUN apk add --no-cache \
-        freetype musl openblas \
-    && apk add --no-cache --virtual=.build-dependencies \
-        curl g++ musl-dev autoconf automake libtool file make \
-    && curl -SL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz | tar xzf - \
-    && cd /usr/src/hdf5-$HDF5_VERSION \
-    && autoreconf -f -i \
-    && ./configure --prefix=/usr/local \
-    && make \
-    && make install \
-    && apk del .build-dependencies \
-    && rm -rf /usr/src/hdf5-$HDF5_VERSION
 
 # Telldus
 RUN apk add --no-cache \
@@ -116,7 +103,7 @@ RUN apk add --no-cache \
     && cmake . -DBUILD_LIBTELLDUS-CORE=ON \
         -DBUILD_TDADMIN=OFF -DBUILD_TDTOOL=OFF -DGENERATE_MAN=OFF \
         -DFORCE_COMPILE_FROM_TRUNK=ON -DFTDI_LIBRARY=/usr/lib/libftdi1.so \
-    && make \
+    && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/telldus
@@ -145,6 +132,7 @@ RUN apk add --no-cache \
     && apk add --no-cache --virtual .build-dependencies \
         gcc g++ musl-dev make \
         mariadb-dev postgresql-dev freetds-dev libffi-dev \
+    && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install --no-cache-dir cython brotlipy cchardet \
     && pip3 install --no-cache-dir mysqlclient psycopg2 pymssql \
     && pip3 install --no-cache-dir uvloop==0.11.3 \

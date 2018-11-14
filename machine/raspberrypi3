@@ -19,7 +19,7 @@ RUN apk del libcec \
     && mkdir -p /usr/src/platform/build \
     && cd /usr/src/platform/build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. \
-    && make \
+    && make -j$(nproc) \
     && make install \
     && git clone --depth 1 -b libcec-4.0.2 https://github.com/Pulse-Eight/libcec /usr/src/libcec \
     && mkdir -p /usr/src/libcec/build \
@@ -29,7 +29,7 @@ RUN apk del libcec \
         -DRPI_LIB_DIR=/opt/vc/lib \
         -DPYTHON_LIBRARY="/usr/local/lib/libpython3.6m.so" \
         -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.6m" .. \
-    && make \
+    && make -j$(nproc) \
     && make install \
     && echo "cec" > "/usr/local/lib/python3.6/site-packages/cec.pth" \
     && apk del .build-dependencies \
@@ -45,6 +45,7 @@ RUN apk add --no-cache --virtual .build-dependencies \
     && sed -i 's/^pi_version\ =\ None/pi_version\ =\ 3/' setup.py \
     && sed -i 's/^platform\ =\ platform_detect.UNKNOWN/platform\ =\ platform_detect.RASPBERRY_PI/' setup.py \
     && sed -i 's/platform\ =\ platform_detect.platform_detect()/pass/' setup.py \
+    && && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install . \
     && apk del .build-dependencies \
     && rm -rf /usr/src/dht
