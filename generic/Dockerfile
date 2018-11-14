@@ -33,7 +33,6 @@ RUN apk add --no-cache \
     && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install --no-cache-dir -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir ./homeassistant \
-    && cp -f homeassistant/requirements_all.txt /root/ \
     && apk del .build-dependencies \
     && rm -r homeassistant
 
