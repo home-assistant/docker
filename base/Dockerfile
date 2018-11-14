@@ -113,7 +113,6 @@ RUN apk add --no-cache \
 RUN apk add --no-cache \
     ffmpeg \
     nmap \
-    libcec \
     net-tools \
     bluez \
     bluez-deprecated \
