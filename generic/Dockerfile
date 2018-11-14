@@ -30,6 +30,7 @@ RUN apk add --no-cache \
     && sed -i "s|# homekit|homekit|g" homeassistant/requirements_all.txt \
     && sed -i "s|# decora_wifi|decora_wifi|g" homeassistant/requirements_all.txt \
     && sed -i "s|# decora|decora|g" homeassistant/requirements_all.txt \
+    && export MAKEFLAGS="-j$(nproc)"
     && pip3 install --no-cache-dir -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir ./homeassistant \
     && apk del .build-dependencies \
