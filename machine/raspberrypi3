@@ -40,7 +40,7 @@ RUN apk add --no-cache --virtual .build-dependencies \
     && sed -i 's/^pi_version\ =\ None/pi_version\ =\ 3/' setup.py \
     && sed -i 's/^platform\ =\ platform_detect.UNKNOWN/platform\ =\ platform_detect.RASPBERRY_PI/' setup.py \
     && sed -i 's/platform\ =\ platform_detect.platform_detect()/pass/' setup.py \
-    && && export MAKEFLAGS="-j$(nproc)" \
+    && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install . \
     && apk del .build-dependencies \
     && rm -rf /usr/src/dht
