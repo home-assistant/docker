@@ -34,8 +34,9 @@ ENV LD_LIBRARY_PATH=/opt/vc/lib:${LD_LIBRARY_PATH}
 ##
 # Install DHT
 RUN apk add --no-cache --virtual .build-dependencies \
-        gcc libc-dev git \
-    && git clone --depth 1 -b 1.3.4 https://github.com/adafruit/Adafruit_Python_DHT /usr/src/dht \
+        gcc libc-dev git raspberrypi-dev \
+    && export DHT_VERSION="$(cat /root/requirements_all.txt | sed -n 's|.*Adafruit-DHT==\([0-9\.]*\).*|\1|p')" \
+    && git clone --depth 1 -b ${DHT_VERSION} https://github.com/adafruit/Adafruit_Python_DHT /usr/src/dht \
     && cd /usr/src/dht \
     && sed -i 's/^pi_version\ =\ None/pi_version\ =\ 3/' setup.py \
     && sed -i 's/^platform\ =\ platform_detect.UNKNOWN/platform\ =\ platform_detect.RASPBERRY_PI/' setup.py \

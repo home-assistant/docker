@@ -34,6 +34,7 @@ RUN apk add --no-cache \
     && pip3 install --no-cache-dir -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir ./homeassistant \
     && apk del .build-dependencies \
+    && cp -f homeassistant/requirements_all.txt /root/ \
     && rm -r homeassistant
 
 # Run Home Assistant
