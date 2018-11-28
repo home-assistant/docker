@@ -33,10 +33,9 @@ ENV LD_LIBRARY_PATH=/opt/vc/lib:${LD_LIBRARY_PATH}
 
 ##
 # Install DHT
-ARG BUILD_VERSION
 RUN apk add --no-cache --virtual .build-dependencies \
         gcc libc-dev git raspberrypi-dev \
-    && export DHT_VERSION="$(curl -sL https://raw.githubusercontent.com/home-assistant/home-assistant/${BUILD_VERSION}/requirements_all.txt | sed -n 's|.*Adafruit-DHT==\([0-9\.]*\).*|\1|p')" \
+    && export DHT_VERSION="$(cat /root/requirements_all.txt | sed -n 's|.*Adafruit-DHT==\([0-9\.]*\).*|\1|p')" \
     && git clone --depth 1 -b ${DHT_VERSION} https://github.com/adafruit/Adafruit_Python_DHT /usr/src/dht \
     && cd /usr/src/dht \
     && sed -i 's/^pi_version\ =\ None/pi_version\ =\ 2/' setup.py \
