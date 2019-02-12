@@ -34,7 +34,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/ssocr
 
 # OpenCV/scipy
-ARG OPENCV_VERSION=3.4.2
+ARG OPENCV_VERSION=4.0.1
 RUN apk add --no-cache \
         libwebp ffmpeg-libs libgfortran libdc1394 jasper-libs zlib \
         lapack \
@@ -50,8 +50,9 @@ RUN apk add --no-cache \
     && mkdir -p build \
     && cd build \
     && cmake .. -DCMAKE_BUILD_TYPE=Release \
-        -DWITH_LAPACK=OFF -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF \
+        -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF \
         -DBUILD_DOCS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF \
+        -DCPU_BASELINE_REQUIRE="" \
     && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
