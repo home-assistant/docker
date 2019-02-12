@@ -5,10 +5,10 @@ FROM $BUILD_FROM
 ARG BUILD_VERSION
 RUN apk add --no-cache \
         bluez-libs eudev-libs libxslt libxml2 cups-libs \
-        libffi libressl gmp mpfr3 mpc1 \
+        libffi openssl gmp mpfr3 mpc1 \
     && apk add --no-cache --virtual .build-dependencies \
         gcc g++ musl-dev cmake make git linux-headers \
-        bluez-dev libffi-dev libressl-dev glib-dev eudev-dev \
+        bluez-dev libffi-dev openssl-dev glib-dev eudev-dev \
         libxml2-dev libxslt-dev libpng-dev libjpeg-turbo-dev tiff-dev \
         autoconf automake cups-dev linux-headers gmp-dev mpfr-dev mpc1-dev \
     && git clone --depth 1 --branch $BUILD_VERSION https://github.com/home-assistant/home-assistant homeassistant \

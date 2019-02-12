@@ -11,8 +11,9 @@ RUN apk add --no-cache \
         tiff \
         libjpeg \
         libjpeg-turbo \
-        libressl \
+        openssl \
         musl \
+        eudev \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
 
 ####
@@ -140,7 +141,5 @@ RUN apk add --no-cache \
 ###
 # Setup entry point for udevd
 COPY entry.sh /bin/
-RUN apk add --no-cache eudev \
-    && chmod a+x /bin/entry.sh
 
 ENTRYPOINT ["/bin/entry.sh"]
