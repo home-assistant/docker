@@ -21,14 +21,13 @@ RUN apk add --no-cache \
 WORKDIR /usr/src/
 
 # ssocr
-ARG SSOCR_VERSION=5e47e26b125a1a13bc79de93a5e87dd0b51354ca
+ARG SSOCR_VERSION=v2.19.0
 RUN apk add --no-cache \
         imlib2 \
     && apk add --no-cache --virtual .build-dependencies \
         git gcc make musl-dev imlib2-dev \
-    && git clone --depth 1 https://github.com/auerswal/ssocr \
+    && git clone --depth 1 -b ${SSOCR_VERSION} https://github.com/auerswal/ssocr \
     && cd ssocr \
-    && git checkout $SSOCR_VERSION \
     && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
@@ -46,7 +45,7 @@ RUN apk add --no-cache \
         jasper-dev libdc1394-dev zlib-dev \
     && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install --no-cache-dir numpy scipy \
-    && git clone --depth 1 -b $OPENCV_VERSION https://github.com/opencv/opencv \
+    && git clone --depth 1 -b ${OPENCV_VERSION} https://github.com/opencv/opencv \
     && cd opencv \
     && mkdir -p build \
     && cd build \
@@ -63,7 +62,7 @@ ARG DLIB_VERSION=19.14.0
 RUN apk add --no-cache --virtual .build-dependencies \
         cmake ncurses make g++ git \
     && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir dlib==$DLIB_VERSION \
+    && pip3 install --no-cache-dir dlib==${DLIB_VERSION} \
     && apk del .build-dependencies
 
 # OpenALPR & Log4Cplus
@@ -74,7 +73,7 @@ RUN apk add --no-cache \
     && apk add --no-cache --virtual .build-dependencies \
         cmake ncurses make g++ tesseract-ocr-dev \
         git autoconf automake libtool \
-    && git clone --depth 1 -b $LOGCPLUS_VERSION https://github.com/log4cplus/log4cplus \
+    && git clone --depth 1 -b ${LOGCPLUS_VERSION} https://github.com/log4cplus/log4cplus \
     && cd log4cplus \
     && autoreconf -f -i \
     && ./configure --with-working-locale \
@@ -82,7 +81,7 @@ RUN apk add --no-cache \
     && make install \
     && cd /usr/src \
     && rm -rf /usr/src/log4cplus \
-    && git clone --depth 1 -b $OPENALPR_VERSION https://github.com/openalpr/openalpr \
+    && git clone --depth 1 -b ${OPENALPR_VERSION} https://github.com/openalpr/openalpr \
     && cd openalpr/src \
     && mkdir -p build \
     && cd build \
