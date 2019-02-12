@@ -34,7 +34,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/ssocr
 
 # OpenCV/scipy
-ARG OPENCV_VERSION=4.0.1
+ARG OPENCV_VERSION=3.4.5
 RUN apk add --no-cache \
         libwebp ffmpeg-libs libgfortran libdc1394 jasper-libs zlib \
         lapack \
