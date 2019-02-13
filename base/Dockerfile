@@ -48,9 +48,8 @@ RUN apk add --no-cache \
     && mkdir -p build \
     && cd build \
     && cmake .. -DCMAKE_BUILD_TYPE=Release \
-        -DWITH_LAPACK=OFF -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF \
-        -DBUILD_DOCS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF \
-        -DCPU_BASELINE_REQUIRE="" \
+        -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF \
+        -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DCPU_BASELINE_REQUIRE="" \
     && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
