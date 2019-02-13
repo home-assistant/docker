@@ -36,13 +36,11 @@ RUN apk add --no-cache \
 # OpenCV/scipy
 ARG OPENCV_VERSION=3.4.5
 RUN apk add --no-cache \
-        libwebp ffmpeg-libs libgfortran libdc1394 jasper-libs zlib \
-        lapack \
+        libwebp ffmpeg-libs libdc1394 jasper-libs zlib \
     && apk add --no-cache --virtual .build-dependencies \
         gcc g++ musl-dev cmake make ncurses linux-headers \
-        gfortran ffmpeg-dev libwebp-dev lapack-dev \
-        git libpng-dev libjpeg-turbo-dev tiff-dev \
-        jasper-dev libdc1394-dev zlib-dev \
+        ffmpeg-dev libwebp-dev git libpng-dev zlib-dev \
+        libjpeg-turbo-dev tiff-dev jasper-dev libdc1394-dev \
     && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install --no-cache-dir numpy \
     && git clone --depth 1 -b ${OPENCV_VERSION} https://github.com/opencv/opencv \
