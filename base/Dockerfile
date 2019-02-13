@@ -34,7 +34,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/ssocr
 
 # OpenCV/scipy
-ARG OPENCV_VERSION=4.0.1
+ARG OPENCV_VERSION=3.4.5
 RUN apk add --no-cache \
         libwebp ffmpeg-libs libgfortran libdc1394 jasper-libs zlib \
         lapack \
@@ -44,7 +44,7 @@ RUN apk add --no-cache \
         git libpng-dev libjpeg-turbo-dev tiff-dev \
         jasper-dev libdc1394-dev zlib-dev \
     && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir numpy scipy \
+    && pip3 install --no-cache-dir numpy \
     && git clone --depth 1 -b ${OPENCV_VERSION} https://github.com/opencv/opencv \
     && cd opencv \
     && mkdir -p build \
