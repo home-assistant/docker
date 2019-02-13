@@ -19,6 +19,7 @@ RUN apk add --no-cache \
 ####
 ## Build library
 WORKDIR /usr/src/
+ARG BUILD_ARCH
 
 # ssocr
 ARG SSOCR_VERSION=v2.19.0
@@ -47,9 +48,16 @@ RUN apk add --no-cache \
     && cd opencv \
     && mkdir -p build \
     && cd build \
-    && cmake .. -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF \
-        -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DCPU_BASELINE_REQUIRE="" \
+    && if [ "${BUILD_ARCH" != "armhf" ]; then \
+            cmake .. -DCMAKE_BUILD_TYPE=Release \
+                -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF \
+                -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF; \
+        else \
+            cmake .. -DCMAKE_BUILD_TYPE=Release \
+                -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF \
+                -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF \
+                -DENABLE_NEON=OFF -DCPU_BASELINE_REQUIRE=""; \
+        fi \
     && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
