@@ -13,10 +13,10 @@ RUN apk add --no-cache eudev-libs p8-platform \
     && mkdir -p /usr/src/libcec/build \
     && cd /usr/src/libcec/build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
-        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.6m.so" \
-        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.6m" .. \
+        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.7m.so" \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.7m" .. \
     && make -j$(nproc) \
     && make install \
-    && echo "cec" > "/usr/local/lib/python3.6/site-packages/cec.pth" \
+    && echo "cec" > "/usr/local/lib/python3.7/site-packages/cec.pth" \
     && apk del .build-dependencies \
     && rm -rf /usr/src/libcec
