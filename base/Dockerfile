@@ -48,7 +48,7 @@ RUN apk add --no-cache \
     && cd opencv \
     && mkdir -p build \
     && cd build \
-    && if [ "${BUILD_ARCH}" != "armhf" ]; then \
+    && if [ "${BUILD_ARCH}" != "armhf" ] && [ "${BUILD_ARCH}" != "armv7" ]; then \
             cmake .. -DCMAKE_BUILD_TYPE=Release \
                 -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF \
                 -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF; \
