@@ -5,7 +5,6 @@ FROM $BUILD_FROM
 # Install core
 RUN apk add --no-cache \
         bsd-compat-headers \
-        libgcc \
         libstdc++ \
         libpng \
         tiff \
@@ -64,7 +63,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/opencv
 
 # Dlib
-ARG DLIB_VERSION=19.14.0
+ARG DLIB_VERSION=19.17.0
 RUN apk add --no-cache --virtual .build-dependencies \
         cmake ncurses make g++ git \
     && export MAKEFLAGS="-j$(nproc)" \
