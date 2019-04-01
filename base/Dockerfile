@@ -139,7 +139,7 @@ RUN apk add --no-cache \
     && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install --no-cache-dir cython brotlipy cchardet \
     && pip3 install --no-cache-dir mysqlclient psycopg2 pymssql \
-    && pip3 install --no-cache-dir uvloop==0.11.3 \
+    && pip3 install --no-cache-dir uvloop==0.12.2 \
     && apk del .build-dependencies
 
 ###
