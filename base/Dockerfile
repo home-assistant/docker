@@ -127,7 +127,8 @@ RUN apk add --no-cache \
     libffi \
     glib \
     socat \
-    iperf3
+    iperf3 \
+    arp-scan
 
 ####
 ## Install pip module for component/homeassistant
