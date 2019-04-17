@@ -35,7 +35,7 @@ RUN apk add --no-cache \
 
 # arp-scan
 ARG ARPSCAN_VERSION=1.9.5
-RUN apk add --no-cache\
+RUN apk add --no-cache \
         libpcap \
     && apk add --no-cache --virtual .build-dependencies \
         autoconf automake libpcap-dev git gcc g++ make \
