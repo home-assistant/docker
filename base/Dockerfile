@@ -33,6 +33,21 @@ RUN apk add --no-cache \
     && apk del .build-dependencies \
     && rm -rf /usr/src/ssocr
 
+# arp-scan
+ARG ARPSCAN_VERSION=1.9.5
+RUN apk add --no-cache\
+        libpcap \
+    && apk add --no-cache --virtual .build-dependencies \
+        autoconf automake libpcap-dev git gcc g++ make \
+    && git clone --depth 1 -b ${ARPSCAN_VERSION} https://github.com/royhills/arp-scan \
+    && cd arp-scan \
+    && autoreconf --install \
+    && ./configure \
+    && make -j$(nproc) \
+    && make install \
+    && apk del .build-dependencies \
+    && rm -rf /usr/src/arp-scan
+
 # OpenCV/scipy
 ARG OPENCV_VERSION=3.4.5
 RUN apk add --no-cache \
