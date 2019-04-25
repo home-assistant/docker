@@ -152,9 +152,16 @@ RUN apk add --no-cache \
         gcc g++ musl-dev make \
         mariadb-dev postgresql-dev freetds-dev libffi-dev \
     && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir cython brotlipy cchardet \
-    && pip3 install --no-cache-dir mysqlclient psycopg2 pymssql \
-    && pip3 install --no-cache-dir uvloop==0.12.2 \
+    && pip3 install --no-cache-dir \
+        cython==0.29.7 \
+        brotlipy==0.7.0 \
+        cchardet==2.1.4 \
+    && pip3 install --no-cache-dir \
+        mysqlclient==1.4.2.post1 \
+        psycopg2==2.8.2 \
+        pymssql==2.1.4 \
+    && pip3 install --no-cache-dir \
+        uvloop==0.12.2 \
     && apk del .build-dependencies
 
 ###
