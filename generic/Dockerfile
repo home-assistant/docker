@@ -1,8 +1,10 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-## Install Home Assistant
 ARG BUILD_VERSION
+
+## Install Home Assistant
+# hadolint ignore=DL3013
 RUN apk add --no-cache \
         bluez-libs eudev-libs libxslt libxml2 cups-libs \
         libffi openssl gmp mpfr3 mpc1 ffmpeg-libs \
