@@ -62,6 +62,6 @@ jobs:
       sudo docker run --rm --privileged \
         -v ~/.docker:/root/.docker \
         -v /run/docker.sock:/run/docker.sock:rw -v $(pwd):/data:ro \
-        homeassistant/amd64-builder:$(versionBuilder) --homeassisant-landingpage ALL \
+        homeassistant/amd64-builder:$(versionBuilder) --homeassistant-landingpage ALL \
         -t /data/landingpage --docker-hub homeassistant
     displayName: 'Build Landingpage'
