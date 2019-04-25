@@ -57,7 +57,8 @@ RUN apk add --no-cache \
         ffmpeg-dev libwebp-dev git libpng-dev zlib-dev \
         libjpeg-turbo-dev tiff-dev jasper-dev libdc1394-dev \
     && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir numpy \
+    && pip3 install --no-cache-dir \
+        numpy==1.16.3 \
     && git clone --depth 1 -b ${OPENCV_VERSION} https://github.com/opencv/opencv \
     && cd opencv \
     && mkdir -p build \
