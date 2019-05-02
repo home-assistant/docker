@@ -112,7 +112,7 @@ jobs:
   - script: sudo docker pull homeassistant/$(buildArch)-wheels:$(versionWheels)
     displayName: 'Install wheels builder'
   - script: |
-      sudo docker run --rm -v $(pwd):/data:ro -v .ssh:/root/.ssh:rw \
+      sudo docker run --rm -v $(pwd):/data:ro -v $(pwd)/.ssh:/root/.ssh:rw \
         homeassistant/$(buildArch)-wheels:$(versionWheels) \
         --apk "build-base;mariadb-dev;postgresql-dev;freetds-dev;libffi-dev;cmake;ncurses;git" \
         --index https://wheels.hass.io \
