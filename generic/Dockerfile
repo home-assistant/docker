@@ -10,7 +10,7 @@ RUN apk add --no-cache \
         bluez-libs eudev-libs libxslt libxml2 cups-libs \
         libffi openssl gmp mpfr3 mpc1 ffmpeg-libs \
     && apk add --no-cache --virtual .build-dependencies \
-        git \
+        git build-base \
     && git clone --depth 1 --branch $BUILD_VERSION https://github.com/home-assistant/home-assistant homeassistant \
     && sed -i "s|# pytradfri|pytradfri|g" homeassistant/requirements_all.txt \
     && sed -i "s|# pybluez|pybluez|g" homeassistant/requirements_all.txt \
