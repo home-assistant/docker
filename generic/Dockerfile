@@ -2,6 +2,7 @@ ARG BUILD_FROM
 FROM $BUILD_FROM
 
 ARG BUILD_VERSION
+ARG BUILD_ARCH
 
 ## Install Home Assistant
 # hadolint ignore=DL3013
@@ -36,8 +37,10 @@ RUN apk add --no-cache \
     && sed -i "s|# PySwitchbot|PySwitchbot|g" homeassistant/requirements_all.txt \
     && sed -i "s|# pySwitchmate|pySwitchmate|g" homeassistant/requirements_all.txt \
     && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
-    && pip3 install --no-cache-dir ./homeassistant \
+    && pip3 install --no-cache-dir --find-links https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/ \
+        -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
+    && pip3 install --no-cache-dir --find-links https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/ \
+        ./homeassistant \
     && apk del .build-dependencies \
     && cp -f homeassistant/requirements_all.txt /root/ \
     && rm -r homeassistant
