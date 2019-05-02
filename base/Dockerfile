@@ -143,7 +143,8 @@ COPY requirements.txt /usr/src/
 RUN apk add --no-cache \
         mariadb-connector-c postgresql-libs freetds libffi \
     && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir -r /usr/src/requirements.txt \
+    && pip3 install --no-cache-dir --find-links https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/ \
+        -r /usr/src/requirements.txt \
     && rm -f /usr/src/requirements.txt \
     && apk del .build-dependencies
 
