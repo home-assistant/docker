@@ -78,14 +78,6 @@ RUN apk add --no-cache \
     && apk del .build-dependencies \
     && rm -rf /usr/src/opencv
 
-# Dlib
-ARG DLIB_VERSION=19.17.0
-RUN apk add --no-cache --virtual .build-dependencies \
-        cmake ncurses make g++ git \
-    && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir dlib==${DLIB_VERSION} \
-    && apk del .build-dependencies
-
 # OpenALPR & Log4Cplus
 ARG LOGCPLUS_VERSION=REL_1_2_0
 ARG OPENALPR_VERSION=v2.3.0
@@ -147,22 +139,12 @@ RUN apk add --no-cache \
 
 ####
 ## Install pip module for component/homeassistant
+COPY requirements.txt /usr/src/
 RUN apk add --no-cache \
         mariadb-connector-c postgresql-libs freetds libffi \
-    && apk add --no-cache --virtual .build-dependencies \
-        gcc g++ musl-dev make \
-        mariadb-dev postgresql-dev freetds-dev libffi-dev \
     && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir \
-        cython==0.29.7 \
-        brotlipy==0.7.0 \
-        cchardet==2.1.4 \
-    && pip3 install --no-cache-dir \
-        mysqlclient==1.4.2.post1 \
-        psycopg2==2.8.2 \
-        pymssql==2.1.4 \
-    && pip3 install --no-cache-dir \
-        uvloop==0.12.2 \
+    && pip3 install --no-cache-dir -r /usr/src/requirements.txt \
+    && rm -f /usr/src/requirements.txt \
     && apk del .build-dependencies
 
 ###

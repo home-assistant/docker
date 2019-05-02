@@ -1,6 +1,7 @@
 # https://dev.azure.com/home-assistant
 
 trigger:
+  batch: true
   branches:
     include:
     - master
@@ -8,9 +9,16 @@ pr:
 - master
 
 variables:
-  versionHadolint: 'v1.16.3'
-  versionShellCheck: 'v0.6.0'
-  versionBuilder: '2.1'
+  - name: versionHadolint
+    value: 'v1.16.3'
+  - name: versionShellCheck
+    value: 'v0.6.0'
+  - name: versionBuilder
+    value: '3.1'
+  - name: versionWheels
+    value: '0.2'
+  - group: wheels
+  - group: docker
 
 jobs:
 
@@ -65,3 +73,50 @@ jobs:
         homeassistant/amd64-builder:$(versionBuilder) --homeassistant-landingpage ALL \
         -t /data/landingpage --docker-hub homeassistant
     displayName: 'Build Landingpage'
+
+
+- job: 'Wheels'
+  condition: eq(variables['Build.SourceBranchName'], 'master')
+  timeoutInMinutes: 180
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    maxParallel: 3
+    matrix:
+      amd64:
+        buildArch: 'amd64'
+      i386:
+        buildArch: 'i386'
+      armhf:
+        buildArch: 'armhf'
+      armv7:
+        buildArch: 'armv7'
+      aarch64:
+        buildArch: 'aarch64'
+  steps:
+  - script: |
+      sudo apt-get install -y --no-install-recommends \
+        qemu-user-static \
+        binfmt-support
+
+      sudo mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
+      sudo update-binfmts --enable qemu-arm
+      sudo update-binfmts --enable qemu-aarch64
+    displayName: 'Initial cross build'
+  - script: |
+      mkdir -p .ssh
+      echo -e "-----BEGIN RSA PRIVATE KEY-----\n$(wheelsSSH)\n-----END RSA PRIVATE KEY-----" >> .ssh/id_rsa
+      ssh-keyscan -H $(wheelsHost) >> .ssh/known_hosts
+      chmod 600 .ssh/*
+    displayName: 'Install ssh key'
+  - script: sudo docker pull homeassistant/$(buildArch)-wheels:$(versionWheels)
+    displayName: 'Install wheels builder'
+  - script: |
+      sudo docker run --rm -v $(pwd):/data:ro -v .ssh:/root/.ssh:rw \
+        homeassistant/$(buildArch)-wheels:$(versionWheels) \
+        --apk "build-base;mariadb-dev;postgresql-dev;freetds-dev;libffi-dev;cmake;ncurses;git" \
+        --index https://wheels.hass.io \
+        --requirement base/requirements.txt \
+        --upload rsync \
+        --remote wheels@$(wheelsHost):/opt/wheels
+    displayName: 'Run wheels build'
