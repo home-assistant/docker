@@ -1,7 +1,7 @@
 # https://dev.azure.com/home-assistant
 
 trigger:
-  patch: true
+  batch: true
   branches:
     include:
     - master
@@ -9,13 +9,16 @@ pr:
 - master
 
 variables:
-  versionHadolint: 'v1.16.3'
-  versionShellCheck: 'v0.6.0'
-  versionBuilder: '3.1'
-  versionWheels: '0.2'
-  group:
-  - wheels
-  - docker
+  - name: versionHadolint
+    value: 'v1.16.3'
+  - name: versionShellCheck
+    value: 'v0.6.0'
+  - name: versionBuilder
+    value: '3.1'
+  - name: versionWheels
+    value: '0.2'
+  - group: wheels
+  - group: docker
 
 jobs:
 
