@@ -120,3 +120,38 @@ jobs:
         --upload rsync \
         --remote wheels@$(wheelsHost):/opt/wheels
     displayName: 'Run wheels build'
+
+
+- job: 'HomeAssistant_Base'
+  condition: and(eq(variables['Build.SourceBranchName'], 'master'), succeeded('Hadolint'), succeeded('ShellCheck'), succeeded('wheels'))
+  dependsOn:
+  - 'Hadolint'
+  - 'ShellCheck'
+  - 'Wheels'
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    maxParallel: 3
+    matrix:
+      amd64:
+        buildArch: 'amd64'
+      i386:
+        buildArch: 'i386'
+      armhf:
+        buildArch: 'armhf'
+      armv7:
+        buildArch: 'armv7'
+      aarch64:
+        buildArch: 'aarch64'
+  steps:
+  - script: sudo docker login -u $(dockerUser) -p $(dockerPassword)
+    displayName: 'Docker hub login'
+  - script: sudo docker pull homeassistant/amd64-builder:$(versionBuilder)
+    displayName: 'Install Builder'
+  - script: |
+      sudo docker run --rm --privileged \
+        -v ~/.docker:/root/.docker \
+        -v /run/docker.sock:/run/docker.sock:rw -v $(pwd):/data:ro \
+        homeassistant/amd64-builder:$(versionBuilder) --homeassistant-base "--$(buildArch)" \
+        -t /data/base --docker-hub homeassistant
+    displayName: 'Build Home Assistant Base'
