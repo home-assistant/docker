@@ -32,7 +32,6 @@ RUN apk add --no-cache \
     && sed -i "s|# decora|decora|g" homeassistant/requirements_all.txt \
     && sed -i "s|# PySwitchbot|PySwitchbot|g" homeassistant/requirements_all.txt \
     && sed -i "s|# pySwitchmate|pySwitchmate|g" homeassistant/requirements_all.txt \
-    && export MAKEFLAGS="-j$(nproc)" \
     && pip3 install --no-cache-dir --find-links https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/ \
         -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir --find-links https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/ \

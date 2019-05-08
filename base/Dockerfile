@@ -15,10 +15,37 @@ RUN apk add --no-cache \
         eudev \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
 
-####
-## Build library
+
 WORKDIR /usr/src/
 ARG BUILD_ARCH
+
+##
+# Install component packages
+COPY requirements.txt /usr/src/
+RUN apk add --no-cache \
+    ffmpeg \
+    nmap \
+    net-tools \
+    bluez \
+    bluez-deprecated \
+    curl \
+    libsodium \
+    openssh-client \
+    libffi \
+    glib \
+    socat \
+    iperf3
+
+####
+## Install pip module for component/homeassistant
+RUN apk add --no-cache \
+        mariadb-connector-c postgresql-libs freetds libffi \
+    && pip3 install --no-cache-dir --find-links https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/ \
+        -r /usr/src/requirements.txt \
+    && rm -f /usr/src/requirements.txt
+
+####
+## Build library
 
 # ssocr
 ARG SSOCR_VERSION=v2.19.0
@@ -57,8 +84,6 @@ RUN apk add --no-cache \
         ffmpeg-dev libwebp-dev git libpng-dev zlib-dev \
         libjpeg-turbo-dev tiff-dev jasper-dev libdc1394-dev \
     && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir \
-        numpy==1.16.3 \
     && git clone --depth 1 -b ${OPENCV_VERSION} https://github.com/opencv/opencv \
     && cd opencv \
     && mkdir -p build \
@@ -120,33 +145,6 @@ RUN apk add --no-cache \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/telldus
-
-##
-# Install component packages
-RUN apk add --no-cache \
-    ffmpeg \
-    nmap \
-    net-tools \
-    bluez \
-    bluez-deprecated \
-    curl \
-    libsodium \
-    openssh-client \
-    libffi \
-    glib \
-    socat \
-    iperf3
-
-####
-## Install pip module for component/homeassistant
-COPY requirements.txt /usr/src/
-RUN apk add --no-cache \
-        mariadb-connector-c postgresql-libs freetds libffi \
-    && export MAKEFLAGS="-j$(nproc)" \
-    && pip3 install --no-cache-dir --find-links https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/ \
-        -r /usr/src/requirements.txt \
-    && rm -f /usr/src/requirements.txt \
-    && apk del .build-dependencies
 
 ###
 # Setup entry point for udevd
