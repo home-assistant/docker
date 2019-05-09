@@ -4,7 +4,7 @@ set -e
 udevd --daemon
 udevadm trigger
 
-if CMD="$(command -v grep "$1")"; then
+if CMD="$(command -v "$1")"; then
   shift
   exec "$CMD" "$@"
 else
