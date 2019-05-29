@@ -1,4 +1,4 @@
-cython==0.29.7
+cython==0.29.9
 brotlipy==0.7.0
 cchardet==2.1.4
 mysqlclient==1.4.2.post1
