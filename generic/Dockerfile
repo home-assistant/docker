@@ -4,6 +4,9 @@ FROM $BUILD_FROM
 ARG BUILD_VERSION
 ARG BUILD_ARCH
 
+# Add Hass.io wheels repository
+ENV WHEELS_LINKS=https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/
+
 ## Install Home Assistant
 # hadolint ignore=DL3013
 RUN apk add --no-cache \
