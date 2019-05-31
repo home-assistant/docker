@@ -6,12 +6,12 @@ ARG BUILD_VERSION
 WORKDIR /usr/src
 
 ## Install Home Assistant
-# hadolint ignore=DL3013
+# hadolint ignore=DL3013,SC2086
 RUN git clone --depth 1 --branch $BUILD_VERSION https://github.com/home-assistant/home-assistant homeassistant \
     && rm -rf homeassistant/.git \
     && default_components="home-assistant-frontend= sqlalchemy= netdisco= zeroconf= hass-nabucasa= aiohttp_cors= av= distro= xmltodict="; \
         for component in ${default_components}; do \
-            grep "${component}" homeassistant/requirements_all.txt >> homeassistant/requirements_default.txt; \
+            egrep "^${component}" homeassistant/requirements_all.txt >> homeassistant/requirements_default.txt; \
         done \
     && pip3 install --no-cache-dir --find-links ${WHEELS_LINKS} \
         -r homeassistant/requirements_default.txt -c homeassistant/homeassistant/package_constraints.txt \
