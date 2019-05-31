@@ -132,37 +132,6 @@ RUN apk add --no-cache \
     && apk del .build-dependencies \
     && rm -rf /usr/src/opencv
 
-# OpenALPR & Log4Cplus
-ARG LOGCPLUS_VERSION=REL_1_2_0
-ARG OPENALPR_VERSION=v2.3.0
-RUN apk add --no-cache \
-        tesseract-ocr \
-    && apk add --no-cache --virtual .build-dependencies \
-        build-base\
-        cmake \
-        ncurses \
-        tesseract-ocr-dev \
-        autoconf \
-        automake \
-        libtool \
-    && git clone --depth 1 -b ${LOGCPLUS_VERSION} https://github.com/log4cplus/log4cplus \
-    && cd log4cplus \
-    && autoreconf -f -i \
-    && ./configure --with-working-locale \
-    && make -j$(nproc) \
-    && make install \
-    && cd /usr/src \
-    && rm -rf /usr/src/log4cplus \
-    && git clone --depth 1 -b ${OPENALPR_VERSION} https://github.com/openalpr/openalpr \
-    && cd openalpr/src \
-    && mkdir -p build \
-    && cd build \
-    && cmake ../ -DWITH_TESTS=FALSE -DWITH_BINDING_JAVA=FALSE -DWITH_BINDING_PYTHON=FALSE -DWITH_BINDING_GO=FALSE -DWITH_DAEMON=FALSE -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
-    && make -j$(nproc) \
-    && make install \
-    && apk del .build-dependencies \
-    && rm -rf /usr/src/openalpr
-
 # Telldus
 RUN apk add --no-cache \
         confuse \
