@@ -1,5 +1,9 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+ARG BUILD_ARCH
+FROM homeassistant/${BUILD_ARCH}-base-python:3.7
+
+# Add Hass.io wheels repository
+ARG BUILD_ARCH
+ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.9/${BUILD_ARCH}/
 
 ####
 # Install core
@@ -8,51 +12,60 @@ RUN apk add --no-cache \
         libstdc++ \
         libpng \
         tiff \
+        libffi \
         libjpeg \
         libjpeg-turbo \
         openssl \
         musl \
         eudev \
+        eudev-libs \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
-
-
-WORKDIR /usr/src/
-ARG BUILD_ARCH
 
 ##
 # Install component packages
-COPY requirements.txt /usr/src/
 RUN apk add --no-cache \
+    bluez \
+    bluez-libs \
+    bluez-deprecated \
+    cups-libs \
+    curl \
     ffmpeg \
+    ffmpeg-libs \
+    freetds \
+    libsodium \
+    glib \
+    gmp \
+    git \
+    iperf3 \
+    libxslt \
+    libxml2 \
     nmap \
     net-tools \
-    bluez \
-    bluez-deprecated \
-    curl \
-    libsodium \
+    mariadb-connector-c \
+    mpfr3 \
+    mpc1 \
     openssh-client \
-    libffi \
-    glib \
-    socat \
-    iperf3
+    postgresql-libs \
+    socat
 
 ####
 ## Install pip module for component/homeassistant
-RUN apk add --no-cache \
-        mariadb-connector-c postgresql-libs freetds libffi \
-    && pip3 install --no-cache-dir --find-links https://wheels.hass.io/alpine-3.9/${BUILD_ARCH}/ \
+COPY requirements.txt /usr/src/
+RUN pip3 install --no-cache-dir --find-links ${WHEELS_LINKS} \
         -r /usr/src/requirements.txt \
     && rm -f /usr/src/requirements.txt
 
 ####
 ## Build library
+WORKDIR /usr/src/
 
 # ssocr
 ARG SSOCR_VERSION=v2.19.0
 RUN apk add --no-cache \
         imlib2 \
     && apk add --no-cache --virtual .build-dependencies \
-        git gcc make musl-dev imlib2-dev \
+        build-base \
+        imlib2-dev \
     && git clone --depth 1 -b ${SSOCR_VERSION} https://github.com/auerswal/ssocr \
     && cd ssocr \
     && make -j$(nproc) \
@@ -65,7 +78,10 @@ ARG ARPSCAN_VERSION=1.9.5
 RUN apk add --no-cache \
         libpcap \
     && apk add --no-cache --virtual .build-dependencies \
-        autoconf automake libpcap-dev git gcc g++ make \
+        build-base \
+        autoconf \
+        automake \
+        libpcap-dev \
     && git clone --depth 1 -b ${ARPSCAN_VERSION} https://github.com/royhills/arp-scan \
     && cd arp-scan \
     && autoreconf --install \
@@ -78,11 +94,24 @@ RUN apk add --no-cache \
 # OpenCV/scipy
 ARG OPENCV_VERSION=3.4.5
 RUN apk add --no-cache \
-        libwebp ffmpeg-libs libdc1394 jasper-libs zlib \
+        libwebp \
+        ffmpeg-libs \
+        libdc1394 \
+        jasper-libs \
+        zlib \
     && apk add --no-cache --virtual .build-dependencies \
-        gcc g++ musl-dev cmake make ncurses linux-headers \
-        ffmpeg-dev libwebp-dev git libpng-dev zlib-dev \
-        libjpeg-turbo-dev tiff-dev jasper-dev libdc1394-dev \
+        build-base \
+        cmake \
+        ncurses \
+        linux-headers \
+        ffmpeg-dev \
+        libwebp-dev \
+        libpng-dev \
+        zlib-dev \
+        libjpeg-turbo-dev \
+        tiff-dev \
+        jasper-dev \
+        libdc1394-dev \
     && export MAKEFLAGS="-j$(nproc)" \
     && git clone --depth 1 -b ${OPENCV_VERSION} https://github.com/opencv/opencv \
     && cd opencv \
@@ -109,8 +138,13 @@ ARG OPENALPR_VERSION=v2.3.0
 RUN apk add --no-cache \
         tesseract-ocr \
     && apk add --no-cache --virtual .build-dependencies \
-        cmake ncurses make g++ tesseract-ocr-dev \
-        git autoconf automake libtool \
+        build-base\
+        cmake \
+        ncurses \
+        tesseract-ocr-dev \
+        autoconf \
+        automake \
+        libtool \
     && git clone --depth 1 -b ${LOGCPLUS_VERSION} https://github.com/log4cplus/log4cplus \
     && cd log4cplus \
     && autoreconf -f -i \
@@ -131,9 +165,15 @@ RUN apk add --no-cache \
 
 # Telldus
 RUN apk add --no-cache \
-        confuse libftdi1 \
+        confuse \
+        libftdi1 \
     && apk add --no-cache --virtual .build-dependencies \
-        cmake build-base gcc doxygen confuse-dev argp-standalone libftdi1-dev git \
+        build-base \
+        cmake \
+        doxygen \
+        confuse-dev \
+        argp-standalone \
+        libftdi1-dev \
     && ln -s /usr/include/libftdi1/ftdi.h /usr/include/ftdi.h \
     && git clone -b master --depth 1 https://github.com/telldus/telldus \
     && cd telldus/telldus-core \
