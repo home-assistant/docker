@@ -1,5 +1,5 @@
 ARG BUILD_ARCH
-FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.0
+FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.1
 
 ARG BUILD_VERSION
 
