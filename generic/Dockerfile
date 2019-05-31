@@ -1,5 +1,5 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+ARG BUILD_ARCH
+FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.0
 
 ARG BUILD_VERSION
 
@@ -11,7 +11,7 @@ RUN git clone --depth 1 --branch $BUILD_VERSION https://github.com/home-assistan
     && rm -rf homeassistant/.git \
     && default_components="home-assistant-frontend= sqlalchemy= netdisco= zeroconf= hass-nabucasa= aiohttp_cors= av= distro= xmltodict="; \
         for component in ${default_components}; do \
-            grep ${component} homeassistant/requirements_all.txt >> homeassistant/requirements_default.txt; \
+            grep "${component}" homeassistant/requirements_all.txt >> homeassistant/requirements_default.txt; \
         done \
     && pip3 install --no-cache-dir --find-links ${WHEELS_LINKS} \
         -r homeassistant/requirements_default.txt -c homeassistant/homeassistant/package_constraints.txt \

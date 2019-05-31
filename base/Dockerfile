@@ -1,5 +1,5 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+ARG BUILD_ARCH
+FROM homeassistant/${BUILD_ARCH}-base-python:3.7
 
 # Add Hass.io wheels repository
 ARG BUILD_ARCH
