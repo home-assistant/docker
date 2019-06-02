@@ -20,7 +20,7 @@ RUN git clone --depth 1 --branch $BUILD_VERSION https://github.com/home-assistan
 COPY constraints.txt homeassistant/constraints_wheels.txt
 RUN echo "# Docker wheels constraints" > homeassistant/homeassistant/package_constraints.txt \
     && cat homeassistant/constraints_wheels.txt > homeassistant/homeassistant/package_constraints.txt \
-    && cat "numpy==" homeassistant/requirements_all.txt > homeassistant/homeassistant/package_constraints.txt
+    && grep "numpy==" homeassistant/requirements_all.txt > homeassistant/homeassistant/package_constraints.txt
 
 # Run Home Assistant
 WORKDIR /config
