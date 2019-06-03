@@ -23,7 +23,7 @@ WORKDIR /usr/src
 # hadolint ignore=DL3013
 RUN ./create_requirements.sh \
     && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" \
-        -r requirements_default.txt -c homeassistant/homeassistant/package_constraints.txt \
+        -r homeassistant/requirements_default.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" -e ./homeassistant \
     && rm -f create_requirements.sh
 
