@@ -10,7 +10,7 @@ COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile
 COMPONENTS+=(zwave mqtt zha proxy ffmpeg)
 
 # Featured
-COMPONENTS+=(hue deconz esphome)
+COMPONENTS+=(hue deconz esphome homekit)
 
 
 REQUIREMENTS="homeassistant/requirements_default.txt"
