@@ -13,7 +13,7 @@ COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome iftt html5 influxdb)
 COMPONENTS+=(hue deconz homekit homematic ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony)
 
 # Featured platforms
-COMPONENTS+=(sonos doorbird netatmo nuki darksky yr apple_tv cast systemmonitor miflora)
+COMPONENTS+=(sonos doorbird netatmo nuki darksky yr apple_tv cast systemmonitor miflora youtube_dl)
 
 
 REQUIREMENTS="homeassistant/requirements_default.txt"
