@@ -1,5 +1,6 @@
 FROM homeassistant/amd64-homeassistant-base:2.1 AS installer
 
+ARG BUILD_VERSION
 WORKDIR /usr/src
 
 ## Setup Home Assistant
