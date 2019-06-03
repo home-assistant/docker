@@ -1,4 +1,4 @@
-#!/usr/bin/env bashio
+#!/usr/bin/env bash
 
 # MFA modules requirements (pip)
 MFA_MODULES=(pyotp PyQRCode)
@@ -26,6 +26,6 @@ done
 
 # Components
 for component in "${COMPONENTS[@]}"; do
-    component_manifest="homeassistant/homeassistant/components/$component/manifest.json"
+    component_manifest="homeassistant/homeassistant/components/${component}/manifest.json"
     jq --raw-output '.requirements | join("\n")' "${component_manifest}" >> ${REQUIREMENTS}
 done
