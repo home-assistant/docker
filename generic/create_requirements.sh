@@ -7,7 +7,11 @@ MFA_MODULES=(pyotp PyQRCode)
 COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile_app)
 
 # IoT
-COMPONENTS+=(zwave mqtt zha proxy)
+COMPONENTS+=(zwave mqtt zha proxy ffmpeg)
+
+# Featured
+COMPONENTS+=(hue deconz esphome)
+
 
 REQUIREMENTS="homeassistant/requirements_default.txt"
 touch ${REQUIREMENTS}
