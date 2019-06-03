@@ -15,9 +15,9 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
 
 FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.1
 
+WORKDIR /usr/src
 COPY --from=installer /usr/src/homeassistant /usr/src/homeassistant
 COPY create_requirements.sh /usr/src/
-WORKDIR /usr/src
 
 ## Install Home Assistant
 # hadolint ignore=DL3013
