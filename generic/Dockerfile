@@ -20,7 +20,7 @@ WORKDIR /usr/src
 
 ## Install Home Assistant
 # hadolint ignore=DL3013,SC2086
-RUN default_components="home-assistant-frontend= sqlalchemy= netdisco= zeroconf= hass-nabucasa= aiohttp_cors= av= distro= xmltodict= PyNaCl="; \
+RUN default_components="home-assistant-frontend= sqlalchemy= netdisco= zeroconf= hass-nabucasa= aiohttp_cors= av= distro= xmltodict= PyNaCl= pyotp= PyQRCode= mutagen= paho-mqtt= pillow="; \
         for component in ${default_components}; do \
             grep -E "^${component}" homeassistant/requirements_all.txt >> homeassistant/requirements_default.txt; \
         done \
