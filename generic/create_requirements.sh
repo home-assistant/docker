@@ -7,10 +7,10 @@ MFA_MODULES=(pyotp PyQRCode)
 COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile_app)
 
 # IoT
-COMPONENTS+=(zwave mqtt zha proxy ffmpeg)
+COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome iftt html5)
 
 # Featured
-COMPONENTS+=(hue deconz esphome homekit homematic ecobee xiaomi_miio)
+COMPONENTS+=(hue deconz homekit homematic ecobee xiaomi_miio xiaomi_aqara sonos doorbird broadlink netatmo tradfri nuki fibaro)
 
 
 REQUIREMENTS="homeassistant/requirements_default.txt"
