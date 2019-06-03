@@ -1,26 +1,31 @@
-ARG BUILD_ARCH
-FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.1
-
-ARG BUILD_VERSION
+FROM homeassistant/amd64-homeassistant-base:2.1 AS installer
 
 WORKDIR /usr/src
 
-## Install Home Assistant
+## Setup Home Assistant
 # hadolint ignore=DL3013,SC2086
 RUN git clone --depth 1 --branch $BUILD_VERSION https://github.com/home-assistant/home-assistant homeassistant \
     && rm -rf homeassistant/.git \
-    && default_components="home-assistant-frontend= sqlalchemy= netdisco= zeroconf= hass-nabucasa= aiohttp_cors= av= distro= xmltodict= PyNaCl="; \
+    && pip3 install --no-cache-dir --find-links ${WHEELS_LINKS} \
+        -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
+    && pip3 freeze > homeassistant/homeassistant/package_constraints.txt
+
+
+ARG BUILD_ARCH
+FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.1
+
+WORKDIR /usr/src
+COPY --from=installer /usr/src/homeassistant .
+
+## Install Home Assistant
+# hadolint ignore=DL3013,SC2086
+RUN default_components="home-assistant-frontend= sqlalchemy= netdisco= zeroconf= hass-nabucasa= aiohttp_cors= av= distro= xmltodict= PyNaCl="; \
         for component in ${default_components}; do \
             grep -E "^${component}" homeassistant/requirements_all.txt >> homeassistant/requirements_default.txt; \
         done \
     && pip3 install --no-cache-dir --find-links ${WHEELS_LINKS} \
         -r homeassistant/requirements_default.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir --find-links ${WHEELS_LINKS} -e ./homeassistant
-
-COPY constraints.txt homeassistant/constraints_wheels.txt
-RUN echo "# Docker wheels constraints" > homeassistant/homeassistant/package_constraints.txt \
-    && cat homeassistant/constraints_wheels.txt > homeassistant/homeassistant/package_constraints.txt \
-    && grep "numpy==" homeassistant/requirements_all.txt > homeassistant/homeassistant/package_constraints.txt
 
 # Run Home Assistant
 WORKDIR /config
