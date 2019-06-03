@@ -5,7 +5,7 @@ ARG BUILD_VERSION
 WORKDIR /usr/src
 
 ## Setup Home Assistant
-# hadolint ignore=DL3013
+# hadolint ignore=DL3013,SC2086
 RUN git clone --depth 1 --branch $BUILD_VERSION https://github.com/home-assistant/home-assistant homeassistant \
     && rm -rf homeassistant/.git \
     && pip3 install --no-cache-dir --find-links ${WHEELS_LINKS} \
