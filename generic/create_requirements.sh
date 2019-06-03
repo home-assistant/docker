@@ -9,8 +9,11 @@ COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile
 # IoT
 COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome iftt html5)
 
-# Featured
-COMPONENTS+=(hue deconz homekit homematic ecobee xiaomi_miio xiaomi_aqara sonos doorbird broadlink netatmo tradfri nuki fibaro)
+# Featured Hubs
+COMPONENTS+=(hue deconz homekit homematic ecobee xiaomi_miio xiaomi_aqara broadlink tradfri)
+
+# Featured platforms
+COMPONENTS+=(sonos doorbird netatmo nuki darksky yr apple_tv cast systemmonitor miflora)
 
 
 REQUIREMENTS="homeassistant/requirements_default.txt"
