@@ -15,8 +15,8 @@ RUN git clone --depth 1 --branch $BUILD_VERSION https://github.com/home-assistan
 
 FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.1
 
+COPY --from=installer /usr/src/homeassistant /usr/src/
 WORKDIR /usr/src
-COPY --from=installer /usr/src/homeassistant .
 
 ## Install Home Assistant
 # hadolint ignore=DL3013,SC2086
