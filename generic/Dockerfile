@@ -8,7 +8,7 @@ WORKDIR /usr/src
 # hadolint ignore=DL3013
 RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assistant/home-assistant homeassistant \
     && rm -rf homeassistant/.git \
-    && copy homeassistant/requirements_all.txt homeassistant/requirements_freeze.txt
+    && cp homeassistant/requirements_all.txt homeassistant/requirements_freeze.txt \
     && sed -i "s|# pytradfri|pytradfri|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# pybluez|pybluez|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# bluepy|bluepy|g" homeassistant/requirements_freeze.txt \
