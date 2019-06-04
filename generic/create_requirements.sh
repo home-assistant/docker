@@ -4,7 +4,7 @@
 MFA_MODULES=(pyotp PyQRCode)
 
 # Core components
-COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile_app ptvsd)
+COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile_app)
 
 # IoT
 COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome ifttt html5 influxdb)
