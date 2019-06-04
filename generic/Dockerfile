@@ -21,7 +21,7 @@ COPY create_requirements.sh /usr/src/
 
 ## Install Home Assistant
 # hadolint ignore=DL3013
-RUN bash create_requirements.sh \
+RUN ./create_requirements.sh \
     && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_default.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" -e ./homeassistant \
