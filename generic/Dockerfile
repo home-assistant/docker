@@ -15,18 +15,17 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
 
 FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.1
 
-COPY --from=installer /usr/src/homeassistant /usr/src/homeassistant
 WORKDIR /usr/src
+COPY --from=installer /usr/src/homeassistant /usr/src/homeassistant
+COPY create_requirements.sh /usr/src/
 
 ## Install Home Assistant
-# hadolint ignore=DL3013,SC2086
-RUN default_components="home-assistant-frontend= sqlalchemy= netdisco= zeroconf= hass-nabucasa= aiohttp_cors= av= distro= xmltodict= PyNaCl= pyotp= PyQRCode= mutagen= paho-mqtt= pillow="; \
-        for component in ${default_components}; do \
-            grep -E "^${component}" homeassistant/requirements_all.txt >> homeassistant/requirements_default.txt; \
-        done \
+# hadolint ignore=DL3013
+RUN ./create_requirements.sh \
     && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_default.txt -c homeassistant/homeassistant/package_constraints.txt \
-    && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" -e ./homeassistant
+    && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" -e ./homeassistant \
+    && rm -f create_requirements.sh
 
 # Run Home Assistant
 WORKDIR /config
