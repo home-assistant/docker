@@ -13,7 +13,7 @@ COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome ifttt html5 influxdb)
 COMPONENTS+=(hue homekit ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo amcrest toon dyson smartthings vera)
 
 # Featured platforms
-COMPONENTS+=(doorbird nuki miflora media_extractor google_translate yeelight lifx mystrom mysensors)
+COMPONENTS+=(doorbird nuki miflora media_extractor google_translate yeelight lifx mystrom mysensors caldav)
 
 # Featured Players
 COMPONENTS+=(sonos spotify apple_tv cast plex kodi)
@@ -28,7 +28,7 @@ COMPONENTS+=(darksky yr openweathermap meteoalarm)
 COMPONENTS+=(pi_hole tellstick homematic deconz)
 
 # Featured clouds
-COMPONENTS+=(netatmo homematicip_cloud icloud pushbullet tellduslive google aws)
+COMPONENTS+=(netatmo homematicip_cloud icloud pushbullet tellduslive google aws github)
 
 
 REQUIREMENTS="homeassistant/requirements_default.txt"
