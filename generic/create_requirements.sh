@@ -10,7 +10,7 @@ COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile
 COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome ifttt html5 influxdb)
 
 # Featured hubs
-COMPONENTS+=(hue homekit ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo amcrest toon dyson smartthings)
+COMPONENTS+=(hue homekit ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo amcrest toon dyson smartthings vera)
 
 # Featured platforms
 COMPONENTS+=(sonos doorbird nuki apple_tv cast miflora media_extractor google_translate plex kodi yeelight lifx mystrom mysensors)
