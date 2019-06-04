@@ -13,10 +13,16 @@ COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome iftt html5 influxdb)
 COMPONENTS+=(hue deconz homekit homematic ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo mysensors amcrest toon dyson tellstick)
 
 # Featured platforms
-COMPONENTS+=(sonos doorbird nuki darksky yr apple_tv cast miflora youtube_dl google_translate plex kodi yeelight lifx mystrom)
+COMPONENTS+=(sonos doorbird nuki apple_tv cast miflora youtube_dl google_translate plex kodi yeelight lifx mystrom)
 
 # Featured locals
-COMPONENTS+=(systemmonitor cpuspeed fastdotcom speedtestdotnet)
+COMPONENTS+=(systemmonitor cpuspeed fastdotcom speedtestdotnet iperf3)
+
+# Featured weather
+COMPONENTS+=(darksky yr openweathermap)
+
+# Featured add-ons
+COMPONENTS+=(pi_hole)
 
 # Featured clouds
 COMPONENTS+=(netatmo homematicip_cloud icloud pushbullet tellduslive)
