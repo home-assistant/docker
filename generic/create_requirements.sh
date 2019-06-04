@@ -13,7 +13,7 @@ COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome ifttt html5 influxdb)
 COMPONENTS+=(hue homekit ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo mysensors amcrest toon dyson)
 
 # Featured platforms
-COMPONENTS+=(sonos doorbird nuki apple_tv cast miflora youtube_dl google_translate plex kodi yeelight lifx mystrom)
+COMPONENTS+=(sonos doorbird nuki apple_tv cast miflora media_extractor google_translate plex kodi yeelight lifx mystrom)
 
 # Featured locals
 COMPONENTS+=(systemmonitor cpuspeed fastdotcom speedtestdotnet iperf3)
