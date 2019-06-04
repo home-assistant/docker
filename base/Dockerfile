@@ -92,7 +92,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/arp-scan
 
 # OpenCV/scipy
-ARG OPENCV_VERSION=3.4.5
+ARG OPENCV_VERSION=4.1.0
 RUN apk add --no-cache \
         libwebp \
         ffmpeg-libs \
