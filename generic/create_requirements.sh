@@ -9,11 +9,17 @@ COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile
 # IoT
 COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome iftt html5 influxdb)
 
-# Featured Hubs
-COMPONENTS+=(hue deconz homekit homematic ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx)
+# Featured hubs
+COMPONENTS+=(hue deconz homekit homematic ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo mysensors amcrest toon dyson tellstick)
 
 # Featured platforms
-COMPONENTS+=(sonos doorbird netatmo nuki darksky yr apple_tv cast systemmonitor miflora youtube_dl google_translate)
+COMPONENTS+=(sonos doorbird nuki darksky yr apple_tv cast miflora youtube_dl google_translate plex kodi yeelight lifx mystrom)
+
+# Featured locals
+COMPONENTS+=(systemmonitor cpuspeed fastdotcom speedtestdotnet)
+
+# Featured clouds
+COMPONENTS+=(netatmo homematicip_cloud icloud pushbullet tellduslive)
 
 
 REQUIREMENTS="homeassistant/requirements_default.txt"
