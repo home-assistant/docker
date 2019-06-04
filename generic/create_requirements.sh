@@ -10,7 +10,7 @@ COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile
 COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome iftt html5 influxdb)
 
 # Featured hubs
-COMPONENTS+=(hue deconz homekit homematic ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo mysensors amcrest toon dyson tellstick)
+COMPONENTS+=(hue homekit ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo mysensors amcrest toon dyson)
 
 # Featured platforms
 COMPONENTS+=(sonos doorbird nuki apple_tv cast miflora youtube_dl google_translate plex kodi yeelight lifx mystrom)
@@ -22,7 +22,7 @@ COMPONENTS+=(systemmonitor cpuspeed fastdotcom speedtestdotnet iperf3)
 COMPONENTS+=(darksky yr openweathermap)
 
 # Featured add-ons
-COMPONENTS+=(pi_hole)
+COMPONENTS+=(pi_hole tellstick homematic deconz)
 
 # Featured clouds
 COMPONENTS+=(netatmo homematicip_cloud icloud pushbullet tellduslive)
