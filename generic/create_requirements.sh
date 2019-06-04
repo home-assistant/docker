@@ -7,7 +7,7 @@ MFA_MODULES=(pyotp PyQRCode)
 COMPONENTS=(frontend stream tts recorder cloud zeroconf ssdp http updater mobile_app ptvsd)
 
 # IoT
-COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome iftt html5 influxdb)
+COMPONENTS+=(zwave mqtt zha proxy ffmpeg esphome ifttt html5 influxdb)
 
 # Featured hubs
 COMPONENTS+=(hue homekit ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmony knx wink wemo mysensors amcrest toon dyson)
