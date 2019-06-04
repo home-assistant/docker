@@ -16,7 +16,7 @@ COMPONENTS+=(hue homekit ecobee xiaomi_miio xiaomi_aqara broadlink tradfri harmo
 COMPONENTS+=(sonos doorbird nuki apple_tv cast miflora media_extractor google_translate plex kodi yeelight lifx mystrom)
 
 # Featured locals
-COMPONENTS+=(systemmonitor cpuspeed fastdotcom speedtestdotnet iperf3)
+COMPONENTS+=(systemmonitor cpuspeed fastdotcom speedtestdotnet iperf3 nmap_tracker)
 
 # Featured weather
 COMPONENTS+=(darksky yr openweathermap)
