@@ -44,11 +44,13 @@ COPY create_requirements.sh /usr/src/
 ## Install Home Assistant
 # hadolint ignore=DL3013
 RUN ./create_requirements.sh \
-    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+    && cat homeassistant/homeassistant/package_constraints.txt | xargs -t -n1 -P9 \
+        pip download --dest .cache --no-deps --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: -find-links .cache/ \
         -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
-    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache/ \
         -e ./homeassistant \
-    && rm -f create_requirements.sh
+    && rm -rf create_requirements.sh .cache
 
 # Run Home Assistant
 WORKDIR /config
