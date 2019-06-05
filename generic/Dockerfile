@@ -30,7 +30,7 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && sed -i "s|# PySwitchbot|PySwitchbot|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# pySwitchmate|pySwitchmate|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# face_recognition|face_recognition|g" homeassistant/requirements_freeze.txt \
-    && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_freeze.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 freeze > homeassistant/homeassistant/package_constraints.txt
 
@@ -44,9 +44,10 @@ COPY create_requirements.sh /usr/src/
 ## Install Home Assistant
 # hadolint ignore=DL3013
 RUN ./create_requirements.sh \
-    && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
-    && pip3 install --no-cache-dir --find-links "${WHEELS_LINKS}" -e ./homeassistant \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+        -e ./homeassistant \
     && rm -f create_requirements.sh
 
 # Run Home Assistant
