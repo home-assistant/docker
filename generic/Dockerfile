@@ -30,10 +30,9 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && sed -i "s|# PySwitchbot|PySwitchbot|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# pySwitchmate|pySwitchmate|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# face_recognition|face_recognition|g" homeassistant/requirements_freeze.txt \
-    && grep -E "^[^#]" homeassistant/requirements_freeze.txt > homeassistant/requirements_freeze.txt \
-    && cat homeassistant/requirements_freeze.txt | xargs -t -n1 -P9 \
-        pip download --dest .cache --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
-        -c homeassistant/homeassistant/package_constraints.txt \
+    && grep -E "^[^#]" homeassistant/requirements_freeze.txt > homeassistant/requirements_freeze.txt || true \
+    &&  xargs -t -n1 -P9 pip download --dest .cache --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+        -c homeassistant/homeassistant/package_constraints.txt < homeassistant/requirements_freeze.txt \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache \
         -r homeassistant/requirements_freeze.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 freeze > homeassistant/homeassistant/package_constraints.txt \
@@ -49,8 +48,8 @@ COPY create_requirements.sh /usr/src/
 ## Install Home Assistant
 # hadolint ignore=DL3013
 RUN ./create_requirements.sh \
-    && cat homeassistant/homeassistant/package_constraints.txt | xargs -t -n1 -P9 \
-        pip download --dest .cache --no-deps --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+    &&  xargs -t -n1 -P9 pip download --dest .cache --no-deps --no-index --only-binary=:all: \
+        --find-links "${WHEELS_LINKS}" < homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache/ \
         -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache/ \
