@@ -30,9 +30,13 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && sed -i "s|# PySwitchbot|PySwitchbot|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# pySwitchmate|pySwitchmate|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# face_recognition|face_recognition|g" homeassistant/requirements_freeze.txt \
-    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+    && cat omeassistant/requirements_freeze.txt | xargs -t -n1 -P9 \
+        pip download --dest .cache --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+        -c homeassistant/homeassistant/package_constraints.txt \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache \
         -r homeassistant/requirements_freeze.txt -c homeassistant/homeassistant/package_constraints.txt \
-    && pip3 freeze > homeassistant/homeassistant/package_constraints.txt
+    && pip3 freeze > homeassistant/homeassistant/package_constraints.txt \
+    && rm -rf .cache
 
 
 FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.2
