@@ -32,7 +32,7 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && sed -i "s|# face_recognition|face_recognition|g" homeassistant/requirements_freeze.txt \
     && sed -i -E "/^(#.*)$/d" homeassistant/requirements_freeze.txt \
     &&  xargs -t -n1 -P9 pip download --dest .cache --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
-        -c homeassistant/homeassistant/package_constraints.txt < homeassistant/requirements_freeze.txt \
+        -c homeassistant/homeassistant/package_constraints.txt < homeassistant/requirements_freeze.txt || true \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache \
         -r homeassistant/requirements_freeze.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 freeze > homeassistant/homeassistant/package_constraints.txt \
