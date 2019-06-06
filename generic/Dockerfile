@@ -33,7 +33,7 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_freeze.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 freeze > homeassistant/homeassistant/package_constraints.txt \
-    && echo "argparse==1.4.0" > homeassistant/homeassistant/package_constraints.txt
+    && echo "argparse==1.4.0" >> homeassistant/homeassistant/package_constraints.txt
 
 
 FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.2
