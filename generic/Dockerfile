@@ -46,8 +46,8 @@ COPY create_requirements.sh /usr/src/
 RUN ./create_requirements.sh \
     &&  xargs -t -n1 -P10 pip download --dest .cache --no-deps --no-index --only-binary=:all: \
         --find-links "${WHEELS_LINKS}" < homeassistant/homeassistant/package_constraints.txt \
-    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache/ --find-links "${WHEELS_LINKS}" \
-        -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache/ \
+        -r homeassistant/requirements_all.txt \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache/ \
         -e ./homeassistant \
     && rm -rf create_requirements.sh .cache
