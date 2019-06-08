@@ -32,8 +32,7 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && sed -i "s|# face_recognition|face_recognition|g" homeassistant/requirements_freeze.txt \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_freeze.txt -c homeassistant/homeassistant/package_constraints.txt \
-    && pip3 freeze > homeassistant/homeassistant/package_constraints.txt \
-    && echo "argparse==1.4.0" >> homeassistant/homeassistant/package_constraints.txt
+    && pip3 freeze > homeassistant/homeassistant/package_constraints.txt
 
 
 FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.2
@@ -45,13 +44,11 @@ COPY create_requirements.sh /usr/src/
 ## Install Home Assistant
 # hadolint ignore=DL3013
 RUN ./create_requirements.sh \
-    &&  xargs -t -n1 -P12 pip download --dest .cache --no-deps --no-index --only-binary=:all: \
-        --find-links "${WHEELS_LINKS}" < homeassistant/homeassistant/package_constraints.txt \
-    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache/ \
-        -r homeassistant/requirements_all.txt \
-    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links .cache/ \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+        -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -e ./homeassistant \
-    && rm -rf create_requirements.sh .cache
+    && rm -f create_requirements.sh
 
 # Run Home Assistant
 WORKDIR /config
