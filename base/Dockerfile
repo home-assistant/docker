@@ -37,6 +37,9 @@ RUN apk add --no-cache \
     gmp \
     git \
     iperf3 \
+    jasper-libs \
+    libdc1394 \
+    libwebp \
     libxslt \
     libxml2 \
     nmap \
@@ -46,7 +49,8 @@ RUN apk add --no-cache \
     mpc1 \
     openssh-client \
     postgresql-libs \
-    socat
+    socat \
+    zlib
 
 ####
 ## Install pip module for component/homeassistant
