@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/home-assistant/Home%20Assistant/_apis/build/status/home-assistant.hassio-homeassistant?branchName=master)](https://dev.azure.com/home-assistant/Home%20Assistant/_build/latest?definitionId=9&branchName=master)
+[![Build Status](https://dev.azure.com/home-assistant/Hass.io/_apis/build/status/hassio-homeassistant?branchName=master)](https://dev.azure.com/home-assistant/Hass.io/_build/latest?definitionId=9&branchName=master)
 
 # hassio-homeassistant
 Hass.io Home Assistant container
