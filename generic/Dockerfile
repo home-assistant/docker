@@ -1,4 +1,4 @@
-ARG BUILD_FROM
+ARG BUILD_ARCH
 FROM homeassistant/amd64-homeassistant-base:2.4 AS installer
 
 ARG BUILD_VERSION
@@ -36,7 +36,7 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && pip3 freeze > homeassistant/homeassistant/package_constraints.txt
 
 
-FROM ${BUILD_FROM}:2.4
+FROM homeassistant/${BUILD_ARCH}-homeassistant-base:2.4
 
 WORKDIR /usr/src
 COPY --from=installer /usr/src/homeassistant /usr/src/homeassistant
