@@ -1,7 +1,14 @@
 ARG BUILD_VERSION
 FROM homeassistant/aarch64-homeassistant:$BUILD_VERSION
 
-RUN apk --no-cache add raspberrypi raspberrypi-libs usbutils
+RUN apk --no-cache add raspberrypi raspberrypi-libs usbutils \
+    && RUN pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+        -c homeassistant/homeassistant/package_constraints.txt \
+        rpi-rf \
+        RPi.GPIO \
+        bluepy \
+        pybluez \
+        pygatt[GATTTOOL]
 
 ##
 # Set symlinks for raspberry pi binaries.
