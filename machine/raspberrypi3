@@ -2,7 +2,7 @@ ARG BUILD_VERSION
 FROM homeassistant/armv7-homeassistant:$BUILD_VERSION
 
 RUN apk --no-cache add raspberrypi raspberrypi-libs usbutils \
-    && RUN pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -c homeassistant/homeassistant/package_constraints.txt \
         rpi-rf \
         RPi.GPIO \
