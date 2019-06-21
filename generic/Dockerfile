@@ -12,7 +12,6 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && sed -i "s|# pytradfri|pytradfri|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# pybluez|pybluez|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# bluepy|bluepy|g" homeassistant/requirements_freeze.txt \
-    && sed -i "s|# pygatt|pygatt|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# beacontools|beacontools|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# RPi.GPIO|RPi.GPIO|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# raspihats|raspihats|g" homeassistant/requirements_freeze.txt \
