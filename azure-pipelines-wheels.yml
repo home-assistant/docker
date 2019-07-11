@@ -14,7 +14,7 @@ variables:
   - name: basePythonTag
     value: '3.7-alpine3.9'
   - name: versionWheels
-    value: '0.11-3.7-alpine3.10'
+    value: '1.0-3.7-alpine3.10'
   - group: wheels
 
 jobs:
