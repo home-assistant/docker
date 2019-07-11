@@ -28,7 +28,7 @@ jobs:
 
 - job: 'Hadolint'
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - script: sudo docker pull hadolint/hadolint:$(versionHadolint)
     displayName: 'Install Hadolint'
@@ -47,7 +47,7 @@ jobs:
 
 - job: 'ShellCheck'
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - script: sudo docker pull koalaman/shellcheck:$(versionShellCheck)
     displayName: 'Install ShellCheck'
@@ -64,7 +64,7 @@ jobs:
   - 'Hadolint'
   - 'ShellCheck'
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - script: sudo docker login -u $(dockerUser) -p $(dockerPassword)
     displayName: 'Docker hub login'
@@ -86,7 +86,7 @@ jobs:
   - 'ShellCheck'
   timeoutInMinutes: 360
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   strategy:
     maxParallel: 3
     matrix:
