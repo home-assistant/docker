@@ -55,7 +55,7 @@ RUN apk add --no-cache \
 ####
 ## Install pip module for component/homeassistant
 COPY requirements.txt /usr/src/
-RUN pip3 install --no-cache-dir --find-links ${WHEELS_LINKS} \
+RUN pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links ${WHEELS_LINKS} \
         -r /usr/src/requirements.txt \
     && rm -f /usr/src/requirements.txt
 
