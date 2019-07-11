@@ -22,7 +22,7 @@ jobs:
 - job: 'Wheels'
   timeoutInMinutes: 360
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   strategy:
     maxParallel: 3
     matrix:
