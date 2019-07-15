@@ -21,7 +21,7 @@ variables:
   - name: versionShellCheck
     value: 'v0.6.0'
   - name: versionBuilder
-    value: '5.1'
+    value: '5.2'
   - group: docker
 
 jobs:
@@ -56,27 +56,6 @@ jobs:
       sudo docker run --rm -i \
         -v $(pwd):/mnt:ro koalaman/shellcheck:$(versionShellCheck) **/*.sh
     displayName: 'Run ShellCheck'
-
-
-- job: 'Landingpage'
-  condition: and(startsWith(variables['Build.SourceBranch'], 'refs/tags'), succeeded('Hadolint'), succeeded('ShellCheck'))
-  dependsOn:
-  - 'Hadolint'
-  - 'ShellCheck'
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - script: sudo docker login -u $(dockerUser) -p $(dockerPassword)
-    displayName: 'Docker hub login'
-  - script: sudo docker pull homeassistant/amd64-builder:$(versionBuilder)
-    displayName: 'Install Builder'
-  - script: |
-      sudo docker run --rm --privileged \
-        -v ~/.docker:/root/.docker \
-        -v /run/docker.sock:/run/docker.sock:rw -v $(pwd):/data:ro \
-        homeassistant/amd64-builder:$(versionBuilder) --homeassistant-landingpage ALL \
-        -t /data/landingpage --docker-hub homeassistant
-    displayName: 'Build Landingpage'
 
 
 - job: 'HomeAssistant_Base'
