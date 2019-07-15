@@ -17,10 +17,6 @@ variables:
 
 jobs:
 - job: 'Landingpage'
-  condition: and(startsWith(variables['Build.SourceBranch'], 'refs/tags'), succeeded('Hadolint'), succeeded('ShellCheck'))
-  dependsOn:
-  - 'Hadolint'
-  - 'ShellCheck'
   pool:
     vmImage: 'ubuntu-latest'
   steps:
