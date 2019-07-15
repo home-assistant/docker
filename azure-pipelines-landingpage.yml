@@ -1,0 +1,38 @@
+# https://dev.azure.com/home-assistant
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - landingpage/*
+pr: none
+
+variables:
+  - name: versionBuilder
+    value: '5.1'
+  - group: docker
+
+jobs:
+- job: 'Landingpage'
+  condition: and(startsWith(variables['Build.SourceBranch'], 'refs/tags'), succeeded('Hadolint'), succeeded('ShellCheck'))
+  dependsOn:
+  - 'Hadolint'
+  - 'ShellCheck'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - script: sudo docker login -u $(dockerUser) -p $(dockerPassword)
+    displayName: 'Docker hub login'
+  - script: sudo docker pull homeassistant/amd64-builder:$(versionBuilder)
+    displayName: 'Install Builder'
+  - script: |
+      sudo docker run --rm --privileged \
+        -v ~/.docker:/root/.docker \
+        -v /run/docker.sock:/run/docker.sock:rw -v $(pwd):/data:ro \
+        homeassistant/amd64-builder:$(versionBuilder) --homeassistant-landingpage ALL \
+        -t /data/landingpage --docker-hub homeassistant
+    displayName: 'Build Landingpage'
+
