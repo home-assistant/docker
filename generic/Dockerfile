@@ -32,8 +32,7 @@ RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assi
     && sed -i "s|# pySwitchmate|pySwitchmate|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# face_recognition|face_recognition|g" homeassistant/requirements_freeze.txt \
     && sed -i "s|# opencv-python-headless|opencv-python-headless|g" homeassistant/requirements_freeze.txt \
-    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links \
-        "https://wheels.home-assistant.io/alpine-$(cut -d '.' -f 1-2 < /etc/alpine-release)/${BUILD_ARCH}/" \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_freeze.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 freeze > homeassistant/homeassistant/package_constraints.txt
 
