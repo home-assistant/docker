@@ -11,11 +11,11 @@ Base Images:
 - homeassistant/i386-homeassistant-base:_BASE-VERSION_
 
 Generic Images:
-- homeassistant/aarch64-homeassistant-base:_REL-VERSION_
-- homeassistant/amd64-homeassistant-base:_REL-VERSION_
-- homeassistant/armhf-homeassistant-base:_REL-VERSION_
-- homeassistant/armv7-homeassistant-base:_REL-VERSION_
-- homeassistant/i386-homeassistant-base:_REL-VERSION_
+- homeassistant/aarch64-homeassistant:_REL-VERSION_
+- homeassistant/amd64-homeassistant:_REL-VERSION_
+- homeassistant/armhf-homeassistant:_REL-VERSION_
+- homeassistant/armv7-homeassistant:_REL-VERSION_
+- homeassistant/i386-homeassistant:_REL-VERSION_
 
 Machine Images:
 
