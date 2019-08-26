@@ -4,7 +4,7 @@ FROM ${BUILD_FROM}:4.0
 WORKDIR /usr/src
 
 ## Setup Home Assistant
-COPY . homeassistant
+COPY homeassistant homeassistant
 RUN rm -rf homeassistant/.git homeassistant/docs homeassistant/tests \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
