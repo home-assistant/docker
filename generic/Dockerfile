@@ -2,12 +2,10 @@ ARG BUILD_FROM
 FROM ${BUILD_FROM}:4.0
 
 WORKDIR /usr/src
-ARG BUILD_VERSION
 
 ## Setup Home Assistant
-# hadolint ignore=DL3013
-RUN git clone --depth 1 --branch "${BUILD_VERSION}" https://github.com/home-assistant/home-assistant homeassistant \
-    && rm -rf homeassistant/.git \
+COPY homeassistant homeassistant
+RUN rm -rf homeassistant/.git homeassistant/docs homeassistant/tests \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -r homeassistant/requirements_all.txt -c homeassistant/homeassistant/package_constraints.txt \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
