@@ -4,7 +4,6 @@ FROM ${BUILD_FROM}:4.0
 WORKDIR /usr/src
 
 ## Setup Home Assistant
-# hadolint ignore=DL3013
 COPY . homeassistant
 RUN rm -rf homeassistant/.git homeassistant/docs homeassistant/tests \
     && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
