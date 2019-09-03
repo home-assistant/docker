@@ -37,8 +37,6 @@ RUN apk add --no-cache \
     glib \
     gmp \
     iperf3 \
-    jasper-libs \
-    libdc1394 \
     libsodium \
     libwebp \
     libxml2 \
