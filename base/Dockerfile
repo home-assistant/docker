@@ -19,6 +19,7 @@ RUN apk add --no-cache \
         musl \
         eudev \
         eudev-libs \
+        grep \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
 
 ##
