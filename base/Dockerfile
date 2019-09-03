@@ -9,44 +9,45 @@ ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.10/${BUILD_ARCH}/
 # Install core
 RUN apk add --no-cache \
         bsd-compat-headers \
-        libstdc++ \
-        libpng \
-        tiff \
+        eudev \
+        eudev-libs \
+        grep \
         libffi \
         libjpeg \
         libjpeg-turbo \
-        openssl \
+        libpng \
+        libstdc++ \
         musl \
-        eudev \
-        eudev-libs \
+        openssl \
+        tiff \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
 
 ##
 # Install component packages
 RUN apk add --no-cache \
     bluez \
-    bluez-libs \
     bluez-deprecated \
+    bluez-libs \
     cups-libs \
     curl \
     ffmpeg \
     ffmpeg-libs \
     freetds \
-    libsodium \
+    git \
     glib \
     gmp \
-    git \
     iperf3 \
     jasper-libs \
     libdc1394 \
+    libsodium \
     libwebp \
-    libxslt \
     libxml2 \
-    nmap \
-    net-tools \
+    libxslt \
     mariadb-connector-c \
-    mpfr3 \
     mpc1 \
+    mpfr3 \
+    net-tools \
+    nmap \
     openssh-client \
     postgresql-libs \
     socat \
@@ -82,9 +83,9 @@ ARG ARPSCAN_VERSION=1.9.5
 RUN apk add --no-cache \
         libpcap \
     && apk add --no-cache --virtual .build-dependencies \
-        build-base \
         autoconf \
         automake \
+        build-base \
         libpcap-dev \
     && git clone --depth 1 -b ${ARPSCAN_VERSION} https://github.com/royhills/arp-scan \
     && cd arp-scan \
@@ -100,11 +101,11 @@ RUN apk add --no-cache \
         confuse \
         libftdi1 \
     && apk add --no-cache --virtual .build-dependencies \
+        argp-standalone \
         build-base \
         cmake \
-        doxygen \
         confuse-dev \
-        argp-standalone \
+        doxygen \
         libftdi1-dev \
     && ln -s /usr/include/libftdi1/ftdi.h /usr/include/ftdi.h \
     && git clone -b master --depth 1 https://github.com/telldus/telldus \
