@@ -2,5 +2,5 @@ aiodns==2.0.0
 brotlipy==0.7.0
 cchardet==2.1.4
 mysqlclient==1.4.4
-psycopg2==2.8.3
+psycopg2==2.8.4
 pymssql==2.1.4
