@@ -47,6 +47,7 @@ RUN apk add --no-cache \
     net-tools \
     nmap \
     openssh-client \
+    pianobar \
     postgresql-libs \
     socat \
     zlib
