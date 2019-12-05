@@ -32,7 +32,6 @@ RUN apk add --no-cache \
     curl \
     ffmpeg \
     ffmpeg-libs \
-    freetds \
     git \
     glib \
     gmp \
