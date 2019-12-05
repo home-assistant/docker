@@ -49,6 +49,7 @@ RUN apk add --no-cache \
     pianobar \
     postgresql-libs \
     socat \
+    unixodbc \
     zlib
 
 ####
