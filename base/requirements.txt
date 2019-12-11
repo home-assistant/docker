@@ -4,4 +4,3 @@ cchardet==2.1.5
 mysqlclient==1.4.6
 psycopg2==2.8.4
 pyodbc==4.0.27
-uvloop==0.14.0
