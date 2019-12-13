@@ -55,7 +55,10 @@ RUN apk add --no-cache \
 
 ###
 # Create /etc/odbcinst.ini for FreeTDS ODBC driver
-RUN echo -e "[FreeTDS]\nDescription = FreeTDS unixODBC Driver\nDriver = /usr/lib/libtdsodbc.so.0\nSetup = /usr/lib/libtdsodbc.so.0\nUsageCount = 1" >> /etc/odbcinst.ini
+RUN echo -e "[FreeTDS]\nDescription = FreeTDS unixODBC Driver" \
+    + "\nDriver = /usr/lib/libtdsodbc.so.0" \
+    + "\nSetup = /usr/lib/libtdsodbc.so.0" \
+    + "\nUsageCount = 1" >> /etc/odbcinst.ini
 
 ####
 ## Install pip module for component/homeassistant
