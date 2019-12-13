@@ -32,6 +32,7 @@ RUN apk add --no-cache \
     curl \
     ffmpeg \
     ffmpeg-libs \
+    freetds \
     git \
     glib \
     gmp \
@@ -51,6 +52,10 @@ RUN apk add --no-cache \
     socat \
     unixodbc \
     zlib
+
+###
+# Create /etc/odbcinst.ini for FreeTDS ODBC driver
+COPY odbcinst.ini /etc/
 
 ####
 ## Install pip module for component/homeassistant
