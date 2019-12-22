@@ -20,6 +20,7 @@ RUN apk add --no-cache \
         musl \
         openssl \
         tiff \
+        bluez \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
 
 ##
