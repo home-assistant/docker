@@ -25,6 +25,7 @@ RUN apk add --no-cache \
 ##
 # Install component packages
 RUN apk add --no-cache \
+    bluez-dev \
     bluez \
     bluez-deprecated \
     bluez-libs \
