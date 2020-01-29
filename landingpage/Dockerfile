@@ -6,8 +6,7 @@ RUN apk --no-cache add nginx
 
 # Copy data
 COPY www/ /usr/share/www/
-COPY nginx.conf /etc/
-COPY entry.sh /usr/bin/entry.sh
+COPY data/nginx.conf /etc/nginx/
+COPY data/run.sh /
 
-# Modify entry point
-ENTRYPOINT ["/usr/bin/entry.sh"]
+CMD ["/run.sh"]
