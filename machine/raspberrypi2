@@ -19,9 +19,16 @@ RUN ln -sv /opt/vc/bin/raspistill /usr/local/bin/raspistill \
 ##
 # Build libcec with RPi support for HDMI-CEC
 ARG LIBCEC_VERSION=4.0.4
-RUN apk add --no-cache eudev-libs p8-platform \
+RUN apk add --no-cache \
+        eudev-libs \
+        p8-platform \
     && apk add --no-cache --virtual .build-dependencies \
-        build-base cmake eudev-dev swig raspberrypi-dev p8-platform-dev \
+        build-base \
+        cmake \
+        eudev-dev \
+        swig \
+        raspberrypi-dev \
+        p8-platform-dev \
     && git clone --depth 1 -b libcec-${LIBCEC_VERSION} https://github.com/Pulse-Eight/libcec /usr/src/libcec \
     && mkdir -p /usr/src/libcec/build \
     && cd /usr/src/libcec/build \
@@ -29,7 +36,8 @@ RUN apk add --no-cache eudev-libs p8-platform \
         -DRPI_INCLUDE_DIR=/opt/vc/include \
         -DRPI_LIB_DIR=/opt/vc/lib \
         -DPYTHON_LIBRARY="/usr/local/lib/libpython3.7m.so" \
-        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.7m" .. \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.7m" \
+        .. \
     && make -j$(nproc) \
     && make install \
     && echo "cec" > "/usr/local/lib/python3.7/site-packages/cec.pth" \

@@ -23,6 +23,7 @@ Machine Images:
 |-------|------|
 | homeassistant/intel-nuc-homeassistant | amd64 |
 | homeassistant/odroid-c2-homeassistant | aarch64 |
+| homeassistant/odroid-n2-homeassistant | aarch64 |
 | homeassistant/odroid-xu-homeassistant | armv7 |
 | homeassistant/orangepi-prime-homeassistant | aarch64 |
 | homeassistant/qemuarm-homeassistant | armhf |
