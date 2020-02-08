@@ -1,7 +1,7 @@
 [![Build Status](https://dev.azure.com/home-assistant/Hass.io/_apis/build/status/hassio-homeassistant?branchName=master)](https://dev.azure.com/home-assistant/Hass.io/_build/latest?definitionId=9&branchName=master)
 
-# hassio-homeassistant
-Hass.io Home Assistant container
+# Docker
+Home Assistant containers
 
 Base Images:
 - homeassistant/aarch64-homeassistant-base:_BASE-VERSION_
