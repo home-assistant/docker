@@ -54,10 +54,6 @@ RUN apk add --no-cache \
     unixodbc \
     zlib
 
-###
-# Create /etc/odbcinst.ini for FreeTDS ODBC driver
-COPY odbcinst.ini /etc/
-
 ####
 ## Install pip module for component/homeassistant
 COPY requirements.txt /usr/src/
@@ -125,7 +121,5 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/telldus
 
 ###
-# Setup entry point for udevd
-COPY entry.sh /bin/
-
-ENTRYPOINT ["/bin/entry.sh"]
+# Base S6-Overlay
+COPY rootfs /
