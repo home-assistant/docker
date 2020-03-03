@@ -4,6 +4,6 @@
 # ==============================================================================
 udevd --daemon
 
-bashio::log.info "Update udev informations"
+bashio::log.info "Update udev information"
 udevadm trigger
 udevadm settle
