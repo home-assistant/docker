@@ -14,14 +14,12 @@ pr:
 - master
 
 variables:
-  - name: basePythonTag
-    value: '3.7-alpine3.10'
   - name: versionHadolint
     value: 'v1.17.2'
   - name: versionShellCheck
     value: 'v0.7.0'
   - name: versionBuilder
-    value: '6.9'
+    value: '7.1'
   - group: docker
 
 jobs:
@@ -54,7 +52,7 @@ jobs:
   - script: |
       shopt -s globstar
       sudo docker run --rm -i \
-        -v $(pwd):/mnt:ro koalaman/shellcheck:$(versionShellCheck) **/*.sh
+        -v $(pwd):/mnt:ro koalaman/shellcheck:$(versionShellCheck) -s bash **/{*.sh,run,finish}
     displayName: 'Run ShellCheck'
 
 
@@ -89,6 +87,5 @@ jobs:
         -v ~/.docker:/root/.docker \
         -v /run/docker.sock:/run/docker.sock:rw -v $(pwd):/data:ro \
         homeassistant/amd64-builder:$(versionBuilder) \
-        --homeassistant-base $(Build.SourceBranchName)=$(basePythonTag) \
-        "--$(buildArch)" -t /data/base --docker-hub homeassistant
+        --generic $(Build.SourceBranchName) "--$(buildArch)" -t /data/base
     displayName: 'Build Home Assistant Base'

@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start Home Assistant service
+# ==============================================================================
+exec python3 -m homeassistant --config /config

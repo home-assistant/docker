@@ -11,6 +11,7 @@ RUN pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${W
         -e ./homeassistant \
     && python3 -m compileall homeassistant/homeassistant
 
-# Run Home Assistant
+# Home Assistant S6-Overlay
+COPY rootfs /
+
 WORKDIR /config
-CMD [ "python3", "-m", "homeassistant", "--config", "/config" ]
