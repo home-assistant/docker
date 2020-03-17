@@ -2,5 +2,5 @@
 # ==============================================================================
 # Start Home Assistant service
 # ==============================================================================
-cd /config
+cd /config || bashio::exit.nok "Can't find config folder!"
 exec python3 -m homeassistant --config /config
