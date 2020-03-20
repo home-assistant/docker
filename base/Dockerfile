@@ -44,7 +44,7 @@ RUN apk add --no-cache \
     libxslt \
     mariadb-connector-c \
     mpc1 \
-    mpfr3 \
+    mpfr4 \
     net-tools \
     nmap \
     openssh-client \
@@ -80,7 +80,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/ssocr
 
 # arp-scan
-ARG ARPSCAN_VERSION=1.9.6
+ARG ARPSCAN_VERSION=1.9.7
 RUN apk add --no-cache \
         libpcap \
     && apk add --no-cache --virtual .build-dependencies \
