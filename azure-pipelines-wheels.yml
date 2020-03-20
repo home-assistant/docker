@@ -11,7 +11,7 @@ trigger:
 pr: none
 variables:
   - name: versionWheels
-    value: '1.3-3.7-alpine3.10'
+    value: '1.6.1-3.7-alpine3.11'
 resources:
   repositories:
     - repository: azure
