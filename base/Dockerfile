@@ -19,6 +19,7 @@ RUN apk add --no-cache \
         libstdc++ \
         musl \
         openssl \
+        pulseaudio-alsa \
         tiff \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
 
@@ -50,6 +51,7 @@ RUN apk add --no-cache \
     openssh-client \
     pianobar \
     postgresql-libs \
+    pulseaudio-utils \
     socat \
     unixodbc \
     zlib
