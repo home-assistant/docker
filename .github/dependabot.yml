@@ -4,7 +4,7 @@ updates:
   directory: "/base"
   schedule:
     interval: daily
-    time: "11:00"
+    time: "06:00"
   open-pull-requests-limit: 10
   ignore:
   - dependency-name: pymssql
