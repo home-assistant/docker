@@ -6,7 +6,3 @@ updates:
     interval: daily
     time: "06:00"
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: pymssql
-    versions:
-    - "> 2.1.4"
