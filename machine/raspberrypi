@@ -35,12 +35,12 @@ RUN apk add --no-cache \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
         -DRPI_INCLUDE_DIR=/opt/vc/include \
         -DRPI_LIB_DIR=/opt/vc/lib \
-        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.7m.so" \
-        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.7m" \
+        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.8.so" \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.8" \
         .. \
     && make -j$(nproc) \
     && make install \
-    && echo "cec" > "/usr/local/lib/python3.7/site-packages/cec.pth" \
+    && echo "cec" > "/usr/local/lib/python3.8/site-packages/cec.pth" \
     && apk del .build-dependencies \
     && rm -rf /usr/src/libcec
 ENV LD_LIBRARY_PATH=/opt/vc/lib:${LD_LIBRARY_PATH}
