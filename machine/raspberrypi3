@@ -18,7 +18,7 @@ RUN ln -sv /opt/vc/bin/raspistill /usr/local/bin/raspistill \
 
 ##
 # Build libcec with RPi support for HDMI-CEC
-ARG LIBCEC_VERSION=4.0.4
+ARG LIBCEC_VERSION=6.0.2
 RUN apk add --no-cache \
         eudev-libs \
         p8-platform \
