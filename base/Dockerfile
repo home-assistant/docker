@@ -38,6 +38,7 @@ RUN apk add --no-cache \
     git \
     glib \
     gmp \
+    lapack \
     iperf3 \
     libexecinfo \
     libsodium \
