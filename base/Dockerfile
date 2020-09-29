@@ -100,6 +100,10 @@ RUN apk add --no-cache \
     && apk del .build-dependencies \
     && rm -rf /usr/src/arp-scan
 
+# PicoTTS
+RUN apk add --no-cache \
+        picotts --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+
 # Telldus
 RUN apk add --no-cache \
         confuse \
