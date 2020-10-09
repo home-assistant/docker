@@ -8,7 +8,7 @@
       @font-face {
         font-family: "Roboto";
         src: local("Roboto Regular"), local("Roboto-Regular"),
-          url(Roboto-Regular.woff2) format("woff2");
+          url(/landingpage/Roboto-Regular.woff2) format("woff2");
         font-weight: 400;
         font-style: normal;
       }
@@ -92,7 +92,7 @@
   </head>
   <body>
     <div class="loading">
-      <img src="logo.svg" alt="Home Assistant logo" />
+      <img src="/landingpage/logo.svg" alt="Home Assistant logo" />
       <h1>Preparing Home&nbsp;Assistant</h1>
       <div class="spinner">
         <div class="double-bounce1"></div>
@@ -117,13 +117,17 @@
           <a
             target="_blank"
             href="https://apps.apple.com/us/app/home-assistant/id1099568401?mt=8"
-            ><img alt="Get it on the Apple App Store" src="apple-badge.svg"
+            ><img
+              alt="Get it on the Apple App Store"
+              src="/landingpage/apple-badge.svg"
           /></a>
 
           <a
             target="_blank"
             href="https://play.google.com/store/apps/details?id=io.homeassistant.companion.android&amp;pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
-            ><img alt="Get it on Google Play" src="google-badge.png"
+            ><img
+              alt="Get it on Google Play"
+              src="/landingpage/google-badge.png"
           /></a>
         </div>
       </div>
@@ -142,51 +146,51 @@
     <script>
       /* unfetch polyfill */
       self.fetch ||
-        (self.fetch = function(e, n) {
+        (self.fetch = function (e, n) {
           return (
             (n = n || {}),
-            new Promise(function(t, s) {
+            new Promise(function (t, s) {
               var r = new XMLHttpRequest(),
                 o = [],
                 u = [],
                 i = {},
-                a = function() {
+                a = function () {
                   return {
                     ok: 2 == ((r.status / 100) | 0),
                     statusText: r.statusText,
                     status: r.status,
                     url: r.responseURL,
-                    text: function() {
+                    text: function () {
                       return Promise.resolve(r.responseText);
                     },
-                    json: function() {
+                    json: function () {
                       return Promise.resolve(JSON.parse(r.responseText));
                     },
-                    blob: function() {
+                    blob: function () {
                       return Promise.resolve(new Blob([r.response]));
                     },
                     clone: a,
                     headers: {
-                      keys: function() {
+                      keys: function () {
                         return o;
                       },
-                      entries: function() {
+                      entries: function () {
                         return u;
                       },
-                      get: function(e) {
+                      get: function (e) {
                         return i[e.toLowerCase()];
                       },
-                      has: function(e) {
+                      has: function (e) {
                         return e.toLowerCase() in i;
-                      }
-                    }
+                      },
+                    },
                   };
                 };
               for (var c in (r.open(n.method || "get", e, !0),
-              (r.onload = function() {
+              (r.onload = function () {
                 r
                   .getAllResponseHeaders()
-                  .replace(/^(.*?):[^\S\n]*([\s\S]*?)$/gm, function(e, n, t) {
+                  .replace(/^(.*?):[^\S\n]*([\s\S]*?)$/gm, function (e, n, t) {
                     o.push((n = n.toLowerCase())),
                       u.push([n, t]),
                       (i[n] = i[n] ? i[n] + "," + t : t);
@@ -203,7 +207,7 @@
         });
 
       function testAvailable() {
-        fetch("./manifest.json").then(function(res) {
+        fetch("./manifest.json").then(function (res) {
           if (res.ok) {
             location.reload();
           } else {
