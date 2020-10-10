@@ -21,6 +21,10 @@ def serve_forever():
                     lambda req: web.Response(status=403),
                 ),
                 web.get(
+                    "/auth/token",
+                    lambda req: web.Response(status=403),
+                ),
+                web.get(
                     r"/{path:.*}",
                     lambda req: web.FileResponse(PUBLIC_PATH / "index.html"),
                 ),
