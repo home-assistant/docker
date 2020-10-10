@@ -20,9 +20,9 @@ def serve_forever():
                     r"/api/{path:.*}",
                     lambda req: web.Response(status=403),
                 ),
-                web.get(
+                web.post(
                     "/auth/token",
-                    lambda req: web.Response(status=403),
+                    lambda req: web.Response(status=400),
                 ),
                 web.get(
                     r"/{path:.*}",
