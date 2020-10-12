@@ -44,6 +44,7 @@ RUN apk add --no-cache \
     libwebp \
     libxml2 \
     libxslt \
+    mailcap \
     mariadb-connector-c \
     mpc1 \
     mpfr4 \
