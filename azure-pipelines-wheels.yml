@@ -7,7 +7,7 @@ trigger:
     - master
   paths:
     include:
-    - base/requirements.txt
+    - requirements.txt
 pr: none
 variables:
   - name: versionWheels
@@ -24,4 +24,4 @@ jobs:
   parameters:
     builderVersion: '$(versionWheels)'
     builderApk: 'build-base;mariadb-dev;postgresql-dev;unixodbc-dev;libffi-dev;cmake;ncurses;git'
-    wheelsRequirement: 'base/requirements.txt'
+    wheelsRequirement: 'requirements.txt'
