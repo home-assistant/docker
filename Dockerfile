@@ -105,17 +105,20 @@ RUN \
     && apk del .build-dependencies \
     && rm -rf /usr/src/arp-scan
 
-# PicoTTS - it has no specific version - unfortunately we'll have to use master directly
-RUN apk add automake autoconf git libtool popt-dev git build-base \ 
-    && mkdir -p -m 755 /usr/src/pico \
-    && git clone https://github.com/naggety/picotts.git /usr/src/pico \
-    && cd /usr/src/pico/pico \
+# PicoTTS - it has no specific version - use current master branch commit
+ARG PICOTTS_HASH=e3ba46009ee868911fa0b53db672a55f9cc13b1c
+RUN apk add --no-cache --virtual .build-dependencies automake autoconf git libtool popt-dev build-base \ 
+    && git clone https://github.com/naggety/picotts.git pico \
+    && cd pico \
+    && git reset --hard ${PICOTTS_HASH} \
+    && cd pico \ # Sources and make files are in sub-dir ./pico
     && ./autogen.sh \
     && ./configure \
     && make \
     && make install \
-    && cd - \
-    && rm -rfv /usr/src/pico
+    && cd ../.. \
+    && rm -rf /usr/src/pico \
+    && apk del .build-dependencies
 
 # Telldus
 ARG TELLDUS_COMMIT
