@@ -105,9 +105,17 @@ RUN \
     && apk del .build-dependencies \
     && rm -rf /usr/src/arp-scan
 
-# PicoTTS
-RUN apk add --no-cache \
-        picotts --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+# PicoTTS - it has no specific version - unfortunately we'll have to use master directly
+RUN apk add automake autoconf git libtool popt-dev git build-base \ 
+    && mkdir -p -m 755 /usr/src/pico \
+    && git clone https://github.com/naggety/picotts.git /usr/src/pico \
+    && cd /usr/src/pico/pico \
+    && ./autogen.sh \
+    && ./configure \
+    && make \
+    && make install \
+    && cd - \
+    && rm -rfv /usr/src/pico
 
 # Telldus
 ARG TELLDUS_COMMIT
