@@ -5,13 +5,6 @@ on:
     branches: ["master"]
   release:
     types: ["published"]
-  push:
-    branches: ["master"]
-    paths:
-    - 'rootfs/**'
-    - build.json
-    - Dockerfile
-    - requirements.txt
 
 env:
   BUILD_TYPE: base # Can be plugin, core, supervisor, base or generic
