@@ -14,7 +14,7 @@ on:
     - requirements.txt
 
 env:
-  BUILD_TYPE: generic # Can be plugin, core, supervisor or generic
+  BUILD_TYPE: base # Can be plugin, core, supervisor, base or generic
 
 jobs:
   build:
