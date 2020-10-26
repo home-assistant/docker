@@ -112,7 +112,7 @@ RUN apk add --no-cache popt \
     && git clone https://github.com/naggety/picotts.git pico \
     && cd pico \
     && git reset --hard ${PICOTTS_HASH} \
-    && cd pico # Sources and make files are in sub-dir ./pico \
+    && cd pico || exit 1 # Sources and make files are in sub-dir ./pico, satisfy hadolint SC2164 \
     && ./autogen.sh \
     && ./configure \
     && make \
