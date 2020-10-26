@@ -1,6 +1,8 @@
 {
   "image": "homeassistant/{arch}-homeassistant-base",
-  "picotts_hash": "e3ba46009ee868911fa0b53db672a55f9cc13b1c",
+  "args":{
+    "PICOTTS_HASH": "e3ba46009ee868911fa0b53db672a55f9cc13b1c"
+  },
   "build_from": {
     "aarch64": "homeassistant/aarch64-base-python:3.8-alpine3.12",
     "armhf": "homeassistant/armhf-base-python:3.8-alpine3.12",
