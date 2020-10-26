@@ -111,7 +111,7 @@ RUN apk add --no-cache --virtual .build-dependencies automake autoconf libtool p
     && git clone https://github.com/naggety/picotts.git pico \
     && cd pico \
     && git reset --hard ${PICOTTS_HASH} \
-    && cd pico \ # Sources and make files are in sub-dir ./pico
+    && cd pico # Sources and make files are in sub-dir ./pico \
     && ./autogen.sh \
     && ./configure \
     && make \
