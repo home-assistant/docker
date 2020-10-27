@@ -107,12 +107,17 @@ RUN \
 
 # PicoTTS - it has no specific version - commit should be taken from build.json
 ARG PICOTTS_HASH
-RUN apk add --no-cache popt \
-    && apk add --no-cache --virtual .build-dependencies automake autoconf libtool popt-dev build-base \ 
+RUN apk add --no-cache \
+        popt \
+    && apk add --no-cache --virtual .build-dependencies \
+       automake \
+       autoconf \
+       libtool \
+       popt-dev \
+       build-base \ 
     && git clone https://github.com/naggety/picotts.git pico \
-    && cd pico \
+    && cd pico/pico \
     && git reset --hard ${PICOTTS_HASH} \
-    && cd pico || exit 1 # Sources and make files are in sub-dir ./pico, satisfy hadolint SC2164 \
     && ./autogen.sh \
     && ./configure \
     && make \
