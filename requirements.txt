@@ -1,5 +1,5 @@
 brotlipy==0.7.0
-cchardet==2.1.6
+cchardet==2.1.7
 mysqlclient==2.0.1
 psycopg2==2.8.6
 pyodbc==4.0.30
