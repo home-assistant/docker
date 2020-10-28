@@ -9,5 +9,10 @@
   },
   "labels": {
     "io.hass.type": "homeassistant-base"
+  },
+  "args": {
+    "SSOCR_VERSION": "2.19.0",
+    "ARPSCAN_VERSION": "1.9.7",
+    "TELLDUS_COMMIT": "2598bbed16ffd701f2a07c99582f057a3decbaf3"
   }
 }
