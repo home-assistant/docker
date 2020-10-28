@@ -1,7 +1,7 @@
 version: 2
 updates:
 - package-ecosystem: pip
-  directory: "/base"
+  directory: "/"
   schedule:
     interval: daily
     time: "06:00"
