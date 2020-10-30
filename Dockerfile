@@ -105,6 +105,27 @@ RUN \
     && apk del .build-dependencies \
     && rm -rf /usr/src/arp-scan
 
+# PicoTTS - it has no specific version - commit should be taken from build.json
+ARG PICOTTS_HASH
+RUN apk add --no-cache \
+        popt \
+    && apk add --no-cache --virtual .build-dependencies \
+       automake \
+       autoconf \
+       libtool \
+       popt-dev \
+       build-base \ 
+    && git clone https://github.com/naggety/picotts.git pico \
+    && cd pico/pico \
+    && git reset --hard ${PICOTTS_HASH} \
+    && ./autogen.sh \
+    && ./configure \
+         --disable-static \
+    && make \
+    && make install \
+    && apk del .build-dependencies \
+    && rm -rf /usr/src/pico
+
 # Telldus
 ARG TELLDUS_COMMIT
 RUN \
