@@ -120,6 +120,7 @@ RUN apk add --no-cache \
     && git reset --hard ${PICOTTS_HASH} \
     && ./autogen.sh \
     && ./configure \
+         --disable-static \
     && make \
     && make install \
     && apk del .build-dependencies \
