@@ -57,7 +57,8 @@ RUN \
         pulseaudio-utils \
         socat \
         unixodbc \
-        zlib
+        zlib \
+        zbar
 
 ####
 ## Install pip module for component/homeassistant
