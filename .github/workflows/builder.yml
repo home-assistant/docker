@@ -8,6 +8,7 @@ on:
 
 env:
   BUILD_TYPE: base
+  WHEELS_TAG: 3.8-alpine3.12
 
 jobs:
   init:
@@ -16,6 +17,7 @@ jobs:
     outputs:
       architectures: ${{ steps.info.outputs.architectures }}
       version: ${{ steps.version.outputs.version }}
+      publish: ${{ steps.version.outputs.publish }}
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v2
@@ -42,6 +44,29 @@ jobs:
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v2
+
+    - name: Get changed files
+      id: changed_files
+      if: needs.init.outputs.publish == 'false'
+      uses: jitterbit/get-changed-files@v1
+
+    - name: Check if requirements files changed
+      id: requirements
+      run: |
+        if [[ "${{ steps.changed_files.outputs.all }}" =~ requirements.txt ]]; then
+          echo "::set-output name=changed::true"
+        fi
+
+    - name: Build wheels
+      uses: home-assistant/wheels@master
+      if: steps.requirements.outputs.requirements == 'true'
+      with:
+        tag: ${{ env.WHEELS_TAG }}
+        arch: ${{ matrix.arch }}
+        wheels-host: ${{ secrets.WHEELS_HOST }}
+        wheels-key: ${{ secrets.WHEELS_KEY }}
+        apk: "build-base;mariadb-dev;postgresql-dev;unixodbc-dev;libffi-dev;cmake;ncurses;git"
+        requirements: "requirements.txt"
    
     - name: Login to DockerHub
       if: github.event_name == 'release'
