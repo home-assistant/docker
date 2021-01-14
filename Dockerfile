@@ -42,6 +42,7 @@ RUN \
         gmp \
         iperf3 \
         libexecinfo \
+        libpcap \
         libsodium \
         libwebp \
         libxml2 \
