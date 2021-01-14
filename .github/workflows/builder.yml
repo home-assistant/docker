@@ -17,7 +17,6 @@ jobs:
     outputs:
       architectures: ${{ steps.info.outputs.architectures }}
       version: ${{ steps.version.outputs.version }}
-      publish: ${{ steps.version.outputs.publish }}
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v2
@@ -47,7 +46,7 @@ jobs:
 
     - name: Get changed files
       id: changed_files
-      if: needs.init.outputs.publish == 'false'
+      if: github.event_name != 'release'
       uses: jitterbit/get-changed-files@v1
 
     - name: Check if requirements files changed
