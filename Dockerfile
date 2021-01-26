@@ -153,6 +153,8 @@ RUN \
     && apk del .build-dependencies \
     && rm -rf /usr/src/telldus
 
+VOLUME /config
+
 ###
 # Base S6-Overlay
 COPY rootfs /
