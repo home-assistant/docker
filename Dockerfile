@@ -5,6 +5,9 @@ FROM ${BUILD_FROM}
 ARG BUILD_ARCH
 ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.12/${BUILD_ARCH}/
 
+# Expose default frontend port
+EXPOSE 8123
+
 ####
 # Install core
 RUN \
