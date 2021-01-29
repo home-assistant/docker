@@ -58,7 +58,7 @@ jobs:
 
     - name: Build wheels
       uses: home-assistant/wheels@master
-      if: steps.requirements.outputs.requirements == 'true'
+      if: steps.requirements.outputs.changed == 'true'
       with:
         tag: ${{ env.WHEELS_TAG }}
         arch: ${{ matrix.arch }}
