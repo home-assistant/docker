@@ -8,7 +8,6 @@ if bashio::fs.directory_exists /run/udev && ! bashio::fs.file_exists /run/.old_u
     bashio::exit.ok
 fi
 
-
 bashio::log.info "Setup udev backend inside container"
 udevd --daemon
 
