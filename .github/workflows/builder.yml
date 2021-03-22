@@ -86,3 +86,12 @@ jobs:
           --${{ matrix.arch }} \
           --target /data \
           --generic ${{ needs.init.outputs.version }}
+
+    - name: Signing image
+      if: github.event_name == 'release'
+      uses: home-assistant/actions/helpers/codenotary@master
+      with:
+        source: docker://homeassistant/${{ matrix.arch }}-homeassistant-base:${{ needs.init.outputs.version }}
+        user: ${{ secrets.VCN_USER }}
+        password: ${{ secrets.VCN_PASSWORD }}
+        organisation: ${{ secrets.VCN_ORG }}
