@@ -73,16 +73,26 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Login to GitHub Container Registry
+      if: github.event_name == 'release'
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ secrets.GIT_USER }}
+        password: ${{ secrets.GIT_TOKEN }}
 
     - name: Set build arguments
       if: github.event_name != 'release'
       run: echo "BUILD_ARGS=--test" >> $GITHUB_ENV
 
     - name: Build base image
-      uses: home-assistant/builder@2021.02.0
+      uses: home-assistant/builder@2021.03.3
       with:
         args: |
           $BUILD_ARGS \
           --${{ matrix.arch }} \
           --target /data \
+          --with-codenotary "${{ secrets.VCN_USER }}" "${{ secrets.VCN_PASSWORD }}" "${{ secrets.VCN_ORG }}" \
+          --validate-from "${{ secrets.VCN_ORG }}" \
           --generic ${{ needs.init.outputs.version }}
