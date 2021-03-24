@@ -1,0 +1,12 @@
+{
+	"name": "Alpine",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { "VARIANT": "3.13" }
+	},
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/ash"
+	},
+	"extensions": [],
+	"remoteUser": "vscode"
+}
