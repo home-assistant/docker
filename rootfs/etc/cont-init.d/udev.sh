@@ -2,7 +2,7 @@
 # ==============================================================================
 # Start udev service if env USING_UDEV is true
 # ==============================================================================
-if ! bashio::var.true "${USING_UDEV}"; then
+if ! bashio::var.true "${USING_UDEV+x}"; then
     bashio::exit.ok
 fi
 
