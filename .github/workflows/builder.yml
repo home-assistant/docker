@@ -19,7 +19,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
     steps:
     - name: Checkout the repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2.3.4
       with:
         fetch-depth: 0
 
@@ -42,7 +42,7 @@ jobs:
         arch: ${{ fromJson(needs.init.outputs.architectures) }}
     steps:
     - name: Checkout the repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2.3.4
 
     - name: Get changed files
       id: changed_files
