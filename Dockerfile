@@ -13,6 +13,7 @@ RUN \
         eudev \
         eudev-libs \
         grep \
+        libc6-compat \
         libffi \
         libjpeg \
         libjpeg-turbo \
