@@ -138,7 +138,6 @@ RUN apk add --no-cache \
     && apk del .build-dependencies \
     && rm -rf /usr/src/libcec
 
-
 # PicoTTS - it has no specific version - commit should be taken from build.json
 RUN apk add --no-cache \
         popt \
