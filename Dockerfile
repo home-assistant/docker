@@ -1,8 +1,15 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-# Add Hass.io wheels repository
-ARG BUILD_ARCH
+ARG \
+    BUILD_ARCH \
+    SSOCR_VERSION \
+    ARPSCAN_VERSION \
+    LIBCEC_VERSION \
+    PICOTTS_HASH \
+    TELLDUS_COMMIT
+
+# Add Home Assistant wheels repository
 ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.13/${BUILD_ARCH}/
 
 ####
@@ -75,7 +82,6 @@ RUN \
 WORKDIR /usr/src/
 
 # ssocr
-ARG SSOCR_VERSION
 RUN \
     apk add --no-cache \
         imlib2 \
@@ -90,7 +96,6 @@ RUN \
     && rm -rf /usr/src/ssocr
 
 # arp-scan
-ARG ARPSCAN_VERSION
 RUN \
     apk add --no-cache \
         libpcap \
@@ -108,8 +113,33 @@ RUN \
     && apk del .build-dependencies \
     && rm -rf /usr/src/arp-scan
 
+# libcec
+RUN apk add --no-cache \
+        eudev-libs \
+        p8-platform \
+    && apk add --no-cache --virtual .build-dependencies \
+        build-base \
+        cmake \
+        eudev-dev \
+        swig \
+        p8-platform-dev \
+        linux-headers \
+    && git clone --depth 1 -b libcec-${LIBCEC_VERSION} https://github.com/Pulse-Eight/libcec \
+    && mkdir -p libcec/build \
+    && cd libcec/build \
+    && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
+        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.9.so" \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.9" \
+        -DHAVE_LINUX_API=1 \
+        .. \
+    && make -j$(nproc) \
+    && make install \
+    && echo "cec" > "/usr/local/lib/python3.9/site-packages/cec.pth" \
+    && apk del .build-dependencies \
+    && rm -rf /usr/src/libcec
+
+
 # PicoTTS - it has no specific version - commit should be taken from build.json
-ARG PICOTTS_HASH
 RUN apk add --no-cache \
         popt \
     && apk add --no-cache --virtual .build-dependencies \
@@ -130,7 +160,6 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/pico
 
 # Telldus
-ARG TELLDUS_COMMIT
 RUN \
     apk add --no-cache \
         confuse \
