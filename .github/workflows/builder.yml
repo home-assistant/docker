@@ -57,7 +57,7 @@ jobs:
         fi
 
     - name: Build wheels
-      uses: home-assistant/wheels@master
+      uses: home-assistant/wheels@2021.06.0
       if: steps.requirements.outputs.changed == 'true'
       with:
         tag: ${{ env.WHEELS_TAG }}
@@ -87,7 +87,7 @@ jobs:
       run: echo "BUILD_ARGS=--test" >> $GITHUB_ENV
 
     - name: Build base image
-      uses: home-assistant/builder@2021.04.2
+      uses: home-assistant/builder@2021.06.2
       with:
         args: |
           $BUILD_ARGS \
