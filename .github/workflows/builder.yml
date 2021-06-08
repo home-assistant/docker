@@ -8,7 +8,7 @@ on:
 
 env:
   BUILD_TYPE: base
-  WHEELS_TAG: 3.8-alpine3.12
+  WHEELS_TAG: 3.9-alpine3.13
 
 jobs:
   init:
