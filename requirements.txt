@@ -3,4 +3,4 @@ cchardet==2.1.7
 mysqlclient==2.0.3
 psycopg2==2.8.6
 pyodbc==4.0.30
-cx_Oracle==8.2.0
+cx_oracle==8.2.1
