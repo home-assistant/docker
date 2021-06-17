@@ -62,7 +62,6 @@ jobs:
       with:
         tag: ${{ env.WHEELS_TAG }}
         arch: ${{ matrix.arch }}
-        wheels-host: ${{ secrets.WHEELS_HOST }}
         wheels-key: ${{ secrets.WHEELS_KEY }}
         apk: "build-base;mariadb-dev;postgresql-dev;unixodbc-dev;libffi-dev;cmake;ncurses;git"
         requirements: "requirements.txt"
