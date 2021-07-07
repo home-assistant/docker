@@ -57,7 +57,7 @@ jobs:
         fi
 
     - name: Build wheels
-      uses: home-assistant/wheels@2021.06.0
+      uses: home-assistant/wheels@2021.07.0
       if: steps.requirements.outputs.changed == 'true'
       with:
         tag: ${{ env.WHEELS_TAG }}
