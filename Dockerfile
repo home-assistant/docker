@@ -10,7 +10,7 @@ ARG \
     TELLDUS_COMMIT
 
 # Add Home Assistant wheels repository
-ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.13/${BUILD_ARCH}/
+ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.14/${BUILD_ARCH}/
 
 ####
 # Install core

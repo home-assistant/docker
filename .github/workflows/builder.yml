@@ -8,7 +8,7 @@ on:
 
 env:
   BUILD_TYPE: base
-  WHEELS_TAG: 3.9-alpine3.13
+  WHEELS_TAG: 3.9-alpine3.14
 
 jobs:
   init:
@@ -58,7 +58,7 @@ jobs:
 
     - name: Build wheels
       uses: home-assistant/wheels@2021.07.0
-      if: steps.requirements.outputs.changed == 'true'
+      #if: steps.requirements.outputs.changed == 'true'
       with:
         tag: ${{ env.WHEELS_TAG }}
         arch: ${{ matrix.arch }}
