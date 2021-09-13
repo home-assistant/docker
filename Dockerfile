@@ -7,7 +7,8 @@ ARG \
     ARPSCAN_VERSION \
     LIBCEC_VERSION \
     PICOTTS_HASH \
-    TELLDUS_COMMIT
+    TELLDUS_COMMIT \
+    IPERF3_VERSION
 
 # Add Home Assistant wheels repository
 ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.14/${BUILD_ARCH}/
@@ -48,7 +49,6 @@ RUN \
         git \
         glib \
         gmp \
-        iperf3 \
         libexecinfo \
         libgpiod \
         libpcap \
@@ -182,6 +182,19 @@ RUN \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/telldus
+
+
+# iperf3
+RUN \
+    apk add --no-cache --virtual .build-dependencies \
+        build-base \
+    && git clone --depth 1 -b "${IPERF3_VERSION}" https://github.com/esnet/iperf \
+    && cd iperf \
+    && ./configure \
+    && make -j$(nproc) \
+    && make install \
+    && apk del .build-dependencies \
+    && rm -rf /usr/src/iperf
 
 ###
 # Base S6-Overlay
