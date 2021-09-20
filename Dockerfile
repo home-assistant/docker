@@ -184,7 +184,7 @@ RUN \
     && rm -rf /usr/src/telldus
 
 
-# iperf3
+# iperf3 - https://github.com/esnet/iperf/pull/1202
 RUN \
     apk add --no-cache --virtual .build-dependencies \
         build-base \
