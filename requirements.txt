@@ -1,6 +1,6 @@
 brotli==1.0.9
 cchardet==2.1.7
 mysqlclient==2.1.0
-psycopg2==2.9.2
+psycopg2==2.9.3
 pyodbc==4.0.32
 cx_oracle==8.2.1
