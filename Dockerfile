@@ -44,7 +44,6 @@ RUN \
         curl \
         ffmpeg \
         ffmpeg-libs \
-        freetds \
         gammu-libs \
         git \
         glib \
@@ -66,7 +65,6 @@ RUN \
         postgresql-libs \
         pulseaudio-utils \
         socat \
-        unixodbc \
         zlib
 
 ####
