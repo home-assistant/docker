@@ -55,6 +55,7 @@ RUN \
         libwebp \
         libxml2 \
         libxslt \
+        libzbar \
         mariadb-connector-c \
         mpc1 \
         mpfr4 \
