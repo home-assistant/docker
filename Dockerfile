@@ -27,6 +27,7 @@ RUN \
         libjpeg-turbo \
         libpng \
         libstdc++ \
+        yaml \
         musl \
         openssl \
         pulseaudio-alsa \
