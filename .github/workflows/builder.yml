@@ -63,7 +63,7 @@ jobs:
         abi: cp310
         arch: ${{ matrix.arch }}
         wheels-key: ${{ secrets.WHEELS_KEY }}
-        apk: "mariadb-dev;postgresql-dev;libffi-dev;cmake"
+        apk: "mariadb-dev;postgresql-dev;libffi-dev"
         requirements: "requirements.txt"
    
     - name: Login to DockerHub

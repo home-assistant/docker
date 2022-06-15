@@ -19,7 +19,7 @@ labels:
   org.opencontainers.image.documentation: https://www.home-assistant.io/docs/
   org.opencontainers.image.licenses: Apache License 2.0
 args:
-  SSOCR_VERSION: 2.21.0
+  SSOCR_VERSION: 2.22.1
   ARPSCAN_VERSION: 1.9.7
   LIBCEC_VERSION: 6.0.2
   TELLDUS_COMMIT: 2598bbed16ffd701f2a07c99582f057a3decbaf3
