@@ -8,7 +8,6 @@ on:
 
 env:
   BUILD_TYPE: base
-  WHEELS_TAG: 3.9-alpine3.14
 
 jobs:
   init:
@@ -57,13 +56,14 @@ jobs:
         fi
 
     - name: Build wheels
-      uses: home-assistant/wheels@2022.01.2
-      if: steps.requirements.outputs.changed == 'true'
+      uses: home-assistant/wheels@2022.06.0
+      #if: steps.requirements.outputs.changed == 'true'
       with:
-        tag: ${{ env.WHEELS_TAG }}
+        tag: cp310
+        abi: musllinux_1_2
         arch: ${{ matrix.arch }}
         wheels-key: ${{ secrets.WHEELS_KEY }}
-        apk: "build-base;mariadb-dev;postgresql-dev;unixodbc-dev;libffi-dev;cmake;ncurses;git"
+        apk: "mariadb-dev;postgresql-dev;libffi-dev;cmake"
         requirements: "requirements.txt"
    
     - name: Login to DockerHub
