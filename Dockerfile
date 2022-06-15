@@ -41,6 +41,7 @@ RUN \
         bluez-libs \
         curl \
         ffmpeg \
+        iperf3 \
         git \
         glib \
         gmp \
@@ -180,19 +181,6 @@ RUN \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/telldus
-
-
-# iperf3 - https://github.com/esnet/iperf/pull/1202
-RUN \
-    apk add --no-cache --virtual .build-dependencies \
-        build-base \
-    && git clone --depth 1 -b "${IPERF3_VERSION}" https://github.com/esnet/iperf \
-    && cd iperf \
-    && ./configure \
-    && make -j$(nproc) \
-    && make install \
-    && apk del .build-dependencies \
-    && rm -rf /usr/src/iperf
 
 ###
 # Base S6-Overlay
