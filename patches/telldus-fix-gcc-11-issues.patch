@@ -1,0 +1,73 @@
+From 34074d08deff64f2b292285f7664936ce586bce8 Mon Sep 17 00:00:00 2001
+From: Pascal Vizeli <pvizeli@syshack.ch>
+Date: Wed, 15 Jun 2022 16:30:33 +0000
+Subject: [PATCH 1/1] Fix GCC 11 issues
+
+---
+ telldus-core/common/Socket_unix.cpp              | 1 +
+ telldus-core/service/ConnectionListener_unix.cpp | 1 +
+ telldus-core/service/SettingsConfuse.cpp         | 8 ++++----
+ 3 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/telldus-core/common/Socket_unix.cpp b/telldus-core/common/Socket_unix.cpp
+index 42842dcd..eaeae480 100644
+--- a/telldus-core/common/Socket_unix.cpp
++++ b/telldus-core/common/Socket_unix.cpp
+@@ -8,6 +8,7 @@
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <sys/socket.h>
++#include <sys/select.h>
+ #include <sys/un.h>
+ #include <fcntl.h>
+ #include <math.h>
+diff --git a/telldus-core/service/ConnectionListener_unix.cpp b/telldus-core/service/ConnectionListener_unix.cpp
+index 33a6b00f..4114c999 100644
+--- a/telldus-core/service/ConnectionListener_unix.cpp
++++ b/telldus-core/service/ConnectionListener_unix.cpp
+@@ -13,6 +13,7 @@
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <string>
++#include <cstring>
+ 
+ #include "service/ConnectionListener.h"
+ #include "common/Socket.h"
+diff --git a/telldus-core/service/SettingsConfuse.cpp b/telldus-core/service/SettingsConfuse.cpp
+index 911d6880..f8494607 100644
+--- a/telldus-core/service/SettingsConfuse.cpp
++++ b/telldus-core/service/SettingsConfuse.cpp
+@@ -44,10 +44,10 @@ Settings::Settings(void) {
+ */
+ Settings::~Settings(void) {
+ 	TelldusCore::MutexLocker locker(&mutex);
+-	if (d->cfg > 0) {
++	if (d->cfg != 0) {
+ 		cfg_free(d->cfg);
+ 	}
+-	if (d->var_cfg > 0) {
++	if (d->var_cfg != 0) {
+ 		cfg_free(d->var_cfg);
+ 	}
+ 	delete d;
+@@ -58,7 +58,7 @@ Settings::~Settings(void) {
+ */
+ std::wstring Settings::getSetting(const std::wstring &strName) const {
+ 	TelldusCore::MutexLocker locker(&mutex);
+-	if (d->cfg > 0) {
++	if (d->cfg != 0) {
+ 		std::string setting(cfg_getstr(d->cfg, TelldusCore::wideToString(strName).c_str()));
+ 		return TelldusCore::charToWstring(setting.c_str());
+ 	}
+@@ -70,7 +70,7 @@ std::wstring Settings::getSetting(const std::wstring &strName) const {
+ */
+ int Settings::getNumberOfNodes(Node node) const {
+ 	TelldusCore::MutexLocker locker(&mutex);
+-	if (d->cfg > 0) {
++	if (d->cfg != 0) {
+ 		if (node == Device) {
+ 			return cfg_size(d->cfg, "device");
+ 		} else if (node == Controller) {
+-- 
+2.30.3
+

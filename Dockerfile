@@ -158,6 +158,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/pico
 
 # Telldus
+COPY patches/telldus-fix-gcc-11-issues.patch /usr/src/
 RUN \
     apk add --no-cache \
         confuse \
@@ -171,16 +172,19 @@ RUN \
         libftdi1-dev \
     && ln -s /usr/include/libftdi1/ftdi.h /usr/include/ftdi.h \
     && git clone https://github.com/telldus/telldus \
-    && cd telldus/telldus-core \
+    && cd telldus \
     && git reset --hard ${TELLDUS_COMMIT} \
-    && sed -i "/\<sys\/socket.h\>/a \#include \<sys\/select.h\>" common/Socket_unix.cpp \
+    && git apply ../telldus-fix-gcc-11-issues.patch \
+    && cd telldus-core \
     && cmake . -DBUILD_LIBTELLDUS-CORE=ON \
         -DBUILD_TDADMIN=OFF -DBUILD_TDTOOL=OFF -DGENERATE_MAN=OFF \
         -DFORCE_COMPILE_FROM_TRUNK=ON -DFTDI_LIBRARY=/usr/lib/libftdi1.so \
     && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
-    && rm -rf /usr/src/telldus
+    && rm -rf \
+        /usr/src/telldus \
+        /usr/src/telldus-fix-gcc-11-issues.patch
 
 ###
 # Base S6-Overlay
