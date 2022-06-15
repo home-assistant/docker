@@ -59,8 +59,8 @@ jobs:
       uses: home-assistant/wheels@2022.06.0
       #if: steps.requirements.outputs.changed == 'true'
       with:
-        tag: cp310
-        abi: musllinux_1_2
+        tag: musllinux_1_2
+        abi: cp310
         arch: ${{ matrix.arch }}
         wheels-key: ${{ secrets.WHEELS_KEY }}
         apk: "mariadb-dev;postgresql-dev;libffi-dev;cmake"
