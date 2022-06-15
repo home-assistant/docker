@@ -12,7 +12,7 @@ ARG \
     IPERF3_VERSION
 
 # Add Home Assistant wheels repository
-ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.14/${BUILD_ARCH}/
+ENV WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/
 
 ####
 # Install core
@@ -27,10 +27,7 @@ RUN \
         libjpeg \
         libjpeg-turbo \
         libpng \
-        libstdc++ \
-        yaml \
         musl \
-        openssl \
         pulseaudio-alsa \
         tiff \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
@@ -42,11 +39,8 @@ RUN \
         bluez \
         bluez-deprecated \
         bluez-libs \
-        cups-libs \
         curl \
         ffmpeg \
-        ffmpeg-libs \
-        gammu-libs \
         git \
         glib \
         gmp \
@@ -58,14 +52,12 @@ RUN \
         libxml2 \
         libxslt \
         libzbar \
-        mariadb-connector-c \
         mpc1 \
         mpfr4 \
         net-tools \
         nmap \
         openssh-client \
         pianobar \
-        postgresql-libs \
         pulseaudio-utils \
         socat \
         zlib
@@ -129,13 +121,13 @@ RUN apk add --no-cache \
     && mkdir -p libcec/build \
     && cd libcec/build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
-        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.9.so" \
-        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.9" \
+        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.10.so" \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.10" \
         -DHAVE_LINUX_API=1 \
         .. \
     && make -j$(nproc) \
     && make install \
-    && echo "cec" > "/usr/local/lib/python3.9/site-packages/cec.pth" \
+    && echo "cec" > "/usr/local/lib/python3.10/site-packages/cec.pth" \
     && apk del .build-dependencies \
     && rm -rf /usr/src/libcec
 
