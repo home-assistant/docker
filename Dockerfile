@@ -107,6 +107,7 @@ RUN \
     && rm -rf /usr/src/arp-scan
 
 # libcec
+COPY patches/libcec-fix-null-return.patch /usr/src/
 RUN apk add --no-cache \
         eudev-libs \
         p8-platform \
@@ -118,8 +119,10 @@ RUN apk add --no-cache \
         p8-platform-dev \
         linux-headers \
     && git clone --depth 1 -b libcec-${LIBCEC_VERSION} https://github.com/Pulse-Eight/libcec \
-    && mkdir -p libcec/build \
-    && cd libcec/build \
+    && cd libcec \
+    && git apply ../libcec-fix-null-return.patch \
+    && mkdir build \
+    && cd build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
         -DPYTHON_LIBRARY="/usr/local/lib/libpython3.10.so" \
         -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.10" \
@@ -129,7 +132,9 @@ RUN apk add --no-cache \
     && make install \
     && echo "cec" > "/usr/local/lib/python3.10/site-packages/cec.pth" \
     && apk del .build-dependencies \
-    && rm -rf /usr/src/libcec
+    && rm -rf \
+        /usr/src/libcec \
+        /usr/src/libcec-fix-null-return.patch
 
 # PicoTTS - it has no specific version - commit should be taken from build.json
 RUN apk add --no-cache \
