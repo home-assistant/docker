@@ -12,7 +12,7 @@ ARG \
     IPERF3_VERSION
 
 # Add Home Assistant wheels repository
-ENV WHEELS_LINKS=https://wheels.home-assistant.io/alpine-3.14/${BUILD_ARCH}/
+ENV WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/
 
 ####
 # Install core
@@ -27,10 +27,7 @@ RUN \
         libjpeg \
         libjpeg-turbo \
         libpng \
-        libstdc++ \
-        yaml \
         musl \
-        openssl \
         pulseaudio-alsa \
         tiff \
     && ln -s /usr/include/locale.h /usr/include/xlocale.h
@@ -42,11 +39,9 @@ RUN \
         bluez \
         bluez-deprecated \
         bluez-libs \
-        cups-libs \
         curl \
         ffmpeg \
-        ffmpeg-libs \
-        gammu-libs \
+        iperf3 \
         git \
         glib \
         gmp \
@@ -58,14 +53,12 @@ RUN \
         libxml2 \
         libxslt \
         libzbar \
-        mariadb-connector-c \
         mpc1 \
         mpfr4 \
         net-tools \
         nmap \
         openssh-client \
         pianobar \
-        postgresql-libs \
         pulseaudio-utils \
         socat \
         zlib
@@ -115,6 +108,7 @@ RUN \
     && rm -rf /usr/src/arp-scan
 
 # libcec
+COPY patches/libcec-fix-null-return.patch /usr/src/
 RUN apk add --no-cache \
         eudev-libs \
         p8-platform \
@@ -126,18 +120,22 @@ RUN apk add --no-cache \
         p8-platform-dev \
         linux-headers \
     && git clone --depth 1 -b libcec-${LIBCEC_VERSION} https://github.com/Pulse-Eight/libcec \
-    && mkdir -p libcec/build \
-    && cd libcec/build \
+    && cd libcec \
+    && git apply ../libcec-fix-null-return.patch \
+    && mkdir build \
+    && cd build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
-        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.9.so" \
-        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.9" \
+        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.10.so" \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.10" \
         -DHAVE_LINUX_API=1 \
         .. \
     && make -j$(nproc) \
     && make install \
-    && echo "cec" > "/usr/local/lib/python3.9/site-packages/cec.pth" \
+    && echo "cec" > "/usr/local/lib/python3.10/site-packages/cec.pth" \
     && apk del .build-dependencies \
-    && rm -rf /usr/src/libcec
+    && rm -rf \
+        /usr/src/libcec \
+        /usr/src/libcec-fix-null-return.patch
 
 # PicoTTS - it has no specific version - commit should be taken from build.json
 RUN apk add --no-cache \
@@ -160,6 +158,7 @@ RUN apk add --no-cache \
     && rm -rf /usr/src/pico
 
 # Telldus
+COPY patches/telldus-fix-gcc-11-issues.patch /usr/src/
 RUN \
     apk add --no-cache \
         confuse \
@@ -173,29 +172,19 @@ RUN \
         libftdi1-dev \
     && ln -s /usr/include/libftdi1/ftdi.h /usr/include/ftdi.h \
     && git clone https://github.com/telldus/telldus \
-    && cd telldus/telldus-core \
+    && cd telldus \
     && git reset --hard ${TELLDUS_COMMIT} \
-    && sed -i "/\<sys\/socket.h\>/a \#include \<sys\/select.h\>" common/Socket_unix.cpp \
+    && git apply ../telldus-fix-gcc-11-issues.patch \
+    && cd telldus-core \
     && cmake . -DBUILD_LIBTELLDUS-CORE=ON \
         -DBUILD_TDADMIN=OFF -DBUILD_TDTOOL=OFF -DGENERATE_MAN=OFF \
         -DFORCE_COMPILE_FROM_TRUNK=ON -DFTDI_LIBRARY=/usr/lib/libftdi1.so \
     && make -j$(nproc) \
     && make install \
     && apk del .build-dependencies \
-    && rm -rf /usr/src/telldus
-
-
-# iperf3 - https://github.com/esnet/iperf/pull/1202
-RUN \
-    apk add --no-cache --virtual .build-dependencies \
-        build-base \
-    && git clone --depth 1 -b "${IPERF3_VERSION}" https://github.com/esnet/iperf \
-    && cd iperf \
-    && ./configure \
-    && make -j$(nproc) \
-    && make install \
-    && apk del .build-dependencies \
-    && rm -rf /usr/src/iperf
+    && rm -rf \
+        /usr/src/telldus \
+        /usr/src/telldus-fix-gcc-11-issues.patch
 
 ###
 # Base S6-Overlay
