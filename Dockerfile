@@ -8,8 +8,7 @@ ARG \
     ARPSCAN_VERSION \
     LIBCEC_VERSION \
     PICOTTS_HASH \
-    TELLDUS_COMMIT \
-    IPERF3_VERSION
+    TELLDUS_COMMIT
 
 # Add Home Assistant wheels repository
 ENV WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/
