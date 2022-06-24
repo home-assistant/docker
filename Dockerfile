@@ -35,8 +35,7 @@ RUN \
         openssh-client \
         pianobar \
         pulseaudio-alsa \
-        socat \
-    && ln -s /usr/include/locale.h /usr/include/xlocale.h
+        socat
 
 ####
 ## Install pip module for component/homeassistant
