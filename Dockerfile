@@ -13,24 +13,6 @@ ARG \
 # Add Home Assistant wheels repository
 ENV WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/
 
-####
-# Install core
-RUN \
-    apk add --no-cache \
-        bsd-compat-headers \
-        eudev \
-        eudev-libs \
-        grep \
-        libc6-compat \
-        libffi \
-        libjpeg \
-        libjpeg-turbo \
-        libpng \
-        musl \
-        pulseaudio-alsa \
-        tiff \
-    && ln -s /usr/include/locale.h /usr/include/xlocale.h
-
 ##
 # Install component packages
 RUN \
@@ -39,28 +21,21 @@ RUN \
         bluez-deprecated \
         bluez-libs \
         curl \
+        eudev-libs \
         ffmpeg \
         iperf3 \
         git \
-        glib \
-        gmp \
-        libexecinfo \
+        grep \
         libgpiod \
-        libpcap \
-        libsodium \
-        libwebp \
-        libxml2 \
-        libxslt \
+        libjpeg-turbo \
+        libpulse \
         libzbar \
-        mpc1 \
-        mpfr4 \
         net-tools \
         nmap \
         openssh-client \
         pianobar \
-        pulseaudio-utils \
-        socat \
-        zlib
+        pulseaudio-alsa \
+        socat
 
 ####
 ## Install pip module for component/homeassistant
