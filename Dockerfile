@@ -30,6 +30,7 @@ RUN \
         libjpeg-turbo \
         libpulse \
         libzbar \
+        mariadb-connector-c \
         net-tools \
         nmap \
         openssh-client \
