@@ -33,6 +33,7 @@ RUN \
         net-tools \
         nmap \
         openssh-client \
+        openssl \
         pianobar \
         pulseaudio-alsa \
         socat
