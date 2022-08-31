@@ -23,6 +23,7 @@ RUN \
         curl \
         eudev-libs \
         ffmpeg \
+        gammu-libs \
         iperf3 \
         git \
         grep \
