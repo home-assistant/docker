@@ -26,6 +26,7 @@ RUN \
         iperf3 \
         git \
         grep \
+        gammu-libs \
         libgpiod \
         libjpeg-turbo \
         libpulse \
