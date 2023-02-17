@@ -1,4 +1,4 @@
 Brotli==1.0.9
-cchardet==2.1.7
+faust-cchardet==2.1.16
 mysqlclient==2.1.1
 psycopg2==2.9.5
