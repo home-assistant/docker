@@ -5,7 +5,6 @@ ARG \
     BUILD_ARCH \
     QEMU_CPU \
     SSOCR_VERSION \
-    ARPSCAN_VERSION \
     LIBCEC_VERSION \
     PICOTTS_HASH \
     TELLDUS_COMMIT
@@ -63,24 +62,6 @@ RUN \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/ssocr
-
-# arp-scan
-RUN \
-    apk add --no-cache \
-        libpcap \
-    && apk add --no-cache --virtual .build-dependencies \
-        autoconf \
-        automake \
-        build-base \
-        libpcap-dev \
-    && git clone --depth 1 -b ${ARPSCAN_VERSION} https://github.com/royhills/arp-scan \
-    && cd arp-scan \
-    && autoreconf --install \
-    && ./configure \
-    && make -j$(nproc) \
-    && make install \
-    && apk del .build-dependencies \
-    && rm -rf /usr/src/arp-scan
 
 # libcec
 COPY patches/libcec-fix-null-return.patch /usr/src/
