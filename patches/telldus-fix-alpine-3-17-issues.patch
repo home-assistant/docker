@@ -1,0 +1,104 @@
+From 621231e71056210d0430b2cf902d63d0c2f2c168 Mon Sep 17 00:00:00 2001
+From: Franck Nijhof <git@frenck.dev>
+Date: Wed, 19 Apr 2023 19:38:44 +0200
+Subject: [PATCH] Fix Alpine 3.17 issues
+
+---
+ telldus-core/common/EventHandler_unix.cpp  | 2 +-
+ telldus-core/common/common.h               | 1 +
+ telldus-core/service/CMakeLists.txt        | 2 +-
+ telldus-core/service/DeviceManager.cpp     | 4 ++--
+ telldus-core/service/Sensor.h              | 2 --
+ telldus-core/service/TellStick_libftdi.cpp | 2 +-
+ 6 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/telldus-core/common/EventHandler_unix.cpp b/telldus-core/common/EventHandler_unix.cpp
+index 6c65339c..4e49e283 100644
+--- a/telldus-core/common/EventHandler_unix.cpp
++++ b/telldus-core/common/EventHandler_unix.cpp
+@@ -79,7 +79,7 @@ bool EventHandler::waitForAny() {
+ 	while (!d->isSignalled) {
+ 		timeval now;
+ 		gettimeofday(&now, NULL);
+-		uint64_t abstime_ns_large = now.tv_usec*1000 + 60000000000;  // add 60 seconds wait (5 seconds before)?
++		suseconds_t abstime_ns_large = now.tv_usec*1000 + 60000000000;  // add 60 seconds wait (5 seconds before)?
+ 		timespec abstime = { now.tv_sec + (abstime_ns_large / 1000000000), abstime_ns_large % 1000000000 };
+ 		ret = pthread_cond_timedwait(&d->event, &d->mutex, &abstime);
+ 		if (ret == ETIMEDOUT) {
+diff --git a/telldus-core/common/common.h b/telldus-core/common/common.h
+index efcd7e9a..aaef3063 100644
+--- a/telldus-core/common/common.h
++++ b/telldus-core/common/common.h
+@@ -16,6 +16,7 @@
+ #else
+ #include <unistd.h>
+ #endif
++#include <pthread.h>
+ #include <stdarg.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/telldus-core/service/CMakeLists.txt b/telldus-core/service/CMakeLists.txt
+index b2c8999f..5f84842a 100644
+--- a/telldus-core/service/CMakeLists.txt
++++ b/telldus-core/service/CMakeLists.txt
+@@ -184,7 +184,7 @@ IF (FTDI_ENGINE STREQUAL "ftd2xx")
+ 	LIST(APPEND telldus-service_SRCS TellStick_ftd2xx.cpp )
+ 	LIST(APPEND telldus-service_LIBRARIES ${FTD2XX_LIBRARY})
+ ELSE (FTDI_ENGINE STREQUAL "ftd2xx")
+-	FIND_LIBRARY(FTDI_LIBRARY ftdi)
++	FIND_LIBRARY(FTDI_LIBRARY ftdi1)
+ 	INCLUDE(FindPkgConfig)
+ 	PKG_SEARCH_MODULE(FTDI libftdi)
+ 	INCLUDE_DIRECTORIES( ${FTDI_INCLUDEDIR} )
+diff --git a/telldus-core/service/DeviceManager.cpp b/telldus-core/service/DeviceManager.cpp
+index 82b8cba4..3e6ace76 100644
+--- a/telldus-core/service/DeviceManager.cpp
++++ b/telldus-core/service/DeviceManager.cpp
+@@ -74,7 +74,7 @@ void DeviceManager::executeActionEvent() {
+ 	}
+ 	Log::notice("Execute a TellStick Action for device %i", data->deviceId);
+ 
+-	std::auto_ptr<TelldusCore::MutexLocker> deviceLocker(0);
++	std::unique_ptr<TelldusCore::MutexLocker> deviceLocker(nullptr);
+ 	{
+ 		// devicelist locked
+ 		TelldusCore::MutexLocker deviceListLocker(&d->lock);
+@@ -84,7 +84,7 @@ void DeviceManager::executeActionEvent() {
+ 			return;
+ 		}
+ 		// device locked
+-		deviceLocker = std::auto_ptr<TelldusCore::MutexLocker>(new TelldusCore::MutexLocker(it->second));
++		deviceLocker = std::unique_ptr<TelldusCore::MutexLocker>(new TelldusCore::MutexLocker(it->second));
+ 		device = it->second;
+ 	}  // devicelist unlocked
+ 
+diff --git a/telldus-core/service/Sensor.h b/telldus-core/service/Sensor.h
+index 2070a3c4..11babf31 100644
+--- a/telldus-core/service/Sensor.h
++++ b/telldus-core/service/Sensor.h
+@@ -7,9 +7,7 @@
+ #ifndef TELLDUS_CORE_SERVICE_SENSOR_H_
+ #define TELLDUS_CORE_SERVICE_SENSOR_H_
+ 
+-#ifdef __FreeBSD__
+ #include <ctime>
+-#endif
+ #include <string>
+ #include "common/Mutex.h"
+ 
+diff --git a/telldus-core/service/TellStick_libftdi.cpp b/telldus-core/service/TellStick_libftdi.cpp
+index 8ce36700..8164b288 100644
+--- a/telldus-core/service/TellStick_libftdi.cpp
++++ b/telldus-core/service/TellStick_libftdi.cpp
+@@ -4,7 +4,7 @@
+ // Copyright: See COPYING file that comes with this distribution
+ //
+ //
+-#include <ftdi.h>
++#include <libftdi1/ftdi.h>
+ #include <string.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+-- 
+2.38.4
+

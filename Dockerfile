@@ -134,6 +134,7 @@ RUN apk add --no-cache \
 
 # Telldus
 COPY patches/telldus-fix-gcc-11-issues.patch /usr/src/
+COPY patches/telldus-fix-alpine-3-17-issues.patch /usr/src/
 RUN \
     apk add --no-cache \
         confuse \
@@ -145,11 +146,11 @@ RUN \
         confuse-dev \
         doxygen \
         libftdi1-dev \
-    && ln -s /usr/include/libftdi1/ftdi.h /usr/include/ftdi.h \
     && git clone https://github.com/telldus/telldus \
     && cd telldus \
     && git reset --hard ${TELLDUS_COMMIT} \
     && git apply ../telldus-fix-gcc-11-issues.patch \
+    && git apply ../telldus-fix-alpine-3-17-issues.patch \
     && cd telldus-core \
     && cmake . -DBUILD_LIBTELLDUS-CORE=ON \
         -DBUILD_TDADMIN=OFF -DBUILD_TDTOOL=OFF -DGENERATE_MAN=OFF \
