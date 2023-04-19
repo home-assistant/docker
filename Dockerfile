@@ -42,7 +42,7 @@ RUN \
 ## Install pip module for component/homeassistant
 COPY requirements.txt /usr/src/
 RUN \
-    pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links ${WHEELS_LINKS} \
+    pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
         -r /usr/src/requirements.txt \
     && rm -f /usr/src/requirements.txt
 
@@ -57,9 +57,9 @@ RUN \
     && apk add --no-cache --virtual .build-dependencies \
         build-base \
         imlib2-dev \
-    && git clone --depth 1 -b v${SSOCR_VERSION} https://github.com/auerswal/ssocr \
+    && git clone --depth 1 -b "v${SSOCR_VERSION}" https://github.com/auerswal/ssocr \
     && cd ssocr \
-    && make -j$(nproc) \
+    && make -j"$(nproc)" \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/ssocr
@@ -73,11 +73,11 @@ RUN \
         automake \
         build-base \
         libpcap-dev \
-    && git clone --depth 1 -b ${ARPSCAN_VERSION} https://github.com/royhills/arp-scan \
+    && git clone --depth 1 -b "${ARPSCAN_VERSION}" https://github.com/royhills/arp-scan \
     && cd arp-scan \
     && autoreconf --install \
     && ./configure \
-    && make -j$(nproc) \
+    && make -j"$(nproc)" \
     && make install \
     && apk del .build-dependencies \
     && rm -rf /usr/src/arp-scan
@@ -94,7 +94,7 @@ RUN apk add --no-cache \
         swig \
         p8-platform-dev \
         linux-headers \
-    && git clone --depth 1 -b libcec-${LIBCEC_VERSION} https://github.com/Pulse-Eight/libcec \
+    && git clone --depth 1 -b "libcec-${LIBCEC_VERSION}" https://github.com/Pulse-Eight/libcec \
     && cd libcec \
     && git apply ../libcec-fix-null-return.patch \
     && mkdir build \
@@ -104,7 +104,7 @@ RUN apk add --no-cache \
         -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.10" \
         -DHAVE_LINUX_API=1 \
         .. \
-    && make -j$(nproc) \
+    && make -j"$(nproc)" \
     && make install \
     && echo "cec" > "/usr/local/lib/python3.10/site-packages/cec.pth" \
     && apk del .build-dependencies \
@@ -123,7 +123,7 @@ RUN apk add --no-cache \
        build-base \ 
     && git clone https://github.com/naggety/picotts.git pico \
     && cd pico/pico \
-    && git reset --hard ${PICOTTS_HASH} \
+    && git reset --hard "${PICOTTS_HASH}" \
     && ./autogen.sh \
     && ./configure \
          --disable-static \
@@ -134,6 +134,7 @@ RUN apk add --no-cache \
 
 # Telldus
 COPY patches/telldus-fix-gcc-11-issues.patch /usr/src/
+COPY patches/telldus-fix-alpine-3-17-issues.patch /usr/src/
 RUN \
     apk add --no-cache \
         confuse \
@@ -145,22 +146,22 @@ RUN \
         confuse-dev \
         doxygen \
         libftdi1-dev \
-    && ln -s /usr/include/libftdi1/ftdi.h /usr/include/ftdi.h \
     && git clone https://github.com/telldus/telldus \
     && cd telldus \
-    && git reset --hard ${TELLDUS_COMMIT} \
+    && git reset --hard "${TELLDUS_COMMIT}" \
     && git apply ../telldus-fix-gcc-11-issues.patch \
+    && git apply ../telldus-fix-alpine-3-17-issues.patch \
     && cd telldus-core \
     && cmake . -DBUILD_LIBTELLDUS-CORE=ON \
         -DBUILD_TDADMIN=OFF -DBUILD_TDTOOL=OFF -DGENERATE_MAN=OFF \
-        -DFORCE_COMPILE_FROM_TRUNK=ON -DFTDI_LIBRARY=/usr/lib/libftdi1.so \
-    && make -j$(nproc) \
+        -DFORCE_COMPILE_FROM_TRUNK=ON \
+    && make -j"$(nproc)" \
     && make install \
     && apk del .build-dependencies \
     && rm -rf \
         /usr/src/telldus \
-        /usr/src/telldus-fix-gcc-11-issues.patch
-
+        /usr/src/telldus-fix-gcc-11-issues.patch \
+        /usr/src/telldus-fix-alpine-3-17-issues.patch
 ###
 # Base S6-Overlay
 COPY rootfs /
