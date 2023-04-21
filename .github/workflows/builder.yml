@@ -56,7 +56,7 @@ jobs:
         fi
 
     - name: Build wheels
-      uses: home-assistant/wheels@2022.10.1
+      uses: home-assistant/wheels@2023.04.0
       if: steps.requirements.outputs.changed == 'true'
       with:
         tag: musllinux_1_2
