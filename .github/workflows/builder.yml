@@ -17,20 +17,20 @@ jobs:
       architectures: ${{ steps.info.outputs.architectures }}
       version: ${{ steps.version.outputs.version }}
     steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v3.5.2
-      with:
-        fetch-depth: 0
+      - name: Checkout the repository
+        uses: actions/checkout@v3.5.2
+        with:
+          fetch-depth: 0
 
-    - name: Get information
-      id: info
-      uses: home-assistant/actions/helpers/info@master
+      - name: Get information
+        id: info
+        uses: home-assistant/actions/helpers/info@master
 
-    - name: Get version
-      id: version
-      uses: home-assistant/actions/helpers/version@master
-      with:
-        type: ${{ env.BUILD_TYPE }}
+      - name: Get version
+        id: version
+        uses: home-assistant/actions/helpers/version@master
+        with:
+          type: ${{ env.BUILD_TYPE }}
 
   build:
     name: Build ${{ matrix.arch }} base image
@@ -40,58 +40,58 @@ jobs:
       matrix:
         arch: ${{ fromJson(needs.init.outputs.architectures) }}
     steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v3.5.2
+      - name: Checkout the repository
+        uses: actions/checkout@v3.5.2
 
-    - name: Get changed files
-      id: changed_files
-      if: github.event_name != 'release'
-      uses: jitterbit/get-changed-files@v1
+      - name: Get changed files
+        id: changed_files
+        if: github.event_name != 'release'
+        uses: jitterbit/get-changed-files@v1
 
-    - name: Check if requirements files changed
-      id: requirements
-      run: |
-        if [[ "${{ steps.changed_files.outputs.all }}" =~ requirements.txt ]]; then
-          echo "::set-output name=changed::true"
-        fi
+      - name: Check if requirements files changed
+        id: requirements
+        run: |
+          if [[ "${{ steps.changed_files.outputs.all }}" =~ requirements.txt ]]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
 
-    - name: Build wheels
-      uses: home-assistant/wheels@2023.04.0
-      if: steps.requirements.outputs.changed == 'true'
-      with:
-        tag: musllinux_1_2
-        abi: cp310
-        arch: ${{ matrix.arch }}
-        wheels-key: ${{ secrets.WHEELS_KEY }}
-        apk: "mariadb-dev;postgresql-dev;libffi-dev"
-        requirements: "requirements.txt"
-   
-    - name: Login to DockerHub
-      if: github.event_name == 'release'
-      uses: docker/login-action@v2.1.0
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    
-    - name: Login to GitHub Container Registry
-      if: github.event_name == 'release'
-      uses: docker/login-action@v2.1.0
-      with:
-        registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build wheels
+        uses: home-assistant/wheels@2023.04.0
+        if: steps.requirements.outputs.changed == 'true'
+        with:
+          tag: musllinux_1_2
+          abi: cp310
+          arch: ${{ matrix.arch }}
+          wheels-key: ${{ secrets.WHEELS_KEY }}
+          apk: "mariadb-dev;postgresql-dev;libffi-dev"
+          requirements: "requirements.txt"
 
-    - name: Set build arguments
-      if: github.event_name != 'release'
-      run: echo "BUILD_ARGS=--test" >> $GITHUB_ENV
+      - name: Login to DockerHub
+        if: github.event_name == 'release'
+        uses: docker/login-action@v2.1.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build base image
-      uses: home-assistant/builder@2023.03.0
-      with:
-        args: |
-          $BUILD_ARGS \
-          --${{ matrix.arch }} \
-          --target /data \
-          --generic ${{ needs.init.outputs.version }}
-      env:
-        CAS_API_KEY: ${{ secrets.CAS_TOKEN }} 
+      - name: Login to GitHub Container Registry
+        if: github.event_name == 'release'
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set build arguments
+        if: github.event_name != 'release'
+        run: echo "BUILD_ARGS=--test" >> $GITHUB_ENV
+
+      - name: Build base image
+        uses: home-assistant/builder@2023.03.0
+        with:
+          args: |
+            $BUILD_ARGS \
+            --${{ matrix.arch }} \
+            --target /data \
+            --generic ${{ needs.init.outputs.version }}
+        env:
+          CAS_API_KEY: ${{ secrets.CAS_TOKEN }}
