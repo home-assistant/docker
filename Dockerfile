@@ -35,7 +35,8 @@ RUN \
         openssh-client \
         pianobar \
         pulseaudio-alsa \
-        socat
+        socat \
+        usbutils
 
 ####
 ## Install pip module for component/homeassistant
