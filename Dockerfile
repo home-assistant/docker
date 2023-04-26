@@ -25,6 +25,7 @@ RUN \
         iperf3 \
         git \
         grep \
+        hwdata-usb \
         libgpiod \
         libjpeg-turbo \
         libpulse \
