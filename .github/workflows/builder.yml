@@ -66,6 +66,17 @@ jobs:
           apk: "mariadb-dev;postgresql-dev;libffi-dev"
           requirements: "requirements.txt"
 
+      - name: Build wheels cp311
+        uses: home-assistant/wheels@2023.04.0
+        if: steps.requirements.outputs.changed == 'true'
+        with:
+          tag: musllinux_1_2
+          abi: cp311
+          arch: ${{ matrix.arch }}
+          wheels-key: ${{ secrets.WHEELS_KEY }}
+          apk: "mariadb-dev;postgresql-dev;libffi-dev"
+          requirements: "requirements.txt"
+
       - name: Login to DockerHub
         if: github.event_name == 'release'
         uses: docker/login-action@v2.1.0
