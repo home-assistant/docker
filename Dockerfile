@@ -25,6 +25,7 @@ RUN \
         iperf3 \
         git \
         grep \
+        hwdata-usb \
         libgpiod \
         libjpeg-turbo \
         libpulse \
@@ -35,8 +36,7 @@ RUN \
         openssh-client \
         pianobar \
         pulseaudio-alsa \
-        socat \
-        usbutils
+        socat
 
 ####
 ## Install pip module for component/homeassistant
