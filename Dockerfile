@@ -88,7 +88,7 @@ RUN apk add --no-cache \
         .. \
     && make -j"$(nproc)" \
     && make install \
-    && echo "cec" > "/usr/local/lib/python3.10/site-packages/cec.pth" \
+    && echo "cec" > "/usr/local/lib/python3.11/site-packages/cec.pth" \
     && apk del .build-dependencies \
     && rm -rf \
         /usr/src/libcec \
