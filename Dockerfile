@@ -82,13 +82,13 @@ RUN apk add --no-cache \
     && mkdir build \
     && cd build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
-        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.10.so" \
-        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.10" \
+        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.11.so" \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.11" \
         -DHAVE_LINUX_API=1 \
         .. \
     && make -j"$(nproc)" \
     && make install \
-    && echo "cec" > "/usr/local/lib/python3.10/site-packages/cec.pth" \
+    && echo "cec" > "/usr/local/lib/python3.11/site-packages/cec.pth" \
     && apk del .build-dependencies \
     && rm -rf \
         /usr/src/libcec \
