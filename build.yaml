@@ -1,5 +1,4 @@
-image: homeassistant/{arch}-homeassistant-base
-shadow_repository: ghcr.io/home-assistant
+image: ghcr.io/home-assistant/{arch}-homeassistant-base
 build_from:
   aarch64: ghcr.io/home-assistant/aarch64-base-python:3.11-alpine3.18
   armhf: ghcr.io/home-assistant/armhf-base-python:3.11-alpine3.18

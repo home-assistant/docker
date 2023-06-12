@@ -36,6 +36,10 @@ jobs:
     name: Build ${{ matrix.arch }} base image
     needs: init
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
     strategy:
       matrix:
         arch: ${{ fromJson(needs.init.outputs.architectures) }}
@@ -77,13 +81,6 @@ jobs:
           apk: "mariadb-dev;postgresql-dev;libffi-dev"
           requirements: "requirements.txt"
 
-      - name: Login to DockerHub
-        if: github.event_name == 'release'
-        uses: docker/login-action@v2.2.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Login to GitHub Container Registry
         if: github.event_name == 'release'
         uses: docker/login-action@v2.2.0
@@ -97,12 +94,13 @@ jobs:
         run: echo "BUILD_ARGS=--test" >> $GITHUB_ENV
 
       - name: Build base image
-        uses: home-assistant/builder@2023.03.0
+        uses: home-assistant/builder@2023.06.0
         with:
           args: |
             $BUILD_ARGS \
             --${{ matrix.arch }} \
             --target /data \
+            --cosign \
             --generic ${{ needs.init.outputs.version }}
         env:
           CAS_API_KEY: ${{ secrets.CAS_TOKEN }}
