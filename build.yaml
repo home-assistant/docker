@@ -8,6 +8,9 @@ build_from:
 codenotary:
   signer: notary@home-assistant.io
   base_image: notary@home-assistant.io
+cosign:
+  base_identity: https://github.com/home-assistant/docker-base/.*
+  identity: https://github.com/home-assistant/docker/.*
 labels:
   io.hass.type: homeassistant-base
   org.opencontainers.image.title: Home Assistant Core baseimage
