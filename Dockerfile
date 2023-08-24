@@ -7,7 +7,8 @@ ARG \
     SSOCR_VERSION \
     LIBCEC_VERSION \
     PICOTTS_HASH \
-    TELLDUS_COMMIT
+    TELLDUS_COMMIT \
+    ONNXRUNTIME_VERSION
 
 # Add Home Assistant wheels repository
 ENV WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/
@@ -144,6 +145,70 @@ RUN \
         /usr/src/telldus \
         /usr/src/telldus-fix-gcc-11-issues.patch \
         /usr/src/telldus-fix-alpine-3-17-issues.patch
+
+# ONNX Runtime
+COPY patches/onnx-0001-Remove-MATH_NO_EXCEPT-macro.patch /usr/src/
+COPY patches/onnx-0002-prevent-object-destruction-compile-error-16134.patch /usr/src/
+COPY patches/onnx-cxx17.patch /usr/src/
+COPY patches/onnx-no-execinfo.patch /usr/src/
+COPY patches/onnx-system.patch /usr/src/
+RUN \
+    apk add --no-cache \
+        abseil-cpp-log-internal-check-op \
+        abseil-cpp-log-internal-message \
+        abseil-cpp-raw-hash-set \
+        libprotobuf-lite \
+        libstdc++ \
+        re2 \
+    && apk add --no-cache --virtual .build-dependencies \
+        build-base \
+        abseil-cpp-dev \
+        patchelf \
+        cmake \
+        icu-dev \
+        linux-headers \
+        nlohmann-json \
+        patch \
+        protobuf-dev \
+        re2-dev \
+        samurai \
+        zlib-dev \
+    && pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" numpy packaging \
+    && pip3 install --no-cache-dir pybind11[global] auditwheel \
+    && mkdir /usr/src/onnxruntime \
+    && curl -J -L -o /tmp/onnxruntime.tar.gz \
+        "https://github.com/microsoft/onnxruntime/archive/refs/tags/v${ONNXRUNTIME_VERSION}.tar.gz" \
+    && tar zxvf \
+        /tmp/onnxruntime.tar.gz \
+        --strip 1 -C /usr/src/onnxruntime \
+    && cd onnxruntime \
+    && patch -p1 < ../onnx-0001-Remove-MATH_NO_EXCEPT-macro.patch \
+    && patch -p1 < ../onnx-0002-prevent-object-destruction-compile-error-16134.patch \
+    && patch -p1 < ../onnx-cxx17.patch \
+    && patch -p1 < ../onnx-no-execinfo.patch \
+    && patch -p1 < ../onnx-system.patch \
+    && cmake -S cmake -B build -G Ninja \
+        -DCMAKE_BUILD_TYPE=None \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_ONNX_PYTHON=ON \
+        -Donnxruntime_BUILD_SHARED_LIB=ON \
+        -Donnxruntime_ENABLE_PYTHON=ON \
+    && sed -i 's|CMAKE_CXX_STANDARD 11|CMAKE_CXX_STANDARD 17|' build/_deps/onnx-src/CMakeLists.txt \
+    && cd build \
+    && cmake --build . \
+    && cmake --install . \
+    && python3 ../setup.py bdist_wheel \
+    && auditwheel repair dist/*.whl \
+    \
+    # Here they are...
+    && ls -la wheelhouse/*.whl \
+    \
+    && apk del .build-dependencies \
+    && rm -rf \
+        /tmp/onnxruntime.tar.gz \
+        /usr/src/onnxruntime \
+        /usr/src/onnx-*.patch
+
 ###
 # Base S6-Overlay
 COPY rootfs /
