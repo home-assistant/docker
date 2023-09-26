@@ -171,7 +171,8 @@ RUN \
         --with-python_prefix=/usr/local \
     && make \
     && cp bindings/python/.libs/gpiod.so /usr/local/lib/python3.11/site-packages \
-    && apk del .build-dependencies
+    && apk del .build-dependencies \
+    && rm -rf /usr/src/libgpiod
 
 ###
 # Base S6-Overlay
