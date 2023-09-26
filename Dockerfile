@@ -146,6 +146,7 @@ RUN \
         /usr/src/telldus-fix-alpine-3-17-issues.patch
 
 # libgpiod Python bindings built against our Python 3.11
+SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 RUN \
     apk add --no-cache --virtual .build-dependencies \
         autoconf \
