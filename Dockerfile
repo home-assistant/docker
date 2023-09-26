@@ -144,6 +144,35 @@ RUN \
         /usr/src/telldus \
         /usr/src/telldus-fix-gcc-11-issues.patch \
         /usr/src/telldus-fix-alpine-3-17-issues.patch
+
+# libgpiod Python bindings build against our Python 3.11
+RUN \
+    apk add --no-cache --virtual .build-dependencies \
+        autoconf \
+        automake \
+        libtool \
+        linux-headers \
+        autoconf-archive \
+        python3-dev \
+        doxygen \
+        help2man \
+    && LIBGPIOD_VERSION=$(apk info -e -v libgpiod | awk -F '-' '{print $(NF-1)}') \
+    && git clone --depth=1 --branch="v$LIBGPIOD_VERSION" https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git \
+    && cd libgpiod \
+    && autoreconf -vfi \
+    && ./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --mandir=/usr/share/man \
+        --localstatedir=/var \
+        --enable-tools=yes \
+        --disable-static \
+        --enable-bindings-python \
+        --with-python_prefix=/usr/local \
+    && make \
+    && cp bindings/python/.libs/gpiod.so /usr/local/lib/python3.11/site-packages \
+    && apk del .build-dependencies
+
 ###
 # Base S6-Overlay
 COPY rootfs /
