@@ -149,6 +149,7 @@ RUN \
 SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 RUN \
     apk add --no-cache --virtual .build-dependencies \
+        build-base \
         autoconf \
         automake \
         libtool \
