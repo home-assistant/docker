@@ -102,5 +102,4 @@ jobs:
             --target /data \
             --cosign \
             --generic ${{ needs.init.outputs.version }}
-        env:
-          CAS_API_KEY: ${{ secrets.CAS_TOKEN }}
+
