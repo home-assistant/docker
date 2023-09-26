@@ -145,7 +145,7 @@ RUN \
         /usr/src/telldus-fix-gcc-11-issues.patch \
         /usr/src/telldus-fix-alpine-3-17-issues.patch
 
-# libgpiod Python bindings build against our Python 3.11
+# libgpiod Python bindings built against our Python 3.11
 RUN \
     apk add --no-cache --virtual .build-dependencies \
         autoconf \
