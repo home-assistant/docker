@@ -11,6 +11,8 @@ ARG \
 
 # Add Home Assistant wheels repository
 ENV WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/
+# Add Home Assistant wheels index for newer versions
+ENV EXTRA_INDEX_URL=https://wheels.home-assistant.io/musllinux-index/
 
 ##
 # Install component packages
