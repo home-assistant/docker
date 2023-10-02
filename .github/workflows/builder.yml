@@ -60,7 +60,7 @@ jobs:
           fi
 
       - name: Build wheels
-        uses: home-assistant/wheels@2023.09.1
+        uses: home-assistant/wheels@2023.10.1
         if: steps.requirements.outputs.changed == 'true'
         with:
           tag: musllinux_1_2
@@ -71,7 +71,7 @@ jobs:
           requirements: "requirements.txt"
 
       - name: Build wheels cp311
-        uses: home-assistant/wheels@2023.09.1
+        uses: home-assistant/wheels@2023.10.1
         if: steps.requirements.outputs.changed == 'true'
         with:
           tag: musllinux_1_2
