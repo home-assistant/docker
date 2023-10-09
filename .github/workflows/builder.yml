@@ -60,7 +60,7 @@ jobs:
           fi
 
       - name: Build wheels cp311
-        uses: home-assistant/wheels@2023.10.1
+        uses: home-assistant/wheels@2023.10.4
         if: steps.requirements.outputs.changed == 'true'
         with:
           tag: musllinux_1_2
