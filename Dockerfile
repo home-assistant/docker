@@ -12,7 +12,7 @@ ARG \
 # Set pip & S6 defaults
 ENV \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_EXTRA_INDEX_URL="https://wheels.home-assistant.io/musllinux-index/"
+    PIP_EXTRA_INDEX_URL="https://wheels.home-assistant.io/musllinux-index/" \
     PIP_NO_CACHE_DIR=1 \
     PIP_PREFER_BINARY=1 \
     S6_SERVICES_GRACETIME=220000
