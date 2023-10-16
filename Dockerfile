@@ -9,8 +9,13 @@ ARG \
     PICOTTS_HASH \
     TELLDUS_COMMIT
 
-# Add Home Assistant wheels repository
-ENV WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/
+# Set pip & S6 defaults
+ENV \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_EXTRA_INDEX_URL="https://wheels.home-assistant.io/musllinux-index/"
+    PIP_NO_CACHE_DIR=1 \
+    PIP_PREFER_BINARY=1 \
+    S6_SERVICES_GRACETIME=220000
 
 ##
 # Install component packages
@@ -42,7 +47,7 @@ RUN \
 ## Install pip module for component/homeassistant
 COPY requirements.txt /usr/src/
 RUN \
-    pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+    pip3 install --only-binary=:all: \
         -r /usr/src/requirements.txt \
     && rm -f /usr/src/requirements.txt
 
