@@ -9,13 +9,6 @@ ARG \
     PICOTTS_HASH \
     TELLDUS_COMMIT
 
-# Set pip & S6 defaults
-ENV \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_EXTRA_INDEX_URL="https://wheels.home-assistant.io/musllinux-index/" \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_PREFER_BINARY=1 \
-    S6_SERVICES_GRACETIME=220000
 
 ##
 # Install component packages
@@ -42,6 +35,10 @@ RUN \
         pianobar \
         pulseaudio-alsa \
         socat
+
+###
+# Base S6-Overlay
+COPY rootfs /
 
 ####
 ## Install pip module for component/homeassistant
@@ -149,6 +146,4 @@ RUN \
         /usr/src/telldus \
         /usr/src/telldus-fix-gcc-11-issues.patch \
         /usr/src/telldus-fix-alpine-3-17-issues.patch
-###
-# Base S6-Overlay
-COPY rootfs /
+
