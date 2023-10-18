@@ -9,9 +9,6 @@ ARG \
     PICOTTS_HASH \
     TELLDUS_COMMIT
 
-# Add Home Assistant wheels repository
-ENV WHEELS_LINKS=https://wheels.home-assistant.io/musllinux/
-
 ##
 # Install component packages
 RUN \
@@ -42,7 +39,7 @@ RUN \
 ## Install pip module for component/homeassistant
 COPY requirements.txt /usr/src/
 RUN \
-    pip3 install --no-cache-dir --no-index --only-binary=:all: --find-links "${WHEELS_LINKS}" \
+    pip3 install --only-binary=:all: \
         -r /usr/src/requirements.txt \
     && rm -f /usr/src/requirements.txt
 
@@ -144,6 +141,7 @@ RUN \
         /usr/src/telldus \
         /usr/src/telldus-fix-gcc-11-issues.patch \
         /usr/src/telldus-fix-alpine-3-17-issues.patch
+
 ###
 # Base S6-Overlay
 COPY rootfs /
