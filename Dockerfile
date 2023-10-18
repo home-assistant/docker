@@ -9,7 +9,6 @@ ARG \
     PICOTTS_HASH \
     TELLDUS_COMMIT
 
-
 ##
 # Install component packages
 RUN \
@@ -35,10 +34,6 @@ RUN \
         pianobar \
         pulseaudio-alsa \
         socat
-
-###
-# Base S6-Overlay
-COPY rootfs /
 
 ####
 ## Install pip module for component/homeassistant
@@ -147,3 +142,6 @@ RUN \
         /usr/src/telldus-fix-gcc-11-issues.patch \
         /usr/src/telldus-fix-alpine-3-17-issues.patch
 
+###
+# Base S6-Overlay
+COPY rootfs /
