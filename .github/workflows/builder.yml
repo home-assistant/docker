@@ -60,7 +60,7 @@ jobs:
           fi
 
       - name: Build wheels cp311
-        uses: home-assistant/wheels@2023.10.4
+        uses: home-assistant/wheels@2023.10.5
         if: steps.requirements.outputs.changed == 'true'
         with:
           tag: musllinux_1_2
@@ -91,4 +91,3 @@ jobs:
             --target /data \
             --cosign \
             --generic ${{ needs.init.outputs.version }}
-
