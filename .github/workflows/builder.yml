@@ -83,7 +83,7 @@ jobs:
         run: echo "BUILD_ARGS=--test" >> $GITHUB_ENV
 
       - name: Build base image
-        uses: home-assistant/builder@2023.12.0
+        uses: home-assistant/builder@2024.01.0
         with:
           args: |
             $BUILD_ARGS \
