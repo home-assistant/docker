@@ -61,7 +61,7 @@ jobs:
 
       - name: Build wheels cp312
         uses: home-assistant/wheels@2023.10.5
-        if: steps.requirements.outputs.changed == 'true'
+        if: github.event_name != 'release' || steps.requirements.outputs.changed == 'true'
         with:
           tag: musllinux_1_2
           abi: cp312
