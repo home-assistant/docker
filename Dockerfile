@@ -24,7 +24,7 @@ RUN \
         grep \
         hwdata-usb \
         libgpiod \
-        libjpeg-turbo \
+        libturbojpeg \
         libpulse \
         libzbar \
         mariadb-connector-c \
