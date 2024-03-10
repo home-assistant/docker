@@ -33,7 +33,8 @@ RUN \
         openssh-client \
         pianobar \
         pulseaudio-alsa \
-        socat
+        socat \
+        openldap-clients
 
 ####
 ## Install pip module for component/homeassistant
