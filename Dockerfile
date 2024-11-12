@@ -79,13 +79,13 @@ RUN apk add --no-cache \
     && mkdir build \
     && cd build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
-        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.12.so" \
-        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.12" \
+        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.13.so" \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.13" \
         -DHAVE_LINUX_API=1 \
         .. \
     && make -j"$(nproc)" \
     && make install \
-    && echo "cec" > "/usr/local/lib/python3.12/site-packages/cec.pth" \
+    && echo "cec" > "/usr/local/lib/python3.13/site-packages/cec.pth" \
     && apk del .build-dependencies \
     && rm -rf \
         /usr/src/libcec \
@@ -99,7 +99,7 @@ RUN apk add --no-cache \
        autoconf \
        libtool \
        popt-dev \
-       build-base \ 
+       build-base \
     && git clone https://github.com/naggety/picotts.git pico \
     && cd pico/pico \
     && git reset --hard "${PICOTTS_HASH}" \

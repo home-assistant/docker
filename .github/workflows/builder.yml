@@ -59,12 +59,12 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Build wheels cp312
+      - name: Build wheels cp313
         uses: home-assistant/wheels@2024.11.0
         if: github.event_name == 'release' || steps.requirements.outputs.changed == 'true'
         with:
           tag: musllinux_1_2
-          abi: cp312
+          abi: cp313
           arch: ${{ matrix.arch }}
           wheels-key: ${{ secrets.WHEELS_KEY }}
           apk: "mariadb-dev;postgresql-dev;libffi-dev"
