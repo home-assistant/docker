@@ -63,6 +63,7 @@ RUN \
 
 # libcec
 COPY patches/libcec-fix-null-return.patch /usr/src/
+COPY patches/libcec-python313.patch /usr/src/
 RUN apk add --no-cache \
         eudev-libs \
         p8-platform \
@@ -76,6 +77,7 @@ RUN apk add --no-cache \
     && git clone --depth 1 -b "libcec-${LIBCEC_VERSION}" https://github.com/Pulse-Eight/libcec \
     && cd libcec \
     && git apply ../libcec-fix-null-return.patch \
+    && git apply ../libcec-python313.patch \
     && mkdir build \
     && cd build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
@@ -89,7 +91,8 @@ RUN apk add --no-cache \
     && apk del .build-dependencies \
     && rm -rf \
         /usr/src/libcec \
-        /usr/src/libcec-fix-null-return.patch
+        /usr/src/libcec-fix-null-return.patch \
+        /usr/src/libcec-python313.patch
 
 # PicoTTS - it has no specific version - commit should be taken from build.json
 RUN apk add --no-cache \
