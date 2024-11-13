@@ -1,0 +1,22 @@
+--- a/src/libcec/SwigHelper.h
++++ b/src/libcec/SwigHelper.h
+@@ -119,7 +119,7 @@ namespace CEC
+       if (!!m_callbacks[callback])
+       {
+         /** call the callback */
+-        result = PyEval_CallObject(m_callbacks[callback], arglist);
++        result = PyObject_CallObject(m_callbacks[callback], arglist);
+
+         /** unref the argument and result */
+         if (!!arglist)
+--- a/src/libcec/libcec.i
++++ b/src/libcec/libcec.i
+@@ -141,7 +141,7 @@ namespace std {
+       if (!!lib)
+       {
+         lib->InitVideoStandalone();
+-        PyEval_InitThreads();
++        // PyEval_InitThreads();
+       }
+       return lib;
+     }

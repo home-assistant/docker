@@ -63,6 +63,7 @@ RUN \
 
 # libcec
 COPY patches/libcec-fix-null-return.patch /usr/src/
+COPY patches/libcec-python313.patch /usr/src/
 RUN apk add --no-cache \
         eudev-libs \
         p8-platform \
@@ -76,20 +77,22 @@ RUN apk add --no-cache \
     && git clone --depth 1 -b "libcec-${LIBCEC_VERSION}" https://github.com/Pulse-Eight/libcec \
     && cd libcec \
     && git apply ../libcec-fix-null-return.patch \
+    && git apply ../libcec-python313.patch \
     && mkdir build \
     && cd build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local \
-        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.12.so" \
-        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.12" \
+        -DPYTHON_LIBRARY="/usr/local/lib/libpython3.13.so" \
+        -DPYTHON_INCLUDE_DIR="/usr/local/include/python3.13" \
         -DHAVE_LINUX_API=1 \
         .. \
     && make -j"$(nproc)" \
     && make install \
-    && echo "cec" > "/usr/local/lib/python3.12/site-packages/cec.pth" \
+    && echo "cec" > "/usr/local/lib/python3.13/site-packages/cec.pth" \
     && apk del .build-dependencies \
     && rm -rf \
         /usr/src/libcec \
-        /usr/src/libcec-fix-null-return.patch
+        /usr/src/libcec-fix-null-return.patch \
+        /usr/src/libcec-python313.patch
 
 # PicoTTS - it has no specific version - commit should be taken from build.json
 RUN apk add --no-cache \
@@ -99,7 +102,7 @@ RUN apk add --no-cache \
        autoconf \
        libtool \
        popt-dev \
-       build-base \ 
+       build-base \
     && git clone https://github.com/naggety/picotts.git pico \
     && cd pico/pico \
     && git reset --hard "${PICOTTS_HASH}" \
