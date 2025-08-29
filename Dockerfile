@@ -5,7 +5,8 @@ FROM ${BUILD_FROM} AS ssocr-builder
 ARG SSOCR_VERSION
 ARG BUILD_FROM
 WORKDIR /tmp/
-RUN --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=ssocr-builder-${BUILD_FROM}-${SSOCR_VERSION} \
+RUN \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=ssocr-builder-${BUILD_FROM}-${SSOCR_VERSION} \
     apk add \
         build-base \
         imlib2-dev \
@@ -24,7 +25,8 @@ FROM ${BUILD_FROM} AS pip-install-builder
 ARG BUILD_FROM
 WORKDIR /tmp/
 COPY requirements.txt /tmp/requirements.txt
-RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=pip-builder-${BUILD_FROM} \
+RUN \
+    --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=pip-builder-${BUILD_FROM} \
     pip3 install --user --only-binary=:all: \
         -r /tmp/requirements.txt
 
@@ -37,7 +39,8 @@ ARG BUILD_FROM
 WORKDIR /tmp/
 COPY patches/libcec-fix-null-return.patch /tmp/
 COPY patches/libcec-python313.patch /tmp/
-RUN --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=libcec-builder-${BUILD_FROM}-${LIBCEC_VERSION} \
+RUN \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=libcec-builder-${BUILD_FROM}-${LIBCEC_VERSION} \
     apk add  \
         build-base \
         cmake \
@@ -68,7 +71,8 @@ FROM ${BUILD_FROM} AS picotts-builder
 ARG PICOTTS_HASH
 ARG BUILD_FROM
 WORKDIR /tmp/
-RUN --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=picotts-builder-${BUILD_FROM}-${PICOTTS_HASH} \
+RUN \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=picotts-builder-${BUILD_FROM}-${PICOTTS_HASH} \
     apk add \
        autoconf \
        automake \
@@ -95,7 +99,8 @@ ARG BUILD_FROM
 WORKDIR /tmp/
 COPY patches/telldus-fix-gcc-11-issues.patch /tmp/
 COPY patches/telldus-fix-alpine-3-17-issues.patch /tmp/
-RUN --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=telldus-builder-${BUILD_FROM}-${TELLDUS_COMMIT} \
+RUN \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=telldus-builder-${BUILD_FROM}-${TELLDUS_COMMIT} \
     apk add \
         argp-standalone \
         build-base \
@@ -127,7 +132,8 @@ ARG BUILD_FROM
 
 ##
 # Install component packages
-RUN --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=main-builder-${BUILD_FROM} \
+RUN \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=main-builder-${BUILD_FROM} \
     apk add \
         bluez \
         bluez-deprecated \
