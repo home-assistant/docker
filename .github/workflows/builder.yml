@@ -18,7 +18,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
         with:
           fetch-depth: 0
 
@@ -45,7 +45,7 @@ jobs:
         arch: ${{ fromJson(needs.init.outputs.architectures) }}
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
 
       - name: Get changed files
         id: changed_files
@@ -60,7 +60,7 @@ jobs:
           fi
 
       - name: Build wheels cp313
-        uses: home-assistant/wheels@2024.11.0
+        uses: home-assistant/wheels@2025.07.0
         if: github.event_name == 'release' || steps.requirements.outputs.changed == 'true'
         with:
           tag: musllinux_1_2
@@ -72,7 +72,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: github.event_name == 'release'
-        uses: docker/login-action@v3.3.0
+        uses: docker/login-action@v3.5.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -83,7 +83,7 @@ jobs:
         run: echo "BUILD_ARGS=--test" >> $GITHUB_ENV
 
       - name: Build base image
-        uses: home-assistant/builder@2024.08.2
+        uses: home-assistant/builder@2025.03.0
         with:
           args: |
             $BUILD_ARGS \
