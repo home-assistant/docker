@@ -6,11 +6,11 @@ ARG SSOCR_VERSION
 ARG BUILD_FROM
 WORKDIR /tmp/
 RUN \
-    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=ssocr-builder-${BUILD_FROM}-${SSOCR_VERSION} \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
         build-base \
-        imlib2-dev \
-    && mkdir /opt/ssocr /tmp/ssocr \
+        imlib2-dev
+RUN mkdir /opt/ssocr /tmp/ssocr \
     && curl --silent --fail --location "https://github.com/auerswal/ssocr/archive/refs/tags/v${SSOCR_VERSION}.tar.gz" \
             | tar zxv -C /tmp/ssocr --strip-components 1 \
     && cd /tmp/ssocr \
@@ -40,7 +40,7 @@ WORKDIR /tmp/
 COPY patches/libcec-fix-null-return.patch /tmp/
 COPY patches/libcec-python313.patch /tmp/
 RUN \
-    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=libcec-builder-${BUILD_FROM}-${LIBCEC_VERSION} \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add  \
         build-base \
         cmake \
@@ -48,8 +48,8 @@ RUN \
         git \
         linux-headers \
         p8-platform-dev \
-        swig \
-    && python_version=$(python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')") \
+        swig
+RUN python_version=$(python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')") \
     && git clone --depth 1 -b "libcec-${LIBCEC_VERSION}" https://github.com/Pulse-Eight/libcec \
     && cd libcec \
     && git apply ../libcec-fix-null-return.patch \
@@ -72,15 +72,15 @@ ARG PICOTTS_HASH
 ARG BUILD_FROM
 WORKDIR /tmp/
 RUN \
-    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=picotts-builder-${BUILD_FROM}-${PICOTTS_HASH} \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
        autoconf \
        automake \
        build-base \
        git \
        libtool \
-       popt-dev \
-    && git clone https://github.com/naggety/picotts.git pico \
+       popt-dev
+RUN git clone https://github.com/naggety/picotts.git pico \
     && cd pico/pico \
     && git reset --hard "${PICOTTS_HASH}" \
     && ./autogen.sh \
@@ -100,7 +100,7 @@ WORKDIR /tmp/
 COPY patches/telldus-fix-gcc-11-issues.patch /tmp/
 COPY patches/telldus-fix-alpine-3-17-issues.patch /tmp/
 RUN \
-    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=telldus-builder-${BUILD_FROM}-${TELLDUS_COMMIT} \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
         argp-standalone \
         build-base \
@@ -108,8 +108,8 @@ RUN \
         confuse-dev \
         doxygen \
         git \
-        libftdi1-dev \
-    && git clone https://github.com/telldus/telldus \
+        libftdi1-dev
+RUN git clone https://github.com/telldus/telldus \
     && cd telldus \
     && git reset --hard "${TELLDUS_COMMIT}" \
     && git apply ../telldus-fix-gcc-11-issues.patch \
@@ -133,7 +133,7 @@ ARG BUILD_FROM
 ##
 # Install component packages
 RUN \
-    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=main-builder-${BUILD_FROM} \
+    --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
         bluez \
         bluez-deprecated \
