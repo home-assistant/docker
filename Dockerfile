@@ -5,6 +5,7 @@ FROM ${BUILD_FROM} AS ssocr-builder
 ARG SSOCR_VERSION
 ARG BUILD_FROM
 WORKDIR /tmp/
+SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 RUN \
     --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
