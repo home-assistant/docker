@@ -143,6 +143,7 @@ RUN \
         curl \
         eudev-libs \
         ffmpeg \
+        git \
         grep \
         hwdata-usb \
         imlib2 \
