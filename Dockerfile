@@ -151,7 +151,6 @@ RUN \
         pulseaudio-alsa \
         socat
 
-WORKDIR /tmp/
 COPY requirements.txt /tmp/requirements.txt
 RUN \
     --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=pip-cache-${BUILD_FROM} \
