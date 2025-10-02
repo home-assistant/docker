@@ -21,18 +21,6 @@ RUN mkdir /opt/ssocr /tmp/ssocr \
 
 
 ####
-## Install pip module for component/homeassistant. Installs to /root/.local
-FROM ${BUILD_FROM} AS pip-install-builder
-ARG BUILD_FROM
-WORKDIR /tmp/
-COPY requirements.txt /tmp/requirements.txt
-RUN \
-    --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=pip-builder-${BUILD_FROM} \
-    pip3 install --user --only-binary=:all: \
-        -r /tmp/requirements.txt
-
-
-####
 ## Builder stage for libcec, installs to /opt/libcec
 FROM ${BUILD_FROM} AS libcec-builder
 ARG LIBCEC_VERSION
@@ -163,12 +151,17 @@ RUN \
         pulseaudio-alsa \
         socat
 
+WORKDIR /tmp/
+COPY requirements.txt /tmp/requirements.txt
+RUN \
+    --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=pip-cache-${BUILD_FROM} \
+    pip3 install --only-binary=:all: \
+        -r /tmp/requirements.txt \
+    && rm -f /tmp/requirements.txt
+
 WORKDIR /usr/src/
 
 ####
-## Copy from pip builder
-COPY --link --from=pip-install-builder /root/.local/ /root/.local/
-
 # Copy from ssocr builder
 COPY --link --from=ssocr-builder /opt/ssocr/ /usr/local/
 
