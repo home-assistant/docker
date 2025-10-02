@@ -151,12 +151,11 @@ RUN \
         pulseaudio-alsa \
         socat
 
-COPY requirements.txt /tmp/requirements.txt
 RUN \
+    --mount=type=bind,src=./requirements.txt,dst=/tmp/requirements.txt \
     --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=pip-cache-${BUILD_FROM} \
     pip3 install --only-binary=:all: \
-        -r /tmp/requirements.txt \
-    && rm -f /tmp/requirements.txt
+        -r /tmp/requirements.txt
 
 WORKDIR /usr/src/
 
