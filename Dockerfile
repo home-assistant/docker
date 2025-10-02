@@ -6,6 +6,7 @@ ARG SSOCR_VERSION
 ARG BUILD_FROM
 WORKDIR /tmp/
 SHELL ["/bin/ash", "-o", "pipefail", "-c"]
+# hadolint ignore=DL3019
 RUN \
     --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
@@ -28,6 +29,7 @@ ARG BUILD_FROM
 WORKDIR /tmp/
 COPY patches/libcec-fix-null-return.patch /tmp/
 COPY patches/libcec-python313.patch /tmp/
+# hadolint ignore=DL3019
 RUN \
     --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add  \
@@ -60,6 +62,7 @@ FROM ${BUILD_FROM} AS picotts-builder
 ARG PICOTTS_HASH
 ARG BUILD_FROM
 WORKDIR /tmp/
+# hadolint ignore=DL3019
 RUN \
     --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
@@ -88,6 +91,7 @@ ARG BUILD_FROM
 WORKDIR /tmp/
 COPY patches/telldus-fix-gcc-11-issues.patch /tmp/
 COPY patches/telldus-fix-alpine-3-17-issues.patch /tmp/
+# hadolint ignore=DL3019
 RUN \
     --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
@@ -121,6 +125,7 @@ ARG BUILD_FROM
 
 ##
 # Install component packages
+# hadolint ignore=DL3019
 RUN \
     --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
     apk add \
