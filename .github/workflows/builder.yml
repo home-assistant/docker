@@ -47,21 +47,14 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v5.0.0
 
-      - name: Get changed files
-        id: changed_files
-        if: github.event_name != 'release'
-        uses: jitterbit/get-changed-files@v1
-
       - name: Check if requirements files changed
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         id: requirements
-        run: |
-          if [[ "${{ steps.changed_files.outputs.all }}" =~ requirements.txt ]]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
+        files: requirements.txt
 
       - name: Build wheels cp313
         uses: home-assistant/wheels@2025.09.1
-        if: github.event_name == 'release' || steps.requirements.outputs.changed == 'true'
+        if: github.event_name == 'release' || steps.requirements.outputs.any_changed == 'true'
         with:
           tag: musllinux_1_2
           abi: cp313
