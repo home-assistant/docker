@@ -77,11 +77,13 @@ RUN git clone https://github.com/naggety/picotts.git pico \
     && git reset --hard "${PICOTTS_HASH}" \
     && ./autogen.sh \
     && mkdir /opt/picotts \
+    # PREFIX needs to stay /usr/local with picotts, \
+    # see 'https://github.com/home-assistant/docker/pull/343#issuecomment-3505870990' \
     && ./configure \
          --disable-static \
-         --prefix=/opt/picotts \
+         --prefix=/usr/local \
     && make \
-    && make install
+    && make DESTDIR=/opt/picotts install
 
 
 # Build stage for Telldus, installs to /opt/telldus
@@ -174,7 +176,7 @@ RUN python_version=$(python -c "import sys; print(f'{sys.version_info.major}.{sy
     && echo "cec" > "/usr/local/lib/python${python_version}/site-packages/cec.pth"
 
 # Copy from picotts builder
-COPY --link --from=picotts-builder /opt/picotts/ /usr/local/
+COPY --link --from=picotts-builder /opt/picotts/usr/local/ /usr/local/
 
 # Copy from Telldus builder
 COPY --link --from=telldus-builder /opt/telldus/ /usr/local/
