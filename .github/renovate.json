@@ -1,0 +1,26 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "enabledManagers": ["custom.regex"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^build\\.yaml$"],
+      "matchStrings": [
+        "(?<image>ghcr\\.io/home-assistant/[a-z0-9]+-base-python:(?<pythonVersion>[0-9\\.]+)-(?<alpineVersion>alpine[0-9\\.]+))-(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "home-assistant/docker-base"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["github-releases"],
+      "matchDepNames": ["home-assistant/docker-base"],
+      "groupName": "docker-base",
+      "commitMessageTopic": "home-assistant/docker-base image",
+      "commitMessageExtra": "to {{newVersion}}",
+      "versioning": "pep440",
+      "minimumReleaseAge": "1 hour"
+    }
+  ]
+}
