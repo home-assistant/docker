@@ -49,6 +49,7 @@ jobs:
 
       - name: Check if requirements or workflow has changed
         uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
+        if: github.event_name != 'release'
         id: wheels_deps_changed
         with:
           files: |
