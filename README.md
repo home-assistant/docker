@@ -3,5 +3,5 @@
 Home Assistant containers
 
 Base Images:
-- homeassistant/aarch64-homeassistant-base:_BASE-VERSION_
-- homeassistant/amd64-homeassistant-base:_BASE-VERSION_
+- ghcr.io/home-assistant/aarch64-homeassistant-base:_BASE-VERSION_
+- ghcr.io/home-assistant/amd64-homeassistant-base:_BASE-VERSION_
