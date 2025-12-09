@@ -122,7 +122,6 @@ RUN git clone https://github.com/telldus/telldus \
 FROM ${BUILD_FROM}
 
 ARG BUILD_ARCH
-ARG QEMU_CPU
 ARG BUILD_FROM
 
 ##
