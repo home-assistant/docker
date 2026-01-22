@@ -60,12 +60,12 @@ jobs:
             requirements.txt
             .github/workflows/builder.yml
 
-      - name: Build wheels cp313
+      - name: Build wheels cp314
         uses: home-assistant/wheels@2025.12.0
         if: github.event_name == 'release' || steps.wheels_deps_changed.outputs.any_changed == 'true'
         with:
           tag: musllinux_1_2
-          abi: cp313
+          abi: cp314
           arch: ${{ matrix.arch }}
           wheels-key: ${{ secrets.WHEELS_KEY }}
           apk: "mariadb-dev;postgresql-dev;libffi-dev"
