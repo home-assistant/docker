@@ -18,7 +18,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
 
@@ -49,7 +49,7 @@ jobs:
             runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Check if requirements or workflow has changed
         uses: tj-actions/changed-files@e0021407031f5be11a464abee9a0776171c79891 # v47
