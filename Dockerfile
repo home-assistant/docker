@@ -27,8 +27,6 @@ FROM ${BUILD_FROM} AS libcec-builder
 ARG LIBCEC_VERSION
 ARG BUILD_FROM
 WORKDIR /tmp/
-COPY patches/libcec-fix-null-return.patch /tmp/
-COPY patches/libcec-python313.patch /tmp/
 # hadolint ignore=DL3019
 RUN \
     --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
@@ -43,8 +41,6 @@ RUN \
 RUN python_version=$(python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')") \
     && git clone --depth 1 -b "libcec-${LIBCEC_VERSION}" https://github.com/Pulse-Eight/libcec \
     && cd libcec \
-    && git apply ../libcec-fix-null-return.patch \
-    && git apply ../libcec-python313.patch \
     && mkdir build \
     && cd build \
     && cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/libcec \
