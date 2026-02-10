@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@v6.0.2
 
       - name: Check if requirements or workflow has changed
-        uses: tj-actions/changed-files@e0021407031f5be11a464abee9a0776171c79891 # v47
+        uses: tj-actions/changed-files@8cba46e29c11878d930bca7870bb54394d3e8b21 # v47
         if: github.event_name != 'release'
         id: wheels_deps_changed
         with:
