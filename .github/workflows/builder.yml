@@ -3,28 +3,37 @@ name: Build base images
 on:
   pull_request:
     branches: ["master"]
+  push:
+    branches: ["master"]
+    paths:
+      - ".github/workflows/builder.yml"
+      - "Dockerfile"
+      - "patches/**"
+      - "requirements.txt"
+      - "rootfs/**"
   release:
     types: ["published"]
 
 env:
-  BUILD_TYPE: base
+  ARCHITECTURES: '["amd64", "aarch64"]'
+  BUILD_TYPE: generic
+  IMAGE_NAME: homeassistant-base
+
+permissions:
+  contents: read
 
 jobs:
   init:
     name: Initialize build
     runs-on: ubuntu-latest
     outputs:
-      architectures: ${{ steps.info.outputs.architectures }}
       version: ${{ steps.version.outputs.version }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
-
-      - name: Get information
-        id: info
-        uses: home-assistant/actions/helpers/info@master
 
       - name: Get version
         id: version
@@ -32,24 +41,29 @@ jobs:
         with:
           type: ${{ env.BUILD_TYPE }}
 
+      - name: Get build matrix
+        id: matrix
+        uses: home-assistant/builder/actions/prepare-multi-arch-matrix@62a1597b84b3461abad9816d9cd92862a2b542c3 # 2026.03.2
+        with:
+          architectures: ${{ env.ARCHITECTURES }}
+          image-name: ${{ env.IMAGE_NAME }}
+
   build:
     name: Build ${{ matrix.arch }} base image
     needs: init
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ${{ matrix.os }}
     permissions:
       contents: read
       id-token: write
       packages: write
     strategy:
-      matrix:
-        arch: ${{ fromJson(needs.init.outputs.architectures) }}
-        include:
-          - runs-on: ubuntu-24.04
-          - arch: aarch64
-            runs-on: ubuntu-24.04-arm
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.init.outputs.matrix) }}
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Check if requirements or workflow has changed
         uses: tj-actions/changed-files@22103cc46bda19c2b464ffe86db46df6922fd323 # v47
@@ -71,25 +85,35 @@ jobs:
           apk: "mariadb-dev;postgresql-dev;libffi-dev"
           requirements: "requirements.txt"
 
-      - name: Login to GitHub Container Registry
-        if: github.event_name == 'release'
-        uses: docker/login-action@v4.0.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set build arguments
-        if: github.event_name != 'release'
-        run: echo "BUILD_ARGS=--test" >> $GITHUB_ENV
-
       - name: Build base image
-        uses: home-assistant/builder@2026.02.1
+        uses: home-assistant/builder/actions/build-image@62a1597b84b3461abad9816d9cd92862a2b542c3 # 2026.03.2
         with:
-          image: ${{ matrix.arch }}
-          args: |
-            $BUILD_ARGS \
-            --${{ matrix.arch }} \
-            --target /data \
-            --cosign \
-            --generic ${{ needs.init.outputs.version }}
+          arch: ${{ matrix.arch }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          cosign-base-identity: 'https://github.com/home-assistant/docker-base/.*'
+          cosign-base-verify: ghcr.io/home-assistant/base-python:3.14-alpine3.22
+          image: ${{ matrix.image }}
+          image-tags: |
+            ${{ needs.init.outputs.version }}
+            latest
+          push: ${{ github.event_name == 'release' }}
+          version: ${{ needs.init.outputs.version }}
+
+  manifest:
+    name: Publish multi-arch manifest
+    needs: [init, build]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+    steps:
+      - name: Publish multi-arch manifest
+        uses: home-assistant/builder/actions/publish-multi-arch-manifest@62a1597b84b3461abad9816d9cd92862a2b542c3 # 2026.03.2
+        with:
+          architectures: ${{ env.ARCHITECTURES }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ env.IMAGE_NAME }}
+          image-tags: |
+            ${{ needs.init.outputs.version }}
+            latest

@@ -1,8 +1,8 @@
-ARG BUILD_FROM
+ARG BUILD_FROM=ghcr.io/home-assistant/base-python:3.14-alpine3.22-2026.03.1
 ####
 ## Builder stage for ssocr, installs to /opt/ssocr
 FROM ${BUILD_FROM} AS ssocr-builder
-ARG SSOCR_VERSION
+ARG SSOCR_VERSION=2.25.1
 ARG BUILD_FROM
 WORKDIR /tmp/
 SHELL ["/bin/ash", "-o", "pipefail", "-c"]
@@ -24,7 +24,7 @@ RUN mkdir /opt/ssocr /tmp/ssocr \
 ####
 ## Builder stage for libcec, installs to /opt/libcec
 FROM ${BUILD_FROM} AS libcec-builder
-ARG LIBCEC_VERSION
+ARG LIBCEC_VERSION=7.1.1
 ARG BUILD_FROM
 WORKDIR /tmp/
 # hadolint ignore=DL3019
@@ -53,9 +53,9 @@ RUN python_version=$(python -c "import sys; print(f'{sys.version_info.major}.{sy
 
 
 # Build stage for PicoTTS, installs to /opt/picotts
-# PicoTTS - it has no specific version - commit should be taken from build.json
+# PicoTTS - it has no specific version, so use a pinned commit hash.
 FROM ${BUILD_FROM} AS picotts-builder
-ARG PICOTTS_HASH
+ARG PICOTTS_HASH=e3ba46009ee868911fa0b53db672a55f9cc13b1c
 ARG BUILD_FROM
 WORKDIR /tmp/
 # hadolint ignore=DL3019
@@ -84,7 +84,7 @@ RUN git clone https://github.com/naggety/picotts.git pico \
 
 # Build stage for Telldus, installs to /opt/telldus
 FROM ${BUILD_FROM} AS telldus-builder
-ARG TELLDUS_COMMIT
+ARG TELLDUS_COMMIT=2598bbed16ffd701f2a07c99582f057a3decbaf3
 ARG BUILD_FROM
 WORKDIR /tmp/
 COPY patches/telldus-fix-gcc-11-issues.patch /tmp/
@@ -179,3 +179,12 @@ COPY --link --from=telldus-builder /opt/telldus/ /usr/local/
 ###
 # Base S6-Overlay
 COPY rootfs /
+
+LABEL \
+    io.hass.type="homeassistant-base" \
+    org.opencontainers.image.title="Home Assistant Core baseimage" \
+    org.opencontainers.image.description="Baseimage for Home Assistant Core container/supervisor installation" \
+    org.opencontainers.image.authors="The Home Assistant Authors" \
+    org.opencontainers.image.url="https://www.home-assistant.io/" \
+    org.opencontainers.image.documentation="https://www.home-assistant.io/docs/" \
+    org.opencontainers.image.licenses="Apache License 2.0"
