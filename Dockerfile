@@ -115,6 +115,19 @@ RUN git clone https://github.com/telldus/telldus \
     && make install
 
 
+# Build stage for pip packages, installs to /opt/pip-packages
+FROM ${BUILD_FROM} AS pip-builder
+ARG BUILD_FROM
+WORKDIR /tmp/
+RUN \
+    --mount=type=bind,src=./requirements.txt,dst=/tmp/requirements.txt \
+    --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=pip-cache-${BUILD_FROM} \
+    pip3 install \
+        --prefix=/opt/pip-packages \
+        --only-binary=:all: \
+        -r /tmp/requirements.txt
+
+
 FROM ${BUILD_FROM}
 
 ARG BUILD_ARCH
@@ -153,15 +166,12 @@ RUN \
         pulseaudio-alsa \
         socat
 
-RUN \
-    --mount=type=bind,src=./requirements.txt,dst=/tmp/requirements.txt \
-    --mount=type=cache,target=/root/.cache/pip,sharing=locked,id=pip-cache-${BUILD_FROM} \
-    pip3 install --only-binary=:all: \
-        -r /tmp/requirements.txt
-
 WORKDIR /usr/src/
 
 ####
+# Copy from pip builder
+COPY --link --from=pip-builder /opt/pip-packages/ /usr/local/
+
 # Copy from ssocr builder
 COPY --link --from=ssocr-builder /opt/ssocr/ /usr/local/
 
