@@ -89,6 +89,7 @@ ARG BUILD_FROM
 WORKDIR /tmp/
 COPY patches/telldus-fix-gcc-11-issues.patch /tmp/
 COPY patches/telldus-fix-alpine-3-17-issues.patch /tmp/
+COPY patches/telldus-bump-cmake-minimum-required-version-to-3100.patch /tmp/
 # hadolint ignore=DL3019
 RUN \
     --mount=type=cache,target=/etc/apk/cache,sharing=locked,id=apk-cache-${BUILD_FROM} \
@@ -105,6 +106,7 @@ RUN git clone https://github.com/telldus/telldus \
     && git reset --hard "${TELLDUS_COMMIT}" \
     && git apply ../telldus-fix-gcc-11-issues.patch \
     && git apply ../telldus-fix-alpine-3-17-issues.patch \
+    && git apply ../telldus-bump-cmake-minimum-required-version-to-3100.patch \
     && cd telldus-core \
     && mkdir /opt/telldus \
     && cmake . -DBUILD_LIBTELLDUS-CORE=ON \

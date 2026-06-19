@@ -1,0 +1,86 @@
+From e83d07446e838167fc9214a762b8d3d2d05df671 Mon Sep 17 00:00:00 2001
+From: E Shattow <e@freeshell.de>
+Date: Mon, 27 Apr 2026 12:45:40 -0700
+Subject: [PATCH] Bump CMake minimum required version to 3.10.0
+
+---
+ rfcmd/CMakeLists.txt               | 2 +-
+ telldus-core/CMakeLists.txt        | 4 ++--
+ telldus-core/INSTALL               | 2 +-
+ telldus-gui/CMakeLists.txt         | 2 +-
+ telldus-gui/Plugins/CMakeLists.txt | 2 +-
+ xpl/qtxpl/CMakeLists.txt           | 2 +-
+ 6 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/rfcmd/CMakeLists.txt b/rfcmd/CMakeLists.txt
+index af4b4484..6d8a3dc9 100644
+--- a/rfcmd/CMakeLists.txt
++++ b/rfcmd/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 2.4)
++cmake_minimum_required( VERSION 3.10.0 )
+ 
+ INCLUDE_DIRECTORIES(
+   /usr/src/linux/include
+diff --git a/telldus-core/CMakeLists.txt b/telldus-core/CMakeLists.txt
+index 5cdd5364..ab524a69 100644
+--- a/telldus-core/CMakeLists.txt
++++ b/telldus-core/CMakeLists.txt
+@@ -1,6 +1,6 @@
+-PROJECT( telldus-core )
++CMAKE_MINIMUM_REQUIRED( VERSION 3.10.0 )
+ 
+-CMAKE_MINIMUM_REQUIRED( VERSION 2.6.0 )
++PROJECT( telldus-core )
+ 
+ CMAKE_POLICY(SET CMP0003 NEW)
+ 
+diff --git a/telldus-core/INSTALL b/telldus-core/INSTALL
+index 9d2b0b4a..035502f1 100644
+--- a/telldus-core/INSTALL
++++ b/telldus-core/INSTALL
+@@ -14,7 +14,7 @@ on some systems it is called gtar.
+ Configuring
+ -----------
+ 
+-Telldus Core is built using CMake (http://www.cmake.org), version 2.4.0 is the
++Telldus Core is built using CMake (http://www.cmake.org), version 3.10.0 is the
+ minimum required version. This means there is no configure-script, but you
+ need to run cmake.
+ 
+diff --git a/telldus-gui/CMakeLists.txt b/telldus-gui/CMakeLists.txt
+index ed193422..fa450842 100644
+--- a/telldus-gui/CMakeLists.txt
++++ b/telldus-gui/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ PROJECT( telldus-gui )
+ 
+-CMAKE_MINIMUM_REQUIRED( VERSION 2.4.0 )
++CMAKE_MINIMUM_REQUIRED( VERSION 3.10.0 )
+ 
+ if(COMMAND cmake_policy)
+ 	cmake_policy(SET CMP0003 NEW)
+diff --git a/telldus-gui/Plugins/CMakeLists.txt b/telldus-gui/Plugins/CMakeLists.txt
+index 382f6744..91ce82d7 100644
+--- a/telldus-gui/Plugins/CMakeLists.txt
++++ b/telldus-gui/Plugins/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ 
+-CMAKE_MINIMUM_REQUIRED( VERSION 2.4.0 )
++CMAKE_MINIMUM_REQUIRED( VERSION 3.10.0 )
+ 
+ SET(BUILD_PLUGIN_TELLDUS-CORE	TRUE	CACHE BOOL "Build plugin 'TelldusCore'")
+ 
+diff --git a/xpl/qtxpl/CMakeLists.txt b/xpl/qtxpl/CMakeLists.txt
+index 480e3796..d9e227ed 100644
+--- a/xpl/qtxpl/CMakeLists.txt
++++ b/xpl/qtxpl/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
++CMAKE_MINIMUM_REQUIRED( VERSION 3.10.0 )
+ PROJECT(qtxpl)
+ 
+ FIND_PACKAGE( Qt4 REQUIRED )
+-- 
+2.50.0
+
