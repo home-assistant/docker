@@ -91,7 +91,7 @@ jobs:
           arch: ${{ matrix.arch }}
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
           cosign-base-identity: 'https://github.com/home-assistant/docker-base/.*'
-          cosign-base-verify: ghcr.io/home-assistant/base-python:3.14-alpine3.22
+          cosign-base-verify: ghcr.io/home-assistant/base-python:3.14-alpine3.24
           image: ${{ matrix.image }}
           image-tags: |
             ${{ needs.init.outputs.version }}
