@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "enabledManagers": ["custom.regex"],
+  "enabledManagers": ["custom.regex", "github-actions", "pip_requirements"],
   "customManagers": [
     {
       "customType": "regex",
@@ -21,6 +21,28 @@
       "commitMessageExtra": "to {{newVersion}}",
       "versioning": "pep440",
       "minimumReleaseAge": "1 hour"
+    },
+    {
+      "description": "Label GitHub Actions updates like Dependabot did",
+      "matchManagers": ["github-actions"],
+      "labels": ["dependencies", "github_actions"]
+    },
+    {
+      "description": "Leave runner labels and action version inputs alone, Dependabot never updated those",
+      "matchManagers": ["github-actions"],
+      "matchDepTypes": ["github-runner", "uses-with"],
+      "enabled": false
+    },
+    {
+      "description": "Group the home-assistant/builder subactions into one PR (they share a release)",
+      "matchPackageNames": ["/^home-assistant\\/builder(?:\\/|$)/"],
+      "groupName": "home-assistant/builder",
+      "groupSlug": "builder"
+    },
+    {
+      "description": "Label Python requirement updates like Dependabot did",
+      "matchManagers": ["pip_requirements"],
+      "labels": ["dependencies", "python"]
     }
   ]
 }
