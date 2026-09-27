@@ -4,7 +4,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^Dockerfile$"],
+      "managerFilePatterns": ["/^Dockerfile$/"],
       "matchStrings": [
         "BUILD_FROM=(?<image>ghcr\\.io/home-assistant/base-python:(?<pythonVersion>[0-9\\.]+)-(?<alpineVersion>alpine[0-9\\.]+))-(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)"
       ],
