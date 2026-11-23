@@ -37,7 +37,7 @@ jobs:
 
       - name: Get version
         id: version
-        uses: home-assistant/actions/helpers/version@86d4564712fa02543c808e3a693dd04f9d3f8361 # master
+        uses: home-assistant/actions/helpers/version@2026.11.0
         with:
           type: ${{ env.BUILD_TYPE }}
 
